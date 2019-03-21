@@ -38,6 +38,11 @@ public class Player extends Creature {
     }
 
     @Override
+    protected void initAITasks() {
+
+    }
+
+    @Override
     public void tick() {
         super.tick();
         down.tick();
@@ -142,7 +147,7 @@ public class Player extends Creature {
     }
 
     @Override
-    public void die() {
+    public void onKilled() {
         System.out.println("You Suck");
         for (ItemStack stack : inventory.getInventoryItems()) {
             BlockPos pos = new PixelPos(x, y).toBlockPos();

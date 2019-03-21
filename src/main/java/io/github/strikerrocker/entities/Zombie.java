@@ -23,8 +23,6 @@ public class Zombie extends Creature {
         right = new Animation(500, Assets.zombie_right);
         left = new Animation(500, Assets.zombie_left);
         setHealth(10);
-        aiTasks.put(new AttackAI(5, 1), 0);
-        aiTasks.put(new FollowPlayerAI(this), 1);
     }
 
     @Override
@@ -43,6 +41,12 @@ public class Zombie extends Creature {
     }
 
     @Override
+    protected void initAITasks() {
+        aiTasks.put(new AttackAI(5, 1), 0);
+        aiTasks.put(new FollowPlayerAI(this), 1);
+    }
+
+    @Override
     public void render(Graphics graphics) {
         super.render(graphics);
         /**graphics.setColor(Color.RED);
@@ -53,7 +57,7 @@ public class Zombie extends Creature {
     }
 
     @Override
-    public void die() {
+    public void onKilled() {
         System.out.println("You killed successfully");
     }
 }

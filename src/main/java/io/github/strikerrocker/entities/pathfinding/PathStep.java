@@ -1,4 +1,4 @@
-package main.java.io.github.strikerrocker.pathfinding;
+package main.java.io.github.strikerrocker.entities.pathfinding;
 
 import main.java.io.github.strikerrocker.world.BlockPos;
 

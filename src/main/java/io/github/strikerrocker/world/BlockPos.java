@@ -10,20 +10,20 @@ public class BlockPos {
         this.y = y;
     }
 
-    public float getX() {
-        return x;
-    }
-
-    public void setX(float x) {
-        this.x = x;
-    }
-
     public float getY() {
         return y;
     }
 
     public void setY(float y) {
         this.y = y;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public void setX(float x) {
+        this.x = x;
     }
 
     @Override
@@ -37,6 +37,10 @@ public class BlockPos {
 
     public PixelPos toPixelPos() {
         return new PixelPos(this);
+    }
+
+    public BlockPos intForm() {
+        return new BlockPos((int) x, (int) y);
     }
 
     @Override

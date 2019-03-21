@@ -3,11 +3,12 @@ package main.java.io.github.strikerrocker.world;
 import main.java.io.github.strikerrocker.Handler;
 import main.java.io.github.strikerrocker.Utils;
 import main.java.io.github.strikerrocker.blocks.Block;
+import main.java.io.github.strikerrocker.blocks.Blocks;
 import main.java.io.github.strikerrocker.entities.EntityManager;
 import main.java.io.github.strikerrocker.entities.Player;
-import main.java.io.github.strikerrocker.entities.Zombie;
 
 import java.awt.*;
+import java.util.logging.Level;
 
 import static main.java.io.github.strikerrocker.blocks.Block.BLOCKHEIGHT;
 import static main.java.io.github.strikerrocker.blocks.Block.BLOCKWIDTH;
@@ -22,9 +23,10 @@ public class World {
     public World(Handler handler, String path) {
         this.handler = handler;
         entityManager = new EntityManager(handler, new Player(handler, 2.5f, 2.5f));
+        handler.setWorld(this);
         loadWorld(path);
-        entityManager.addEntity(new Zombie(handler, spawnX, spawnY + 1));
         entityManager.getPlayer().setPos(new BlockPos(spawnX, spawnY));
+        //entityManager.addEntity(new Zombie(handler, spawnX, spawnY + 2));
     }
 
     public EntityManager getEntityManager() {
@@ -63,9 +65,9 @@ public class World {
     }
 
     public Block getBlock(float x, float y) {
-        if (x < 0 || x > width || y < 0 || y > height) return Block.grass;
+        if (x < 0 || x > width || y < 0 || y > height) return Blocks.grass;
         Block block = Block.blocks[blocks[(int) x][(int) y]];
-        if (block == null) return Block.dirt;
+        if (block == null) return Blocks.dirt;
         return block;
     }
 
@@ -79,7 +81,12 @@ public class World {
         blocks = new int[width][height];
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                blocks[x][y] = Integer.parseInt(tokens[(x + y * width) + 4]);
+                try {
+                    blocks[x][y] = Integer.parseInt(tokens[(x + y * width) + 4]);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    handler.getGame().getLogger().log(Level.INFO, e.getMessage());
+                    blocks[x][y] = 0;
+                }
             }
         }
     }

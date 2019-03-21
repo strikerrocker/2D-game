@@ -34,7 +34,10 @@ public abstract class Creature extends Entity {
         this.health = DEFAULT_HEALTH;
         this.speed = DEFAULT_SPEED;
         bounds = new Rectangle(16, 32, 32, 32);
+        initAITasks();
     }
+
+    protected abstract void initAITasks();
 
     @Override
     public void tick() {
@@ -56,7 +59,7 @@ public abstract class Creature extends Entity {
         if (health <= 0) {
             renderHurt = false;
             active = false;
-            die();
+            onKilled();
         }
     }
 
@@ -92,7 +95,7 @@ public abstract class Creature extends Entity {
 
     public abstract BufferedImage getCurrentFrame();
 
-    public abstract void die();
+    public abstract void onKilled();
 
     public void move() {
         if (!entityColliding(xMove, 0))
@@ -104,14 +107,14 @@ public abstract class Creature extends Entity {
     public void moveX() {
         if (xMove > 0) {
             int tx = (int) ((x + xMove + bounds.x + bounds.width) / BLOCKWIDTH);
-            if (!blockColliding(tx, (int) ((y + bounds.y) / BLOCKHEIGHT)) && !blockColliding(tx, (int) ((y + bounds.y + bounds.height) / BLOCKHEIGHT))) {
+            if (!blockCollision(tx, (int) ((y + bounds.y) / BLOCKHEIGHT)) && !blockCollision(tx, (int) ((y + bounds.y + bounds.height) / BLOCKHEIGHT))) {
                 x += xMove;
             } else {
                 x = tx * BLOCKWIDTH - bounds.x - bounds.width - 1;
             }
         } else if (xMove < 0) {
             int tx = (int) ((x + xMove + bounds.x) / BLOCKWIDTH);
-            if (!blockColliding(tx, (int) ((y + bounds.y) / BLOCKHEIGHT)) && !blockColliding(tx, (int) ((y + bounds.y + bounds.height) / BLOCKHEIGHT))) {
+            if (!blockCollision(tx, (int) ((y + bounds.y) / BLOCKHEIGHT)) && !blockCollision(tx, (int) ((y + bounds.y + bounds.height) / BLOCKHEIGHT))) {
                 x += xMove;
             } else {
                 x = tx * BLOCKWIDTH + BLOCKWIDTH - bounds.x;
@@ -123,8 +126,8 @@ public abstract class Creature extends Entity {
         if (yMove < 0) {
             int ty = (int) (y + yMove + bounds.y) / BLOCKHEIGHT;
 
-            if (!blockColliding((int) (x + bounds.x) / BLOCKWIDTH, ty) &&
-                    !blockColliding((int) (x + bounds.x + bounds.width) / BLOCKWIDTH, ty)) {
+            if (!blockCollision((int) (x + bounds.x) / BLOCKWIDTH, ty) &&
+                    !blockCollision((int) (x + bounds.x + bounds.width) / BLOCKWIDTH, ty)) {
                 y += yMove;
             } else {
                 y = ty * BLOCKHEIGHT + BLOCKHEIGHT - bounds.y;
@@ -133,8 +136,8 @@ public abstract class Creature extends Entity {
         } else if (yMove > 0) {
             int ty = (int) (y + yMove + bounds.y + bounds.height) / BLOCKHEIGHT;
 
-            if (!blockColliding((int) (x + bounds.x) / BLOCKWIDTH, ty) &&
-                    !blockColliding((int) (x + bounds.x + bounds.width) / BLOCKWIDTH, ty)) {
+            if (!blockCollision((int) (x + bounds.x) / BLOCKWIDTH, ty) &&
+                    !blockCollision((int) (x + bounds.x + bounds.width) / BLOCKWIDTH, ty)) {
                 y += yMove;
             } else {
                 y = ty * BLOCKHEIGHT - bounds.y - bounds.height - 1;
@@ -143,7 +146,7 @@ public abstract class Creature extends Entity {
         }
     }
 
-    private boolean blockColliding(int x, int y) {
+    private boolean blockCollision(int x, int y) {
         return handler.getWorld().getBlock(x, y).isSolid();
     }
 

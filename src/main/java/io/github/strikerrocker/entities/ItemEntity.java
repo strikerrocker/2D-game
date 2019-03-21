@@ -15,13 +15,18 @@ public class ItemEntity extends Creature {
     }
 
     @Override
+    protected void initAITasks() {
+
+    }
+
+    @Override
     public BufferedImage getCurrentFrame() {
         return stack.getTexture();
     }
 
 
     @Override
-    public void die() {
+    public void onKilled() {
         stack.setCount(stack.getCount() + 10);
         handler.getWorld().getEntityManager().getPlayer().getInventory().addItem(stack);
     }

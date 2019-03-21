@@ -81,8 +81,4 @@ public class ItemStack {
     public String getName() {
         return item.getName();
     }
-
-    public int getID() {
-        return item.getId();
-    }
 }

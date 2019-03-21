@@ -1,7 +1,5 @@
 package main.java.io.github.strikerrocker.blocks;
 
-import main.java.io.github.strikerrocker.gfx.Assets;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -12,9 +10,6 @@ public class Block {
     public static final int BLOCKWIDTH = 64;
     public static final int BLOCKHEIGHT = 64;
     public static Block[] blocks = new Block[256];
-    public static Block grass = new Block(Assets.grass, 0);
-    public static Block dirt = new Block(Assets.dirt, 1);
-    public static Block rock = new SolidBlock(Assets.stone, 2);
     protected final int id;
     protected BufferedImage texture;
 

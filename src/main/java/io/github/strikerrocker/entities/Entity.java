@@ -24,6 +24,9 @@ public abstract class Entity {
         bounds = new Rectangle(0, 0, width, height);
     }
 
+    public BlockPos getPos() {
+        return new PixelPos(x, y).toBlockPos();
+    }
 
     public void setPos(PixelPos pos) {
         this.x = pos.getXPixel();
@@ -36,6 +39,10 @@ public abstract class Entity {
         this.y = pos1.getYPixel();
     }
 
+    public PixelPos getPixelPos() {
+        return new PixelPos(x, y);
+    }
+
     public Rectangle getCollisionBounds(float xOffset, float yOffset) {
         return new Rectangle((int) (x + bounds.x + xOffset), (int) (y + bounds.y + yOffset), bounds.width, bounds.height);
     }
@@ -43,6 +50,15 @@ public abstract class Entity {
     public boolean entityColliding(float xOffset, float yOffset) {
         for (Entity entity : handler.getWorld().getEntityManager().getEntities()) {
             if (entity != this && entity.getCollisionBounds(1, 1).intersects(getCollisionBounds(xOffset, yOffset))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean entityCollidingExceptPlayer(float xOffset, float yOffset) {
+        for (Entity entity : handler.getWorld().getEntityManager().getEntities()) {
+            if (entity != this && !(entity instanceof Player) && entity.getCollisionBounds(1, 1).intersects(getCollisionBounds(xOffset, yOffset))) {
                 return true;
             }
         }

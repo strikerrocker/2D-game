@@ -2,7 +2,6 @@ package main.java.io.github.strikerrocker;
 
 import main.java.io.github.strikerrocker.gfx.Assets;
 import main.java.io.github.strikerrocker.gfx.Text;
-import main.java.io.github.strikerrocker.items.Item;
 import main.java.io.github.strikerrocker.items.ItemStack;
 
 import java.awt.*;
@@ -13,21 +12,11 @@ public class Inventory {
     private Handler handler;
     private boolean active = false;
     private ArrayList<ItemStack> inventoryItems;
-    private int invX = 64, invY = 48,
-            invWidth = 512, invHeight = 384,
-            invListCenterX = invX + 171,
-            invListCenterY = invY + invHeight / 2 + 5,
-            invListSpacing = 30;
-    private int invImageX = 452, invImageY = 82,
-            invImageWidth = 64, invImageHeight = 64;
-    private int invCountX = 484, invCountY = 172;
     private int selectedItem = 0;
 
     public Inventory(Handler handler) {
         this.handler = handler;
         inventoryItems = new ArrayList<>();
-        inventoryItems.add(new ItemStack(Item.woodItem, 2));
-        inventoryItems.add(new ItemStack(Item.rockItem, 2));
     }
 
     public ArrayList<ItemStack> getInventoryItems() {
@@ -57,28 +46,34 @@ public class Inventory {
     public void render(Graphics g) {
         if (!active)
             return;
-
-        g.drawImage(Assets.inventoryScreen, invX, invY, invWidth, invHeight, null);
+        int guiX = 64;
+        int guiY = 64;
+        int guiWidth = handler.getWidth() - guiX * 2;
+        int guiHeight = handler.getHeight() - guiY * 2;
+        int invListCenterX = 64 + (guiWidth / 3);
+        int invListCenterY = (int) (64 + guiHeight / 1.93);
+        int invListSpacing = (handler.getHeight() - (guiY * 2) - 61) / 11;
+        g.drawImage(Assets.inventoryScreen, guiX, guiY, guiWidth, guiHeight, null);
 
         int len = inventoryItems.size();
-        if (len == 0)
+        if (len == 0) {
             return;
-
+        }
         for (int i = -5; i < 6; i++) {
             if (selectedItem + i < 0 || selectedItem + i >= len)
                 continue;
             if (i == 0) {
                 Text.drawString(g, "> " + inventoryItems.get(selectedItem + i).getName() + " <", invListCenterX,
-                        invListCenterY + i * invListSpacing, true, Color.YELLOW, Assets.font28);
+                        invListCenterY + i * invListSpacing, true, Color.YELLOW, Assets.font28.deriveFont((float) invListSpacing * 3 / 2));
             } else {
                 Text.drawString(g, inventoryItems.get(selectedItem + i).getName(), invListCenterX,
-                        invListCenterY + i * invListSpacing, true, Color.WHITE, Assets.font28);
+                        invListCenterY + i * invListSpacing, true, Color.WHITE, Assets.font28.deriveFont((float) invListSpacing * 3 / 2));
             }
         }
 
         ItemStack stack = inventoryItems.get(selectedItem);
-        g.drawImage(stack.getTexture(), invImageX, invImageY, invImageWidth, invImageHeight, null);
-        Text.drawString(g, Integer.toString(stack.getCount()), invCountX, invCountY, true, Color.WHITE, Assets.font28);
+        g.drawImage(stack.getTexture(), (int) (guiWidth / 1.34) + guiX, (guiHeight / 14) + guiY, (int) (guiWidth / 6.7), (guiHeight / 5), null);
+        Text.drawString(g, Integer.toString(stack.getCount()), (int) (guiWidth / 1.22) + guiX, (guiHeight / 3) + guiY, true, Color.WHITE, Assets.font28.deriveFont((float) invListSpacing));
     }
 
     public void addItem(ItemStack stack) {

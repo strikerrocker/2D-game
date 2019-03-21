@@ -1,20 +1,24 @@
 package main.java.io.github.strikerrocker;
 
+import main.java.io.github.strikerrocker.blocks.Blocks;
 import main.java.io.github.strikerrocker.gfx.Assets;
 import main.java.io.github.strikerrocker.gfx.Display;
 import main.java.io.github.strikerrocker.gfx.GameCamera;
 import main.java.io.github.strikerrocker.input.KeyManager;
 import main.java.io.github.strikerrocker.input.MouseManager;
+import main.java.io.github.strikerrocker.items.Items;
 import main.java.io.github.strikerrocker.states.GameState;
 import main.java.io.github.strikerrocker.states.MenuState;
 import main.java.io.github.strikerrocker.states.State;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.util.logging.Logger;
 
 public class Game implements Runnable {
     public int fps = 0;
     public State gameState;
+    private Logger logger;
     private String title;
     private int height, width;
     private Display display;
@@ -34,6 +38,12 @@ public class Game implements Runnable {
         this.height = height;
         keyManager = new KeyManager();
         mouseManager = new MouseManager();
+
+        logger = Logger.getLogger("Game : ");
+    }
+
+    public Logger getLogger() {
+        return logger;
     }
 
     public GameCamera getCamera() {
@@ -67,6 +77,8 @@ public class Game implements Runnable {
 
         handler = new Handler(this);
         camera = new GameCamera(handler, 0, 0);
+        Blocks.init();
+        Items.init();
         menuState = new MenuState(handler);
         gameState = new GameState(handler);
         //State.setCurrentState(menuState);
@@ -110,6 +122,8 @@ public class Game implements Runnable {
             lastTime = now;
             if (delta >= 1) {
                 tick();
+                width = display.getFrame().getWidth();
+                height = display.getFrame().getHeight();
                 render();
                 ticks++;
                 delta--;

@@ -37,4 +37,12 @@ public class PixelPos {
     public BlockPos toBlockPos() {
         return new BlockPos(x / BLOCKWIDTH, y / BLOCKHEIGHT);
     }
+
+    @Override
+    public String toString() {
+        return "PixelPos{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }
