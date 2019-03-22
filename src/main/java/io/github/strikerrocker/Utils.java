@@ -3,6 +3,7 @@ package io.github.strikerrocker;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Comparator;
@@ -11,7 +12,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Utils {
-    public static String loadFilesAsFile(String path) {
+    public static String loadFilesAsString(File path) {
         StringBuilder builder = new StringBuilder();
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));

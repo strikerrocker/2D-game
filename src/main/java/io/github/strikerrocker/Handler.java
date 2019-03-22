@@ -7,7 +7,6 @@ import io.github.strikerrocker.world.World;
 public class Handler {
 
     private Game game;
-    private World world;
 
     public Handler(Game game) {
         this.game = game;
@@ -33,16 +32,11 @@ public class Handler {
         return game;
     }
 
-    public void setGame(Game game) {
-        this.game = game;
-    }
-
     public World getWorld() {
-        return world;
+        return game.gameState.getWorld();
     }
 
-    public void setWorld(World world) {
-        this.world = world;
+    public void setWorld(String world) {
+        game.gameState.setWorld(world);
     }
-
 }

@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 
 public class Game implements Runnable {
     public int fps = 0;
-    public State gameState;
+    public GameState gameState;
     private Logger logger;
     private String title;
     private int height, width;

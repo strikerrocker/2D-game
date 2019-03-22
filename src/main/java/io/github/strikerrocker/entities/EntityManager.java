@@ -19,11 +19,9 @@ public class EntityManager {
         return 1;
     };
 
-    public EntityManager(Handler handler, Player player) {
+    public EntityManager(Handler handler) {
         this.handler = handler;
-        this.player = player;
         entities = new ArrayList<>();
-        addEntity(player);
     }
 
     public ArrayList<Entity> getEntities() {
@@ -32,6 +30,19 @@ public class EntityManager {
 
     public Player getPlayer() {
         return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+        if (player != null) {
+            addEntity(player);
+        } else {
+            for (Entity entity : entities) {
+                if (entity instanceof Player) {
+                    removeEntity(entity);
+                }
+            }
+        }
     }
 
     public void addEntity(Entity entity) {
@@ -61,6 +72,8 @@ public class EntityManager {
         for (Entity entity : entities) {
             entity.render(graphics);
         }
-        player.postRender(graphics);
+        if (player != null) {
+            player.postRender(graphics);
+        }
     }
 }

@@ -8,39 +8,51 @@ import io.github.strikerrocker.entities.EntityManager;
 import io.github.strikerrocker.entities.Player;
 
 import java.awt.*;
+import java.io.File;
 import java.util.logging.Level;
 
 public class World {
     protected Handler handler;
-    private int width, height;
-    private float spawnX, spawnY;
+    private int worldWidth, worldHeight;
+    private BlockPos spawn;
     private int[][] blocks;
     private EntityManager entityManager;
+    private String name;
 
-    public World(Handler handler, String path) {
+    public World(Handler handler, File path) {
         this.handler = handler;
-        entityManager = new EntityManager(handler, new Player(handler, 2.5f, 2.5f));
-        handler.setWorld(this);
+        this.name = path.getName().replaceFirst(".txt", "");
+        entityManager = new EntityManager(handler);
         loadWorld(path);
-        entityManager.getPlayer().setPos(new BlockPos(spawnX, spawnY));
         //entityManager.addEntity(new Zombie(handler, spawnX, spawnY + 2));
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setPlayer(Player player) {
+        entityManager.setPlayer(player);
+        if (player != null) {
+            player.setPos(spawn);
+        }
     }
 
     public EntityManager getEntityManager() {
         return entityManager;
     }
 
-    public int getWidth() {
-        return width;
+    public int getWorldWidth() {
+        return worldWidth;
     }
 
-    public int getHeight() {
-        return height;
+    public int getWorldHeight() {
+        return worldHeight;
     }
 
     public void tick() {
-        for (int y = 0; y > height; y++) {
-            for (int x = 0; x > width; x++) {
+        for (int y = 0; y > worldHeight; y++) {
+            for (int x = 0; x > worldWidth; x++) {
                 getBlock(x, y).tick();
             }
         }
@@ -49,9 +61,9 @@ public class World {
 
     public void render(Graphics graphics) {
         int xStart = (int) Math.max(0, handler.getGameCamera().getXOffset() / Block.BLOCKWIDTH);
-        int xEnd = (int) Math.min(width, (handler.getGameCamera().getXOffset() + handler.getWidth()) / Block.BLOCKWIDTH + 1);
+        int xEnd = (int) Math.min(worldWidth, (handler.getGameCamera().getXOffset() + handler.getWidth()) / Block.BLOCKWIDTH + 1);
         int yStart = (int) Math.max(0, handler.getGameCamera().getYOffset() / Block.BLOCKHEIGHT);
-        int yEnd = (int) Math.min(height, (handler.getGameCamera().getYOffset() + handler.getHeight()) / Block.BLOCKHEIGHT + 1);
+        int yEnd = (int) Math.min(worldHeight, (handler.getGameCamera().getYOffset() + handler.getHeight()) / Block.BLOCKHEIGHT + 1);
         for (int y = yStart; y < yEnd; y++) {
             for (int x = xStart; x < xEnd; x++) {
                 getBlock(x, y).render(graphics, (int) (x * Block.BLOCKWIDTH - handler.getGameCamera().getXOffset()),
@@ -62,24 +74,23 @@ public class World {
     }
 
     public Block getBlock(float x, float y) {
-        if (x < 0 || x > width || y < 0 || y > height) return Blocks.grass;
+        if (x < 0 || x > worldWidth || y < 0 || y > worldHeight) return Blocks.grass;
         Block block = Block.blocks[blocks[(int) x][(int) y]];
         if (block == null) return Blocks.dirt;
         return block;
     }
 
-    private void loadWorld(String path) {
-        String file = Utils.loadFilesAsFile(path);
+    private void loadWorld(File path) {
+        String file = Utils.loadFilesAsString(path);
         String[] tokens = file.split("\\s+");
-        width = Integer.parseInt(tokens[0]);
-        height = Integer.parseInt(tokens[1]);
-        spawnX = Float.parseFloat(tokens[2]);
-        spawnY = Float.parseFloat(tokens[3]);
-        blocks = new int[width][height];
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
+        worldWidth = Integer.parseInt(tokens[0]);
+        worldHeight = Integer.parseInt(tokens[1]);
+        spawn = new BlockPos(Float.parseFloat(tokens[2]), Float.parseFloat(tokens[3]));
+        blocks = new int[worldWidth][worldHeight];
+        for (int y = 0; y < worldHeight; y++) {
+            for (int x = 0; x < worldWidth; x++) {
                 try {
-                    blocks[x][y] = Integer.parseInt(tokens[(x + y * width) + 4]);
+                    blocks[x][y] = Integer.parseInt(tokens[(x + y * worldWidth) + 4]);
                 } catch (ArrayIndexOutOfBoundsException e) {
                     handler.getGame().getLogger().log(Level.INFO, e.getMessage());
                     blocks[x][y] = 0;

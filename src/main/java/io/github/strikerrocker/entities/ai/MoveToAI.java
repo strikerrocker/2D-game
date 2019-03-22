@@ -43,7 +43,7 @@ public class MoveToAI extends AI {
         if (path == null) {
             updatePath(creature);
         }
-        if ((tempTarget == null || tempTarget.equals(creaturePos)) && path.size() > 0) {
+        if ((tempTarget == null || tempTarget.intForm().equals(creaturePos.intForm())) && path.size() > 0) {
             PixelPos movePos = path.get(0).toPixelPos();
             double x = (movePos.getXPixel() - creature.getPixelPos().getXPixel());
             double y = (movePos.getYPixel() - creature.getPixelPos().getYPixel());

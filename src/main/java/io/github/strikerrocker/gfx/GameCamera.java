@@ -23,14 +23,14 @@ public class GameCamera {
     private void checkBlankSpace() {
         if (xOffset < 0) {
             xOffset = 0;
-        } else if (xOffset > handler.getWorld().getWidth() * Block.BLOCKWIDTH - handler.getWidth()) {
-            xOffset = handler.getWorld().getWidth() * Block.BLOCKWIDTH - handler.getWidth();
+        } else if (xOffset > handler.getWorld().getWorldWidth() * Block.BLOCKWIDTH - handler.getWidth()) {
+            xOffset = handler.getWorld().getWorldWidth() * Block.BLOCKWIDTH - handler.getWidth();
         }
 
         if (yOffset < 0) {
             yOffset = 0;
-        } else if (yOffset > handler.getWorld().getHeight() * Block.BLOCKHEIGHT - handler.getHeight()) {
-            yOffset = handler.getWorld().getHeight() * Block.BLOCKHEIGHT - handler.getHeight();
+        } else if (yOffset > handler.getWorld().getWorldHeight() * Block.BLOCKHEIGHT - handler.getHeight()) {
+            yOffset = handler.getWorld().getWorldHeight() * Block.BLOCKHEIGHT - handler.getHeight();
         }
     }
 

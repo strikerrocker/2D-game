@@ -6,6 +6,8 @@ import io.github.strikerrocker.gfx.Animation;
 import io.github.strikerrocker.gfx.Assets;
 import io.github.strikerrocker.gfx.PixelPos;
 import io.github.strikerrocker.items.ItemStack;
+import io.github.strikerrocker.states.DeathScreen;
+import io.github.strikerrocker.states.State;
 import io.github.strikerrocker.world.BlockPos;
 
 import java.awt.*;
@@ -118,13 +120,16 @@ public class Player extends Creature {
         if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_H)) {
             setHealth(10);
         }
-    }
-
-    @Override
-    public void render(Graphics graphics) {
-        super.render(graphics);
-        //graphics.setColor(Color.RED);
-        //graphics.fillRect((int) (x + bounds.x - handler.getGameCamera().getXOffset()), (int) (y + bounds.y - handler.getGameCamera().getYOffset()), bounds.width, bounds.height);
+        if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_B)) {
+            switch (handler.getWorld().getName()) {
+                case "world1":
+                    handler.setWorld("world2");
+                    break;
+                case "world2":
+                    handler.setWorld("world1");
+                    break;
+            }
+        }
     }
 
     public void postRender(Graphics graphics) {
@@ -153,5 +158,6 @@ public class Player extends Creature {
             BlockPos pos = new PixelPos(x, y).toBlockPos();
             handler.getWorld().getEntityManager().addEntity(new ItemEntity(handler, pos.getX(), pos.getY(), stack));
         }
+        State.setCurrentState(new DeathScreen(handler));
     }
 }
