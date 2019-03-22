@@ -1,4 +1,4 @@
-package main.java.io.github.strikerrocker;
+package io.github.strikerrocker;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

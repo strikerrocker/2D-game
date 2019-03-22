@@ -1,10 +1,10 @@
-package main.java.io.github.strikerrocker.states;
+package io.github.strikerrocker.states;
 
-import main.java.io.github.strikerrocker.Handler;
-import main.java.io.github.strikerrocker.Main;
-import main.java.io.github.strikerrocker.gfx.Assets;
-import main.java.io.github.strikerrocker.gfx.Text;
-import main.java.io.github.strikerrocker.world.World;
+import io.github.strikerrocker.Handler;
+import io.github.strikerrocker.Main;
+import io.github.strikerrocker.gfx.Assets;
+import io.github.strikerrocker.gfx.Text;
+import io.github.strikerrocker.world.World;
 
 import java.awt.*;
 
@@ -25,6 +25,6 @@ public class GameState extends State {
     public void render(Graphics graphics) {
         world.render(graphics);
         Text.drawString(graphics, "FPS : " + Main.game.fps, 0, 20, false, Color.WHITE, Assets.font28);
-        Text.drawString(graphics, "Health : " + State.getCurrentState().handler.getWorld().getEntityManager().getPlayer().getHealth(), 0, 40, false, Color.WHITE, Assets.font28);
+        Text.drawString(graphics, "Health : " + getCurrentState().handler.getWorld().getEntityManager().getPlayer().getHealth(), 0, 40, false, Color.WHITE, Assets.font28);
     }
 }

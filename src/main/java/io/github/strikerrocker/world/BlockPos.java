@@ -1,6 +1,6 @@
-package main.java.io.github.strikerrocker.world;
+package io.github.strikerrocker.world;
 
-import main.java.io.github.strikerrocker.gfx.PixelPos;
+import io.github.strikerrocker.gfx.PixelPos;
 
 public class BlockPos {
     private float x, y;

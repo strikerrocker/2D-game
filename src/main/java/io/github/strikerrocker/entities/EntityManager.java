@@ -1,6 +1,6 @@
-package main.java.io.github.strikerrocker.entities;
+package io.github.strikerrocker.entities;
 
-import main.java.io.github.strikerrocker.Handler;
+import io.github.strikerrocker.Handler;
 
 import java.awt.*;
 import java.util.ArrayList;

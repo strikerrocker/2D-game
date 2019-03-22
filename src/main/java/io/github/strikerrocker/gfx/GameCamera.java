@@ -1,10 +1,8 @@
-package main.java.io.github.strikerrocker.gfx;
+package io.github.strikerrocker.gfx;
 
-import main.java.io.github.strikerrocker.Handler;
-import main.java.io.github.strikerrocker.entities.Entity;
-
-import static main.java.io.github.strikerrocker.blocks.Block.BLOCKHEIGHT;
-import static main.java.io.github.strikerrocker.blocks.Block.BLOCKWIDTH;
+import io.github.strikerrocker.Handler;
+import io.github.strikerrocker.blocks.Block;
+import io.github.strikerrocker.entities.Entity;
 
 public class GameCamera {
     private Handler handler;
@@ -25,14 +23,14 @@ public class GameCamera {
     private void checkBlankSpace() {
         if (xOffset < 0) {
             xOffset = 0;
-        } else if (xOffset > handler.getWorld().getWidth() * BLOCKWIDTH - handler.getWidth()) {
-            xOffset = handler.getWorld().getWidth() * BLOCKWIDTH - handler.getWidth();
+        } else if (xOffset > handler.getWorld().getWidth() * Block.BLOCKWIDTH - handler.getWidth()) {
+            xOffset = handler.getWorld().getWidth() * Block.BLOCKWIDTH - handler.getWidth();
         }
 
         if (yOffset < 0) {
             yOffset = 0;
-        } else if (yOffset > handler.getWorld().getHeight() * BLOCKHEIGHT - handler.getHeight()) {
-            yOffset = handler.getWorld().getHeight() * BLOCKHEIGHT - handler.getHeight();
+        } else if (yOffset > handler.getWorld().getHeight() * Block.BLOCKHEIGHT - handler.getHeight()) {
+            yOffset = handler.getWorld().getHeight() * Block.BLOCKHEIGHT - handler.getHeight();
         }
     }
 

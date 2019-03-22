@@ -1,8 +1,8 @@
-package main.java.io.github.strikerrocker;
+package io.github.strikerrocker;
 
-import main.java.io.github.strikerrocker.gfx.Assets;
-import main.java.io.github.strikerrocker.gfx.Text;
-import main.java.io.github.strikerrocker.items.ItemStack;
+import io.github.strikerrocker.gfx.Assets;
+import io.github.strikerrocker.gfx.Text;
+import io.github.strikerrocker.items.ItemStack;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;

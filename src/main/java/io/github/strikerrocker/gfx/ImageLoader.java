@@ -1,10 +1,10 @@
-package main.java.io.github.strikerrocker.gfx;
+package io.github.strikerrocker.gfx;
+
+import io.github.strikerrocker.Main;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-
-import static main.java.io.github.strikerrocker.Main.game;
 
 public class ImageLoader {
     static BufferedImage loadImage(String path) {
@@ -12,7 +12,7 @@ public class ImageLoader {
             return ImageIO.read(ImageLoader.class.getResource(path));
         } catch (IOException e) {
             e.printStackTrace();
-            game.stop();
+            Main.game.stop();
         }
         return null;
     }

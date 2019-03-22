@@ -1,9 +1,7 @@
-package main.java.io.github.strikerrocker.gfx;
+package io.github.strikerrocker.gfx;
 
-import main.java.io.github.strikerrocker.world.BlockPos;
-
-import static main.java.io.github.strikerrocker.blocks.Block.BLOCKHEIGHT;
-import static main.java.io.github.strikerrocker.blocks.Block.BLOCKWIDTH;
+import io.github.strikerrocker.blocks.Block;
+import io.github.strikerrocker.world.BlockPos;
 
 public class PixelPos {
     private float x, y;
@@ -14,8 +12,8 @@ public class PixelPos {
     }
 
     public PixelPos(BlockPos blockPos) {
-        this.x = blockPos.getX() * BLOCKWIDTH;
-        this.y = blockPos.getY() * BLOCKHEIGHT;
+        this.x = blockPos.getX() * Block.BLOCKWIDTH;
+        this.y = blockPos.getY() * Block.BLOCKHEIGHT;
     }
 
     public float getYPixel() {
@@ -35,7 +33,7 @@ public class PixelPos {
     }
 
     public BlockPos toBlockPos() {
-        return new BlockPos(x / BLOCKWIDTH, y / BLOCKHEIGHT);
+        return new BlockPos(x / Block.BLOCKWIDTH, y / Block.BLOCKHEIGHT);
     }
 
     @Override

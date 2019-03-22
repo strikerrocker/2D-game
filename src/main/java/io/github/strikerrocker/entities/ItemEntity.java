@@ -1,7 +1,7 @@
-package main.java.io.github.strikerrocker.entities;
+package io.github.strikerrocker.entities;
 
-import main.java.io.github.strikerrocker.Handler;
-import main.java.io.github.strikerrocker.items.ItemStack;
+import io.github.strikerrocker.Handler;
+import io.github.strikerrocker.items.ItemStack;
 
 import java.awt.image.BufferedImage;
 

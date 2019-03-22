@@ -1,8 +1,8 @@
-package main.java.io.github.strikerrocker.entities.ai;
+package io.github.strikerrocker.entities.ai;
 
-import main.java.io.github.strikerrocker.entities.Creature;
-import main.java.io.github.strikerrocker.entities.Entity;
-import main.java.io.github.strikerrocker.entities.Zombie;
+import io.github.strikerrocker.entities.Creature;
+import io.github.strikerrocker.entities.Entity;
+import io.github.strikerrocker.entities.Zombie;
 
 import java.awt.*;
 

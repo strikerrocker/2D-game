@@ -1,9 +1,9 @@
-package main.java.io.github.strikerrocker.entities.ai;
+package io.github.strikerrocker.entities.ai;
 
-import main.java.io.github.strikerrocker.entities.Creature;
-import main.java.io.github.strikerrocker.entities.pathfinding.PathFinder;
-import main.java.io.github.strikerrocker.gfx.PixelPos;
-import main.java.io.github.strikerrocker.world.BlockPos;
+import io.github.strikerrocker.entities.Creature;
+import io.github.strikerrocker.entities.pathfinding.PathFinder;
+import io.github.strikerrocker.gfx.PixelPos;
+import io.github.strikerrocker.world.BlockPos;
 
 import java.util.ArrayList;
 

@@ -1,6 +1,6 @@
-package main.java.io.github.strikerrocker.entities.pathfinding;
+package io.github.strikerrocker.entities.pathfinding;
 
-import main.java.io.github.strikerrocker.world.BlockPos;
+import io.github.strikerrocker.world.BlockPos;
 
 public class PathStep {
     private int g, h;

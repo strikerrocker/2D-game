@@ -1,6 +1,6 @@
-package main.java.io.github.strikerrocker.blocks;
+package io.github.strikerrocker.blocks;
 
-import main.java.io.github.strikerrocker.gfx.Assets;
+import io.github.strikerrocker.gfx.Assets;
 
 public class Blocks {
     public static Block grass;

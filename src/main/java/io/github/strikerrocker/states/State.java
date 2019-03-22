@@ -1,6 +1,6 @@
-package main.java.io.github.strikerrocker.states;
+package io.github.strikerrocker.states;
 
-import main.java.io.github.strikerrocker.Handler;
+import io.github.strikerrocker.Handler;
 
 import java.awt.*;
 

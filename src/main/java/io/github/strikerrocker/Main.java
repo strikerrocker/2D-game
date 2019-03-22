@@ -1,4 +1,4 @@
-package main.java.io.github.strikerrocker;
+package io.github.strikerrocker;
 
 public class Main {
     public static Game game;

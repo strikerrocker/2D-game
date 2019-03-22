@@ -1,8 +1,8 @@
-package main.java.io.github.strikerrocker.entities;
+package io.github.strikerrocker.entities;
 
-import main.java.io.github.strikerrocker.Handler;
-import main.java.io.github.strikerrocker.gfx.PixelPos;
-import main.java.io.github.strikerrocker.world.BlockPos;
+import io.github.strikerrocker.Handler;
+import io.github.strikerrocker.gfx.PixelPos;
+import io.github.strikerrocker.world.BlockPos;
 
 import java.awt.*;
 

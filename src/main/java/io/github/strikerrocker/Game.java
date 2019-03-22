@@ -1,15 +1,15 @@
-package main.java.io.github.strikerrocker;
+package io.github.strikerrocker;
 
-import main.java.io.github.strikerrocker.blocks.Blocks;
-import main.java.io.github.strikerrocker.gfx.Assets;
-import main.java.io.github.strikerrocker.gfx.Display;
-import main.java.io.github.strikerrocker.gfx.GameCamera;
-import main.java.io.github.strikerrocker.input.KeyManager;
-import main.java.io.github.strikerrocker.input.MouseManager;
-import main.java.io.github.strikerrocker.items.Items;
-import main.java.io.github.strikerrocker.states.GameState;
-import main.java.io.github.strikerrocker.states.MenuState;
-import main.java.io.github.strikerrocker.states.State;
+import io.github.strikerrocker.blocks.Blocks;
+import io.github.strikerrocker.gfx.Assets;
+import io.github.strikerrocker.gfx.Display;
+import io.github.strikerrocker.gfx.GameCamera;
+import io.github.strikerrocker.input.KeyManager;
+import io.github.strikerrocker.input.MouseManager;
+import io.github.strikerrocker.items.Items;
+import io.github.strikerrocker.states.GameState;
+import io.github.strikerrocker.states.MenuState;
+import io.github.strikerrocker.states.State;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;

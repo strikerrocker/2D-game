@@ -1,12 +1,12 @@
-package main.java.io.github.strikerrocker.entities;
+package io.github.strikerrocker.entities;
 
-import main.java.io.github.strikerrocker.Handler;
-import main.java.io.github.strikerrocker.Inventory;
-import main.java.io.github.strikerrocker.gfx.Animation;
-import main.java.io.github.strikerrocker.gfx.Assets;
-import main.java.io.github.strikerrocker.gfx.PixelPos;
-import main.java.io.github.strikerrocker.items.ItemStack;
-import main.java.io.github.strikerrocker.world.BlockPos;
+import io.github.strikerrocker.Handler;
+import io.github.strikerrocker.Inventory;
+import io.github.strikerrocker.gfx.Animation;
+import io.github.strikerrocker.gfx.Assets;
+import io.github.strikerrocker.gfx.PixelPos;
+import io.github.strikerrocker.items.ItemStack;
+import io.github.strikerrocker.world.BlockPos;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -21,7 +21,7 @@ public class Player extends Creature {
     private Inventory inventory;
 
     public Player(Handler handler, float x, float y) {
-        super(handler, x, y, Creature.DEFAULT_WIDTH, Creature.DEFAULT_HEIGHT);
+        super(handler, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
         down = new Animation(500, Assets.player_down);
         up = new Animation(500, Assets.player_up);

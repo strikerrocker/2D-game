@@ -1,9 +1,9 @@
-package main.java.io.github.strikerrocker.states;
+package io.github.strikerrocker.states;
 
-import main.java.io.github.strikerrocker.Handler;
-import main.java.io.github.strikerrocker.gfx.Assets;
-import main.java.io.github.strikerrocker.ui.UIImageButton;
-import main.java.io.github.strikerrocker.ui.UIManager;
+import io.github.strikerrocker.Handler;
+import io.github.strikerrocker.gfx.Assets;
+import io.github.strikerrocker.ui.UIImageButton;
+import io.github.strikerrocker.ui.UIManager;
 
 import java.awt.*;
 
@@ -17,7 +17,7 @@ public class MenuState extends State {
 
         uiManager.add(new UIImageButton(handler.getWidth() / 2 - 64, handler.getHeight() / 2 - 32, 128, 64, Assets.startBtn, () -> {
             handler.getGame().getMouseManager().setUIManager(null);
-            State.setCurrentState(handler.getGame().gameState);
+            setCurrentState(handler.getGame().gameState);
         }));
     }
 

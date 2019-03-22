@@ -1,9 +1,9 @@
-package main.java.io.github.strikerrocker.entities.pathfinding;
+package io.github.strikerrocker.entities.pathfinding;
 
-import main.java.io.github.strikerrocker.Handler;
-import main.java.io.github.strikerrocker.entities.Entity;
-import main.java.io.github.strikerrocker.gfx.PixelPos;
-import main.java.io.github.strikerrocker.world.BlockPos;
+import io.github.strikerrocker.Handler;
+import io.github.strikerrocker.entities.Entity;
+import io.github.strikerrocker.gfx.PixelPos;
+import io.github.strikerrocker.world.BlockPos;
 
 import java.util.ArrayList;
 import java.util.logging.Level;

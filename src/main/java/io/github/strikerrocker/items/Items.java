@@ -1,6 +1,6 @@
-package main.java.io.github.strikerrocker.items;
+package io.github.strikerrocker.items;
 
-import main.java.io.github.strikerrocker.gfx.Assets;
+import io.github.strikerrocker.gfx.Assets;
 
 public class Items {
 

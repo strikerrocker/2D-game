@@ -1,10 +1,10 @@
-package main.java.io.github.strikerrocker.entities;
+package io.github.strikerrocker.entities;
 
-import main.java.io.github.strikerrocker.Handler;
-import main.java.io.github.strikerrocker.Utils;
-import main.java.io.github.strikerrocker.entities.ai.AI;
-import main.java.io.github.strikerrocker.gfx.Assets;
-import main.java.io.github.strikerrocker.gfx.Text;
+import io.github.strikerrocker.Handler;
+import io.github.strikerrocker.Utils;
+import io.github.strikerrocker.entities.ai.AI;
+import io.github.strikerrocker.gfx.Assets;
+import io.github.strikerrocker.gfx.Text;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -13,8 +13,8 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static main.java.io.github.strikerrocker.blocks.Block.BLOCKHEIGHT;
-import static main.java.io.github.strikerrocker.blocks.Block.BLOCKWIDTH;
+import static io.github.strikerrocker.blocks.Block.BLOCKHEIGHT;
+import static io.github.strikerrocker.blocks.Block.BLOCKWIDTH;
 
 public abstract class Creature extends Entity {
     public static final int DEFAULT_HEALTH = 10;

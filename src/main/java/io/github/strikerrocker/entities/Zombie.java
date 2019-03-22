@@ -1,10 +1,10 @@
-package main.java.io.github.strikerrocker.entities;
+package io.github.strikerrocker.entities;
 
-import main.java.io.github.strikerrocker.Handler;
-import main.java.io.github.strikerrocker.entities.ai.AttackAI;
-import main.java.io.github.strikerrocker.entities.ai.FollowPlayerAI;
-import main.java.io.github.strikerrocker.gfx.Animation;
-import main.java.io.github.strikerrocker.gfx.Assets;
+import io.github.strikerrocker.Handler;
+import io.github.strikerrocker.entities.ai.AttackAI;
+import io.github.strikerrocker.entities.ai.FollowPlayerAI;
+import io.github.strikerrocker.gfx.Animation;
+import io.github.strikerrocker.gfx.Assets;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

@@ -1,8 +1,8 @@
-package main.java.io.github.strikerrocker;
+package io.github.strikerrocker;
 
-import main.java.io.github.strikerrocker.gfx.GameCamera;
-import main.java.io.github.strikerrocker.input.KeyManager;
-import main.java.io.github.strikerrocker.world.World;
+import io.github.strikerrocker.gfx.GameCamera;
+import io.github.strikerrocker.input.KeyManager;
+import io.github.strikerrocker.world.World;
 
 public class Handler {
 

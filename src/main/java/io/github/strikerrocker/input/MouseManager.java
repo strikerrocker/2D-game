@@ -1,6 +1,6 @@
-package main.java.io.github.strikerrocker.input;
+package io.github.strikerrocker.input;
 
-import main.java.io.github.strikerrocker.ui.UIManager;
+import io.github.strikerrocker.ui.UIManager;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;

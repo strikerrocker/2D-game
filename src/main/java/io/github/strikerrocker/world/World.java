@@ -1,17 +1,14 @@
-package main.java.io.github.strikerrocker.world;
+package io.github.strikerrocker.world;
 
-import main.java.io.github.strikerrocker.Handler;
-import main.java.io.github.strikerrocker.Utils;
-import main.java.io.github.strikerrocker.blocks.Block;
-import main.java.io.github.strikerrocker.blocks.Blocks;
-import main.java.io.github.strikerrocker.entities.EntityManager;
-import main.java.io.github.strikerrocker.entities.Player;
+import io.github.strikerrocker.Handler;
+import io.github.strikerrocker.Utils;
+import io.github.strikerrocker.blocks.Block;
+import io.github.strikerrocker.blocks.Blocks;
+import io.github.strikerrocker.entities.EntityManager;
+import io.github.strikerrocker.entities.Player;
 
 import java.awt.*;
 import java.util.logging.Level;
-
-import static main.java.io.github.strikerrocker.blocks.Block.BLOCKHEIGHT;
-import static main.java.io.github.strikerrocker.blocks.Block.BLOCKWIDTH;
 
 public class World {
     protected Handler handler;
@@ -51,14 +48,14 @@ public class World {
     }
 
     public void render(Graphics graphics) {
-        int xStart = (int) Math.max(0, handler.getGameCamera().getXOffset() / BLOCKWIDTH);
-        int xEnd = (int) Math.min(width, (handler.getGameCamera().getXOffset() + handler.getWidth()) / BLOCKWIDTH + 1);
-        int yStart = (int) Math.max(0, handler.getGameCamera().getYOffset() / BLOCKHEIGHT);
-        int yEnd = (int) Math.min(height, (handler.getGameCamera().getYOffset() + handler.getHeight()) / BLOCKHEIGHT + 1);
+        int xStart = (int) Math.max(0, handler.getGameCamera().getXOffset() / Block.BLOCKWIDTH);
+        int xEnd = (int) Math.min(width, (handler.getGameCamera().getXOffset() + handler.getWidth()) / Block.BLOCKWIDTH + 1);
+        int yStart = (int) Math.max(0, handler.getGameCamera().getYOffset() / Block.BLOCKHEIGHT);
+        int yEnd = (int) Math.min(height, (handler.getGameCamera().getYOffset() + handler.getHeight()) / Block.BLOCKHEIGHT + 1);
         for (int y = yStart; y < yEnd; y++) {
             for (int x = xStart; x < xEnd; x++) {
-                getBlock(x, y).render(graphics, (int) (x * BLOCKWIDTH - handler.getGameCamera().getXOffset()),
-                        (int) (y * BLOCKHEIGHT - handler.getGameCamera().getYOffset()));
+                getBlock(x, y).render(graphics, (int) (x * Block.BLOCKWIDTH - handler.getGameCamera().getXOffset()),
+                        (int) (y * Block.BLOCKHEIGHT - handler.getGameCamera().getYOffset()));
             }
         }
         entityManager.render(graphics);

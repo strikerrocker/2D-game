@@ -1,4 +1,4 @@
-package main.java.io.github.strikerrocker.input;
+package io.github.strikerrocker.input;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
