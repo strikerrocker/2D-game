@@ -1,6 +1,9 @@
 package io.github.strikerrocker.entities;
 
 import io.github.strikerrocker.Handler;
+import io.github.strikerrocker.entities.player.Player;
+import io.github.strikerrocker.items.ItemStack;
+import io.github.strikerrocker.items.Items;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -36,6 +39,7 @@ public class EntityManager {
         this.player = player;
         if (player != null) {
             addEntity(player);
+            addEntity(new ItemEntity(handler, player.getX(), player.getY(), new ItemStack(Items.apple)));
         } else {
             for (Entity entity : entities) {
                 if (entity instanceof Player) {

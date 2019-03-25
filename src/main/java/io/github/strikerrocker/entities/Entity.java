@@ -1,23 +1,27 @@
 package io.github.strikerrocker.entities;
 
 import io.github.strikerrocker.Handler;
+import io.github.strikerrocker.entities.player.Player;
 import io.github.strikerrocker.gfx.PixelPos;
+import io.github.strikerrocker.misc.Rectangle;
 import io.github.strikerrocker.world.BlockPos;
 
 import java.awt.*;
 
+import static io.github.strikerrocker.blocks.Block.BLOCKHEIGHT;
+import static io.github.strikerrocker.blocks.Block.BLOCKWIDTH;
+
 public abstract class Entity {
     protected float x, y;
-    protected int width, height;
+    protected float width, height;
     protected Handler handler;
     protected Rectangle bounds;
     protected boolean active = true;
 
-    public Entity(Handler handler, float x, float y, int width, int height) {
+    public Entity(Handler handler, float x, float y, float width, float height) {
         this.handler = handler;
-        PixelPos pos = new BlockPos(x, y).toPixelPos();
-        this.x = pos.getXPixel();
-        this.y = pos.getYPixel();
+        this.x = x;
+        this.y = y;
         this.width = width;
         this.height = height;
 
@@ -25,31 +29,36 @@ public abstract class Entity {
     }
 
     public BlockPos getPos() {
-        return new PixelPos(x, y).toBlockPos();
+        return new BlockPos(x, y);
     }
 
     public void setPos(PixelPos pos) {
-        this.x = pos.getXPixel();
-        this.y = pos.getYPixel();
+        BlockPos blockPos = pos.toBlockPos();
+        this.x = blockPos.getX();
+        this.y = blockPos.getY();
     }
 
     public void setPos(BlockPos pos) {
-        PixelPos pos1 = pos.toPixelPos();
-        this.x = pos1.getXPixel();
-        this.y = pos1.getYPixel();
+        this.x = pos.getX();
+        this.y = pos.getY();
     }
 
     public PixelPos getPixelPos() {
-        return new PixelPos(x, y);
+        return getPos().toPixelPos();
     }
 
     public Rectangle getCollisionBounds(float xOffset, float yOffset) {
         return new Rectangle((int) (x + bounds.x + xOffset), (int) (y + bounds.y + yOffset), bounds.width, bounds.height);
     }
 
+    public Rectangle getPixelCollisionBounds(float xOffset, float yOffset) {
+        PixelPos pos = getPixelPos();
+        return new Rectangle((int) (pos.getX() + xOffset) + (bounds.x * BLOCKWIDTH) - handler.getGameCamera().getXOffset(), (int) (pos.getY() + yOffset) + (bounds.y * BLOCKHEIGHT) - handler.getGameCamera().getYOffset(), bounds.width * BLOCKWIDTH, bounds.height * BLOCKHEIGHT);
+    }
+
     public boolean entityColliding(float xOffset, float yOffset) {
         for (Entity entity : handler.getWorld().getEntityManager().getEntities()) {
-            if (entity != this && entity.getCollisionBounds(1, 1).intersects(getCollisionBounds(xOffset, yOffset))) {
+            if (entity != this && entity.getCollisionBounds(0, 0).intersects(getCollisionBounds(xOffset, yOffset))) {
                 return true;
             }
         }
@@ -58,7 +67,7 @@ public abstract class Entity {
 
     public boolean entityCollidingExceptPlayer(float xOffset, float yOffset) {
         for (Entity entity : handler.getWorld().getEntityManager().getEntities()) {
-            if (entity != this && !(entity instanceof Player) && entity.getCollisionBounds(1, 1).intersects(getCollisionBounds(xOffset, yOffset))) {
+            if (entity != this && !(entity instanceof Player) && entity.getCollisionBounds(1 / 64, 1 / 64).intersects(getCollisionBounds(xOffset, yOffset))) {
                 return true;
             }
         }
@@ -81,19 +90,19 @@ public abstract class Entity {
         this.y = y;
     }
 
-    public int getWidth() {
+    public float getWidth() {
         return width;
     }
 
-    public void setWidth(int width) {
+    public void setWidth(float width) {
         this.width = width;
     }
 
-    public int getHeight() {
+    public float getHeight() {
         return height;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(float height) {
         this.height = height;
     }
 

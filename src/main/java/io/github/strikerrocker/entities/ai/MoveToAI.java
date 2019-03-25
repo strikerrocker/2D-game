@@ -2,7 +2,6 @@ package io.github.strikerrocker.entities.ai;
 
 import io.github.strikerrocker.entities.Creature;
 import io.github.strikerrocker.entities.pathfinding.PathFinder;
-import io.github.strikerrocker.gfx.PixelPos;
 import io.github.strikerrocker.world.BlockPos;
 
 import java.util.ArrayList;
@@ -29,7 +28,7 @@ public class MoveToAI extends AI {
 
     @Override
     public boolean canExecute(Creature creature) {
-        if (!creature.getPos().equals(targetPos) || !(path.size() == 0)) {
+        if (!creature.getPos().intForm().equals(targetPos.intForm()) || !(path.size() == 0)) {
             return true;
         } else {
             creature.setXMove(0);
@@ -40,18 +39,16 @@ public class MoveToAI extends AI {
 
     @Override
     public void execute(Creature creature) {
-        if (path == null) {
-            updatePath(creature);
-        }
+        if (path == null) updatePath(creature);
         if ((tempTarget == null || tempTarget.intForm().equals(creaturePos.intForm())) && path.size() > 0) {
-            PixelPos movePos = path.get(0).toPixelPos();
-            double x = (movePos.getXPixel() - creature.getPixelPos().getXPixel());
-            double y = (movePos.getYPixel() - creature.getPixelPos().getYPixel());
+            BlockPos movePos = path.get(0);
+            double x = (movePos.getX() - creature.getX());
+            double y = (movePos.getY() - creature.getY());
             double total = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-            PixelPos move = new PixelPos((float) ((x / total) * creature.getSpeed()), (float) ((y / total) * creature.getSpeed()));
-            creature.setXMove(move.getXPixel());
-            creature.setYMove(move.getYPixel());
-            tempTarget = movePos.toBlockPos();
+            BlockPos move = new BlockPos((float) ((x / total) * creature.getSpeed()), (float) ((y / total) * creature.getSpeed()));
+            creature.setXMove(move.getX());
+            creature.setYMove(move.getY());
+            tempTarget = movePos;
             path.remove(tempTarget);
         }
         creaturePos = creature.getPos();

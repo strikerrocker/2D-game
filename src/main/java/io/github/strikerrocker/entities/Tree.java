@@ -7,9 +7,13 @@ import io.github.strikerrocker.items.Items;
 
 import java.awt.image.BufferedImage;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 public class Tree extends Creature {
-    private boolean hasApple = false;
+    private boolean hasApple = true;
+    private Timer appleGrowTimer = new Timer();
 
     public Tree(Handler handler, float x, float y) {
         super(handler, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT);
@@ -24,7 +28,8 @@ public class Tree extends Creature {
     @Override
     public void hurt(int amt) {
         if (hasApple) {
-            handler.getWorld().getEntityManager().addEntity(new ItemEntity(handler, x, y, new ItemStack(Items.apple, new Random().nextInt(3))));
+            handler.getWorld().getEntityManager().addEntity(new ItemEntity(handler, (float) (x + 0.5), (float) (y + 0.5), new ItemStack(Items.apple, new Random().nextInt(2) + 1)));
+            hasApple = false;
         } else
             super.hurt(amt);
     }
@@ -35,7 +40,25 @@ public class Tree extends Creature {
     }
 
     @Override
+    public void tick() {
+        super.tick();
+        if (!hasApple) {
+            appleGrowTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    hasApple = true;
+                }
+            }, TimeUnit.MINUTES.toMillis(1));
+        }
+    }
+
+    @Override
+    public boolean canMove() {
+        return false;
+    }
+
+    @Override
     public BufferedImage getCurrentFrame() {
-        return Assets.tree;
+        return hasApple ? Assets.appleTree : Assets.tree;
     }
 }

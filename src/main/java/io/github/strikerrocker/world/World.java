@@ -1,11 +1,11 @@
 package io.github.strikerrocker.world;
 
 import io.github.strikerrocker.Handler;
-import io.github.strikerrocker.Utils;
 import io.github.strikerrocker.blocks.Block;
 import io.github.strikerrocker.blocks.Blocks;
 import io.github.strikerrocker.entities.EntityManager;
-import io.github.strikerrocker.entities.Player;
+import io.github.strikerrocker.entities.player.Player;
+import io.github.strikerrocker.misc.Utils;
 
 import java.awt.*;
 import java.io.File;
@@ -75,7 +75,12 @@ public class World {
 
     public Block getBlock(float x, float y) {
         if (x < 0 || x > worldWidth || y < 0 || y > worldHeight) return Blocks.grass;
-        Block block = Block.blocks[blocks[(int) x][(int) y]];
+        Block block;
+        try {
+            block = Block.blocks[blocks[(int) x][(int) y]];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            block = null;
+        }
         if (block == null) return Blocks.dirt;
         return block;
     }
@@ -90,7 +95,7 @@ public class World {
         for (int y = 0; y < worldHeight; y++) {
             for (int x = 0; x < worldWidth; x++) {
                 try {
-                    blocks[x][y] = Integer.parseInt(tokens[(x + y * worldWidth) + 4]);
+                    blocks[x][y] = Integer.parseInt(tokens[(x + y * worldHeight) + 4]);
                 } catch (ArrayIndexOutOfBoundsException e) {
                     handler.getGame().getLogger().log(Level.INFO, e.getMessage());
                     blocks[x][y] = 0;

@@ -15,8 +15,8 @@ public class GameCamera {
     }
 
     public void centreOnEntity(Entity entity) {
-        setXOffset(entity.getX() - handler.getWidth() / 2);
-        setYOffset(entity.getY() - handler.getHeight() / 2);
+        setXOffset(entity.getPixelPos().getX() - handler.getWidth() / 2);
+        setYOffset(entity.getPixelPos().getY() - handler.getHeight() / 2);
         checkBlankSpace();
     }
 

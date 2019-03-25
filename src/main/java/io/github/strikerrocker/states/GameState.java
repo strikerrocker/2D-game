@@ -2,7 +2,7 @@ package io.github.strikerrocker.states;
 
 import io.github.strikerrocker.Handler;
 import io.github.strikerrocker.Main;
-import io.github.strikerrocker.entities.Player;
+import io.github.strikerrocker.entities.player.Player;
 import io.github.strikerrocker.gfx.Assets;
 import io.github.strikerrocker.gfx.Text;
 import io.github.strikerrocker.world.World;

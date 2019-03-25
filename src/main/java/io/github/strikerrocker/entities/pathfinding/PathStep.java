@@ -45,14 +45,4 @@ public class PathStep {
     public void setParent(PathStep parent) {
         this.parent = parent;
     }
-
-    @Override
-    public String toString() {
-        return "PathStep{" +
-                "g=" + g +
-                ", h=" + h +
-                ", pos=" + pos +
-                ", parent=" + parent +
-                '}';
-    }
 }

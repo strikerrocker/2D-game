@@ -1,10 +1,12 @@
 package io.github.strikerrocker.entities;
 
 import io.github.strikerrocker.Handler;
-import io.github.strikerrocker.Utils;
 import io.github.strikerrocker.entities.ai.AI;
+import io.github.strikerrocker.entities.player.Player;
 import io.github.strikerrocker.gfx.Assets;
+import io.github.strikerrocker.gfx.PixelPos;
 import io.github.strikerrocker.gfx.Text;
+import io.github.strikerrocker.misc.Rectangle;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -13,14 +15,14 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static io.github.strikerrocker.blocks.Block.BLOCKHEIGHT;
-import static io.github.strikerrocker.blocks.Block.BLOCKWIDTH;
+import static io.github.strikerrocker.misc.Utils.sortByValue;
+import static io.github.strikerrocker.misc.Utils.tintRed;
 
 public abstract class Creature extends Entity {
     public static final int DEFAULT_HEALTH = 10;
     public static final int DEFAULT_WIDTH = 64;
     public static final int DEFAULT_HEIGHT = 64;
-    public static final float DEFAULT_SPEED = 2.0f;
+    public static final float DEFAULT_SPEED = 0.03f;
     private static final Timer renderHurtTimer = new Timer();
     public boolean renderHurt = false;
     protected int health;
@@ -33,7 +35,7 @@ public abstract class Creature extends Entity {
         super(handler, x, y, width, height);
         this.health = DEFAULT_HEALTH;
         this.speed = DEFAULT_SPEED;
-        bounds = new Rectangle(16, 32, 32, 32);
+        bounds = new Rectangle(0.25f, 0.5f, 0.5f, 0.5f);
         initAITasks();
     }
 
@@ -41,16 +43,21 @@ public abstract class Creature extends Entity {
 
     @Override
     public void tick() {
-        move();
+        if (canMove())
+            move();
         attackTimer += System.currentTimeMillis() - lastAttackTimer;
         lastAttackTimer = System.currentTimeMillis();
-        Utils.sortByValue(aiTasks);
+        sortByValue(aiTasks);
         for (AI ai : aiTasks.keySet()) {
             if (ai.canExecute(this)) {
                 ai.execute(this);
                 return;
             }
         }
+    }
+
+    public boolean canMove() {
+        return true;
     }
 
     public void hurt(int amt) {
@@ -77,7 +84,7 @@ public abstract class Creature extends Entity {
 
     @Override
     public void render(Graphics graphics) {
-        BufferedImage toBeRendered = renderHurt ? Utils.tintRed(getCurrentFrame()) : getCurrentFrame();
+        BufferedImage toBeRendered = renderHurt ? tintRed(getCurrentFrame()) : getCurrentFrame();
         if (renderHurt) {
             renderHurtTimer.schedule(new TimerTask() {
                 @Override
@@ -86,63 +93,56 @@ public abstract class Creature extends Entity {
                 }
             }, 500);
         }
-        graphics.drawImage(toBeRendered, (int) (x - handler.getGameCamera().getXOffset()), (int) (y - handler.getGameCamera().getYOffset()), width, height, null);
-        if (!(this instanceof Player) && renderHurt)
-            Text.drawString(graphics, "" + getHealth(), (int) (getCollisionBounds(0, 0).getCenterX()), (int) (getCollisionBounds(0, 0).getY() - 10), true, Color.WHITE, Assets.font28);
-        //graphics.setColor(Color.RED);
-        //graphics.fillRect((int) (x + bounds.x - handler.getGameCamera().getXOffset()), (int) (y + bounds.y - handler.getGameCamera().getYOffset()), bounds.width, bounds.height);
+        PixelPos pos = getPixelPos();
+        graphics.drawImage(toBeRendered, (int) (pos.getX() - handler.getGameCamera().getXOffset()), (int) (pos.getY() - handler.getGameCamera().getYOffset()), (int) width, (int) height, null);
+        if (!(this instanceof Player) && renderHurt) {
+            Rectangle collisionBound = getPixelCollisionBounds(0, 0);
+            Text.drawString(graphics, "" + getHealth(), (int) (collisionBound.getCenterX()), (int) (collisionBound.getY()), true, Color.WHITE, Assets.font28);
+        }
     }
 
     public abstract BufferedImage getCurrentFrame();
 
     public abstract void onKilled();
 
-    public void move() {
+    protected void move() {
         if (!entityColliding(xMove, 0))
             moveX();
         if (!entityColliding(0, yMove))
             moveY();
     }
 
-    public void moveX() {
+    private void moveX() {
         if (xMove > 0) {
-            int tx = (int) ((x + xMove + bounds.x + bounds.width) / BLOCKWIDTH);
-            if (!blockCollision(tx, (int) ((y + bounds.y) / BLOCKHEIGHT)) && !blockCollision(tx, (int) ((y + bounds.y + bounds.height) / BLOCKHEIGHT))) {
+            int tx = (int) (x + xMove + bounds.x + bounds.width);
+            if (!blockCollision(tx, (int) ((y + bounds.y))) && !blockCollision(tx, (int) (y + bounds.y + bounds.height))) {
                 x += xMove;
-            } else {
-                x = tx * BLOCKWIDTH - bounds.x - bounds.width - 1;
             }
         } else if (xMove < 0) {
-            int tx = (int) ((x + xMove + bounds.x) / BLOCKWIDTH);
-            if (!blockCollision(tx, (int) ((y + bounds.y) / BLOCKHEIGHT)) && !blockCollision(tx, (int) ((y + bounds.y + bounds.height) / BLOCKHEIGHT))) {
+            int tx = (int) ((x + xMove + bounds.x));
+            if (!blockCollision(tx, (int) (y + bounds.y)) && !blockCollision(tx, (int) (y + bounds.y + bounds.height))) {
                 x += xMove;
             } else {
-                x = tx * BLOCKWIDTH + BLOCKWIDTH - bounds.x;
+                x = tx + bounds.x + bounds.width;
             }
         }
     }
 
-    public void moveY() {
+    private void moveY() {
         if (yMove < 0) {
-            int ty = (int) (y + yMove + bounds.y) / BLOCKHEIGHT;
-
-            if (!blockCollision((int) (x + bounds.x) / BLOCKWIDTH, ty) &&
-                    !blockCollision((int) (x + bounds.x + bounds.width) / BLOCKWIDTH, ty)) {
+            int ty = (int) (y + yMove + bounds.y);
+            if (!blockCollision((int) (x + bounds.x), ty) &&
+                    !blockCollision((int) (x + bounds.x + bounds.width), ty)) {
                 y += yMove;
             } else {
-                y = ty * BLOCKHEIGHT + BLOCKHEIGHT - bounds.y;
+                y = ty + bounds.y;
             }
-
         } else if (yMove > 0) {
-            int ty = (int) (y + yMove + bounds.y + bounds.height) / BLOCKHEIGHT;
-
-            if (!blockCollision((int) (x + bounds.x) / BLOCKWIDTH, ty) &&
-                    !blockCollision((int) (x + bounds.x + bounds.width) / BLOCKWIDTH, ty)) {
+            int ty = (int) (y + yMove + bounds.y + bounds.height);
+            if (!blockCollision((int) (x + bounds.x), ty) &&
+                    !blockCollision((int) (x + bounds.x + bounds.width), ty)) {
                 y += yMove;
-            } else {
-                y = ty * BLOCKHEIGHT - bounds.y - bounds.height - 1;
             }
-
         }
     }
 
@@ -160,10 +160,6 @@ public abstract class Creature extends Entity {
 
     public float getSpeed() {
         return speed;
-    }
-
-    public void setSpeed(float speed) {
-        this.speed = speed;
     }
 
     public void setXMove(float xMove) {

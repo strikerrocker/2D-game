@@ -3,22 +3,21 @@ package io.github.strikerrocker.entities.ai;
 import io.github.strikerrocker.entities.Creature;
 import io.github.strikerrocker.entities.Entity;
 import io.github.strikerrocker.entities.Zombie;
-
-import java.awt.*;
+import io.github.strikerrocker.misc.Rectangle;
 
 public class AttackAI extends AI {
-    private float growFactor;
+    private int growFactor;
     private int hurtAmt;
 
-    public AttackAI(float growFactor, int hurtAmt) {
+    public AttackAI(int growFactor, int hurtAmt) {
         this.growFactor = growFactor;
         this.hurtAmt = hurtAmt;
     }
 
     @Override
     public boolean canExecute(Creature creature) {
-        Rectangle visibleArea = new Rectangle((int) (creature.getBounds().x + creature.getX()), (int) (creature.getBounds().y + creature.getY()), creature.getBounds().width, creature.getBounds().height);
-        visibleArea.grow((int) growFactor, (int) growFactor);
+        Rectangle visibleArea = creature.getCollisionBounds(0, 0);
+        visibleArea.grow(growFactor, growFactor);
         for (Entity e : creature.getHandler().getWorld().getEntityManager().getEntities()) {
             if (e.getCollisionBounds(0, 0).intersects(visibleArea) && !(e instanceof Zombie) && e instanceof Creature) {
                 return true;
@@ -29,8 +28,7 @@ public class AttackAI extends AI {
 
     @Override
     public void execute(Creature creature) {
-        Rectangle visibleArea = new Rectangle((int) (creature.getBounds().x + creature.getX()), (int) (creature.getBounds().y + creature.getY()), creature.getBounds().width, creature.getBounds().height);
-        visibleArea.grow((int) growFactor, (int) growFactor);
+        Rectangle visibleArea = creature.getCollisionBounds(0, 0).grow(growFactor, growFactor);
         for (Entity e : creature.getHandler().getWorld().getEntityManager().getEntities()) {
             if (e.getCollisionBounds(0, 0).intersects(visibleArea) && !(e instanceof Zombie) && e instanceof Creature) {
                 if (creature.getAttackTimer() > creature.getAttackCooldown()) {

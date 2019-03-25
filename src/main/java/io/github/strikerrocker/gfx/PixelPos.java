@@ -16,7 +16,7 @@ public class PixelPos {
         this.y = blockPos.getY() * Block.BLOCKHEIGHT;
     }
 
-    public float getYPixel() {
+    public float getY() {
         return y;
     }
 
@@ -24,7 +24,7 @@ public class PixelPos {
         this.y = y;
     }
 
-    public float getXPixel() {
+    public float getX() {
         return x;
     }
 

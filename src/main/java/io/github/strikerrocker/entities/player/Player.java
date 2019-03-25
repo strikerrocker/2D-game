@@ -1,11 +1,12 @@
-package io.github.strikerrocker.entities;
+package io.github.strikerrocker.entities.player;
 
 import io.github.strikerrocker.Handler;
-import io.github.strikerrocker.Inventory;
+import io.github.strikerrocker.entities.*;
 import io.github.strikerrocker.gfx.Animation;
 import io.github.strikerrocker.gfx.Assets;
 import io.github.strikerrocker.gfx.PixelPos;
 import io.github.strikerrocker.items.ItemStack;
+import io.github.strikerrocker.misc.Rectangle;
 import io.github.strikerrocker.states.DeathScreen;
 import io.github.strikerrocker.states.State;
 import io.github.strikerrocker.world.BlockPos;
@@ -30,9 +31,10 @@ public class Player extends Creature {
         right = new Animation(500, Assets.player_right);
         left = new Animation(500, Assets.player_left);
         inventory = new Inventory(handler);
+
         attackCooldown = 500;
         attackTimer = 500;
-        setSpeed(3.0f);
+        speed = 0.07f;
     }
 
     public Inventory getInventory() {
@@ -52,8 +54,6 @@ public class Player extends Creature {
         right.tick();
         left.tick();
         getInput();
-        if (!inventory.isActive())
-            move();
         handler.getGameCamera().centreOnEntity(this);
 
         checkAttack();
@@ -71,16 +71,16 @@ public class Player extends Creature {
             ar.width = arSize;
             ar.height = arSize;
 
-            if (handler.getKeyManager().aup) {
+            if (handler.getKeyManager().attackUp) {
                 ar.x = cb.x + cb.width / 2 - arSize / 2;
                 ar.y = cb.y - arSize;
-            } else if (handler.getKeyManager().adown) {
+            } else if (handler.getKeyManager().attackDown) {
                 ar.x = cb.x + cb.width / 2 - arSize / 2;
                 ar.y = cb.y + cb.height;
-            } else if (handler.getKeyManager().aleft) {
+            } else if (handler.getKeyManager().attackLeft) {
                 ar.x = cb.x - arSize;
                 ar.y = cb.y + cb.height / 2 - arSize / 2;
-            } else if (handler.getKeyManager().aright) {
+            } else if (handler.getKeyManager().attackRight) {
                 ar.x = cb.x + cb.width;
                 ar.y = cb.y + cb.height / 2 - arSize / 2;
             } else {
@@ -114,11 +114,13 @@ public class Player extends Creature {
             xMove = -speed;
         }
         if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_X)) {
-            BlockPos pos = new PixelPos(x, y).toBlockPos();
-            handler.getWorld().getEntityManager().addEntity(new Zombie(handler, pos.getX(), pos.getY() + 2));
+            handler.getWorld().getEntityManager().addEntity(new Zombie(handler, x, y + 2));
         }
         if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_H)) {
             setHealth(10);
+        }
+        if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_T)) {
+            handler.getWorld().getEntityManager().addEntity(new Tree(handler, x, y + 2));
         }
         if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_B)) {
             switch (handler.getWorld().getName()) {
@@ -159,5 +161,10 @@ public class Player extends Creature {
             handler.getWorld().getEntityManager().addEntity(new ItemEntity(handler, pos.getX(), pos.getY(), stack));
         }
         State.setCurrentState(new DeathScreen(handler));
+    }
+
+    @Override
+    public boolean canMove() {
+        return !inventory.isActive();
     }
 }

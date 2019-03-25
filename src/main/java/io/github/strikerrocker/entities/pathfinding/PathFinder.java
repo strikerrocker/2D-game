@@ -2,7 +2,7 @@ package io.github.strikerrocker.entities.pathfinding;
 
 import io.github.strikerrocker.Handler;
 import io.github.strikerrocker.entities.Entity;
-import io.github.strikerrocker.gfx.PixelPos;
+import io.github.strikerrocker.misc.Utils;
 import io.github.strikerrocker.world.BlockPos;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ public class PathFinder {
 
     public PathFinder(Handler handler, Entity entity, BlockPos target) {
         this.handler = handler;
-        this.start = new PixelPos(entity.getX(), entity.getY()).toBlockPos().intForm();
+        this.start = entity.getPos().intForm();
         this.target = target;
         this.entity = entity;
         openList = new ArrayList<>();
@@ -38,27 +38,23 @@ public class PathFinder {
         startStep.setG(1);
         startStep.setH(computeH(startStep.getPos(), target));
         openList.add(startStep);
-        try {
-            do {
-                openList.sort((o1, o2) -> Integer.compare(o2.getF(), o1.getF()));
-                PathStep currentStep = openList.get(0);
-                closedList.add(currentStep);
-                openList.remove(0);
-                //If path found
-                if (currentStep.getPos().equals(target)) {
-                    pathFound = true;
-                    getPathFromSteps(currentStep, posArrayList);
-                    break;
-                }
-                //If not found
-                tryNewPath(currentStep);
+        do {
+            openList.sort((o1, o2) -> Integer.compare(o2.getF(), o1.getF()));
+            PathStep currentStep = openList.get(0);
+            closedList.add(currentStep);
+            openList.remove(0);
+            //If path found
+            if (currentStep.getPos().equals(target)) {
+                pathFound = true;
+                getPathFromSteps(currentStep, posArrayList);
+                break;
             }
-            while (!openList.isEmpty());
-        } catch (Exception e) {
-            handler.getGame().getLogger().log(Level.INFO, e.getMessage());
+            //If not found
+            tryNewPath(currentStep);
         }
+        while (!openList.isEmpty());
         if (!pathFound) {
-            handler.getGame().getLogger().log(Level.INFO, "Path not found for entity");
+            handler.getGame().getLogger().log(Level.INFO, "Path not found for " + entity);
         } //else handler.getGame().getLogger().log(Level.INFO, "Path found for entity");
         return posArrayList;
     }
@@ -101,20 +97,12 @@ public class PathFinder {
     }
 
     private void insertInOpen(PathStep step) {
-        int fScore = step.getF();
-        int i = 0;
-        for (; i < openList.size(); i++) {
-            if (fScore <= openList.get(i).getF()) {
-                return;
-            }
-        }
-        openList.add(i, step);
+        openList.stream().filter(pathStep -> step.getF() <= pathStep.getF()).findFirst().ifPresent(pathStep -> openList.add(openList.indexOf(pathStep), step));
     }
 
     private ArrayList<BlockPos> adjMovablePos(BlockPos pos) {
         ArrayList<BlockPos> arrayList = new ArrayList<>();
         BlockPos adj;
-
         adj = new BlockPos(pos.getX(), pos.getY() - 1);
         if (!hasCollision(adj)) {
             arrayList.add(adj);
@@ -135,7 +123,7 @@ public class PathFinder {
     }
 
     private boolean hasCollision(BlockPos pos) {
-        return entity.entityCollidingExceptPlayer(0, 0) || handler.getWorld().getBlock(pos.getX(), pos.getY()).isSolid();
+        return entity.entityCollidingExceptPlayer(0, 0) || Utils.hasCollision(handler, pos);
     }
 
     private boolean isBlocked(BlockPos pos) {

@@ -1,5 +1,6 @@
-package io.github.strikerrocker;
+package io.github.strikerrocker.entities.player;
 
+import io.github.strikerrocker.Handler;
 import io.github.strikerrocker.gfx.Assets;
 import io.github.strikerrocker.gfx.Text;
 import io.github.strikerrocker.items.ItemStack;

@@ -1,4 +1,7 @@
-package io.github.strikerrocker;
+package io.github.strikerrocker.misc;
+
+import io.github.strikerrocker.Handler;
+import io.github.strikerrocker.world.BlockPos;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -45,6 +48,10 @@ public class Utils {
         Map<K, V> map = new TreeMap<>(comparator);
         map.putAll(unsortMap);
         return map;
+    }
+
+    public static boolean hasCollision(Handler handler, BlockPos pos) {
+        return handler.getWorld().getBlock(pos.getX(), pos.getY()).isSolid();
     }
 
     private static class CustomComparator<K, V extends Comparable> implements Comparator<K> {

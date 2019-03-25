@@ -1,10 +1,9 @@
 package io.github.strikerrocker.entities.ai;
 
 import io.github.strikerrocker.entities.Creature;
-import io.github.strikerrocker.entities.Player;
+import io.github.strikerrocker.entities.player.Player;
+import io.github.strikerrocker.misc.Rectangle;
 import io.github.strikerrocker.world.BlockPos;
-
-import java.awt.*;
 
 public class FollowPlayerAI extends MoveToAI {
     private BlockPos lastPlayerPos;

@@ -2,11 +2,11 @@ package io.github.strikerrocker.entities;
 
 import io.github.strikerrocker.Handler;
 import io.github.strikerrocker.entities.ai.AttackAI;
-import io.github.strikerrocker.entities.ai.FollowPlayerAI;
+import io.github.strikerrocker.entities.ai.MoveToAI;
 import io.github.strikerrocker.gfx.Animation;
 import io.github.strikerrocker.gfx.Assets;
+import io.github.strikerrocker.world.BlockPos;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Zombie extends Creature {
@@ -42,18 +42,8 @@ public class Zombie extends Creature {
 
     @Override
     protected void initAITasks() {
-        aiTasks.put(new AttackAI(5, 1), 0);
-        aiTasks.put(new FollowPlayerAI(this), 1);
-    }
-
-    @Override
-    public void render(Graphics graphics) {
-        super.render(graphics);
-        /**graphics.setColor(Color.RED);
-         Rectangle visibleArea = new Rectangle((int) (getBounds().x + getX()), (int) (getBounds().y + getY()), getBounds().width, getBounds().height);
-         int factor = 10;
-         visibleArea.grow(factor, factor);
-         graphics.fillRect((int) (visibleArea.getX() - handler.getGameCamera().getXOffset()), (int) (visibleArea.getY() - handler.getGameCamera().getYOffset()), visibleArea.width, visibleArea.height);**/
+        aiTasks.put(new AttackAI(1, 1), 0);
+        aiTasks.put(new MoveToAI(this, new BlockPos(3, 4)), 1);
     }
 
     @Override

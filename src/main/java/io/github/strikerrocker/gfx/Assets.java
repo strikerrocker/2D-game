@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class Assets {
-    public static BufferedImage player, dirt, grass, stone, tree, rock, wood;
+    public static BufferedImage player, dirt, grass, stone, tree, rock, wood, apple, appleTree;
     public static BufferedImage[] player_down = new BufferedImage[2];
     public static BufferedImage[] zombie_down = new BufferedImage[2];
     public static BufferedImage[] zombie_up = new BufferedImage[2];
@@ -53,10 +53,14 @@ public class Assets {
         //Entities Texture
         tree = sheet.crop(0, 0, width, height * 2);
         rock = sheet.crop(0, height * 2, width, height);
+        appleTree = sheet.crop(0, height * 3, width, height * 2);
 
         //Button Texture
         startBtn[0] = sheet.crop(width * 6, height * 4, width * 2, height);
         startBtn[1] = sheet.crop(width * 6, height * 5, width * 2, height);
+
+        //Items
+        apple = sheet.crop(width * 2, height, width, height);
 
         inventoryScreen = ImageLoader.loadImage("/textures/inventoryScreen.png");
     }
