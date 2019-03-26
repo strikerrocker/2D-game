@@ -1,13 +1,19 @@
 package io.github.strikerrocker.items;
 
+import com.google.gson.annotations.Expose;
+
 import java.awt.image.BufferedImage;
 
 public class Item {
     private static Item[] items = new Item[256];
+    @Expose
     private final int id;
     protected BufferedImage texture;
+    @Expose
     protected String name;
+    @Expose
     private boolean isFood = false;
+    @Expose
     private int heal = 0;
 
     public Item(BufferedImage texture, String name, int id) {

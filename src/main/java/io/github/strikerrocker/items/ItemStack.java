@@ -1,10 +1,14 @@
 package io.github.strikerrocker.items;
 
+import com.google.gson.annotations.Expose;
+
 import java.awt.image.BufferedImage;
 
 public class ItemStack {
     private static final int MAX_COUNT = 64;
+    @Expose
     private Item item;
+    @Expose
     private int count;
 
     public ItemStack(Item item, int count) {

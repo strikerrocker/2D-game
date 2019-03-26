@@ -1,6 +1,11 @@
 package io.github.strikerrocker;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import io.github.strikerrocker.blocks.Blocks;
+import io.github.strikerrocker.entities.Entity;
+import io.github.strikerrocker.entities.EntityManager;
+import io.github.strikerrocker.entities.player.Player;
 import io.github.strikerrocker.gfx.Assets;
 import io.github.strikerrocker.gfx.Display;
 import io.github.strikerrocker.gfx.GameCamera;
@@ -10,9 +15,18 @@ import io.github.strikerrocker.items.Items;
 import io.github.strikerrocker.states.GameState;
 import io.github.strikerrocker.states.MenuState;
 import io.github.strikerrocker.states.State;
+import io.github.strikerrocker.world.Level;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Iterator;
 import java.util.logging.Logger;
 
 public class Game implements Runnable {
@@ -94,8 +108,9 @@ public class Game implements Runnable {
         Items.init();
         menuState = new MenuState(handler);
         gameState = new GameState(handler);
-        //State.setCurrentState(menuState);
-        State.setCurrentState(gameState);
+        State.setCurrentState(menuState);
+
+        Runtime.getRuntime().addShutdownHook(new Thread(this::save));
     }
 
     private void tick() {
@@ -148,6 +163,49 @@ public class Game implements Runnable {
             }
         }
         stop();
+    }
+
+    public synchronized void save() {
+        Gson gson = new GsonBuilder().serializeNulls().setPrettyPrinting().disableHtmlEscaping().excludeFieldsWithoutExposeAnnotation().create();
+        File worldDir = gameState.getWorldDirectory();
+        savePlayerData(worldDir, gson);
+        saveEntityData(worldDir, gson);
+    }
+
+    public void saveEntityData(File worldDir, Gson gson) {
+        for (Level lvl : gameState.getLevels()) {
+            Path lvlEntityData = Paths.get(worldDir.getPath() + "/" + lvl.getName() + "Entities.json");
+            try {
+                Files.deleteIfExists(lvlEntityData);
+                PrintWriter writer = new PrintWriter(new FileWriter(lvlEntityData.toFile()));
+                EntityManager manager = lvl.getEntityManager();
+                Iterator<Entity> iterator = manager.getEntities().iterator();
+                while (iterator.hasNext()) {
+                    Entity entity1 = iterator.next();
+                    entity1.tick();
+                    if ((entity1 instanceof Player)) {
+                        iterator.remove();
+                    }
+                }
+                writer.println(gson.toJson(manager.getEntities()));
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void savePlayerData(File worldDir, Gson gson) {
+        Player player = gameState.getPlayer();
+        Path playerData = Paths.get(worldDir.getPath() + "/player.json");
+        try {
+            Files.deleteIfExists(playerData);
+            PrintWriter writer = new PrintWriter(new FileWriter(playerData.toFile()));
+            writer.println(gson.toJson(player));
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     synchronized void start() {

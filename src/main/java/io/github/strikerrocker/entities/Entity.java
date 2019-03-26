@@ -1,5 +1,6 @@
 package io.github.strikerrocker.entities;
 
+import com.google.gson.annotations.Expose;
 import io.github.strikerrocker.Handler;
 import io.github.strikerrocker.entities.player.Player;
 import io.github.strikerrocker.gfx.PixelPos;
@@ -12,6 +13,7 @@ import static io.github.strikerrocker.blocks.Block.BLOCKHEIGHT;
 import static io.github.strikerrocker.blocks.Block.BLOCKWIDTH;
 
 public abstract class Entity {
+    @Expose
     protected float x, y;
     protected float width, height;
     protected Handler handler;

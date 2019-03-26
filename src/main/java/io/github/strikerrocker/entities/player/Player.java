@@ -1,5 +1,6 @@
 package io.github.strikerrocker.entities.player;
 
+import com.google.gson.annotations.Expose;
 import io.github.strikerrocker.Handler;
 import io.github.strikerrocker.entities.*;
 import io.github.strikerrocker.gfx.Animation;
@@ -22,6 +23,7 @@ public class Player extends Creature {
     private Animation up;
     private Animation right;
     private Animation left;
+    @Expose
     private Inventory inventory;
 
     public Player(Handler handler, float x, float y) {

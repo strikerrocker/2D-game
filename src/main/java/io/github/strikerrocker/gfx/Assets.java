@@ -2,8 +2,8 @@ package io.github.strikerrocker.gfx;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class Assets {
     public static BufferedImage player, dirt, grass, stone, tree, rock, wood, apple, appleTree;
@@ -16,6 +16,7 @@ public class Assets {
     public static BufferedImage[] player_left = new BufferedImage[2];
     public static BufferedImage[] player_right = new BufferedImage[2];
     public static BufferedImage[] startBtn = new BufferedImage[2];
+    public static BufferedImage button;
     public static BufferedImage inventoryScreen, hotBar;
     public static Font font28;
     private static int width = 32;
@@ -23,7 +24,7 @@ public class Assets {
 
     public static void init() {
         SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/sheet.png"));
-        font28 = loadFont("run/fonts/slkscr.ttf", 28);
+        font28 = loadFont(Assets.class.getResourceAsStream("/fonts/slkscr.ttf"), 28);
         //Player textures
         player_down[0] = sheet.crop(width * 4, 0, width, height);
         player_down[1] = sheet.crop(width * 5, 0, width, height);
@@ -57,6 +58,7 @@ public class Assets {
         //Button Texture
         startBtn[0] = sheet.crop(width * 6, height * 4, width * 2, height);
         startBtn[1] = sheet.crop(width * 6, height * 5, width * 2, height);
+        button = sheet.crop(width * 4, height * 4, width * 2, height);
 
         //Items
         apple = sheet.crop(width * 2, height, width, height);
@@ -64,11 +66,12 @@ public class Assets {
 
         inventoryScreen = ImageLoader.loadImage("/textures/inventoryScreen.png");
         hotBar = sheet.crop(width * 3, height, width, height);
+
     }
 
-    private static Font loadFont(String path, float size) {
+    private static Font loadFont(InputStream inputStream, float size) {
         try {
-            return Font.createFont(Font.TRUETYPE_FONT, new File(path)).deriveFont(Font.PLAIN, size);
+            return Font.createFont(Font.TRUETYPE_FONT, inputStream).deriveFont(Font.PLAIN, size);
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
             System.exit(1);

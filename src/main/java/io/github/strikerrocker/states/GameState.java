@@ -4,7 +4,7 @@ import io.github.strikerrocker.Handler;
 import io.github.strikerrocker.entities.player.Player;
 import io.github.strikerrocker.gfx.Assets;
 import io.github.strikerrocker.gfx.Text;
-import io.github.strikerrocker.world.World;
+import io.github.strikerrocker.world.Level;
 
 import java.awt.*;
 import java.io.File;
@@ -12,59 +12,80 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameState extends State {
-    private World world;
-    private List<World> worlds;
+    private Level level;
+    private List<Level> levels;
     private Player player;
+    private File worldDirectory;
 
     public GameState(Handler handler) {
         super(handler);
-        File worldFolder = new File("run/worlds");
-        worlds = new ArrayList<>();
+        levels = new ArrayList<>();
         player = new Player(handler, 2.5f, 2.5f);
-        for (File file : worldFolder.listFiles()) {
-            if (file.getName().endsWith(".txt")) {
-                worlds.add(new World(handler, file));
+        if (worldDirectory != null) loadWorld();
+    }
+
+    public List<Level> getLevels() {
+        return levels;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void loadWorld() {
+        for (File file1 : worldDirectory.listFiles()) {
+            if (file1.getName().endsWith(".txt")) {
+                levels.add(new Level(handler, file1));
             }
         }
-        world = getWorld("world1");
-        setPlayer(world, player);
+        level = getLevel("level1");
+        setPlayer(level, player);
     }
 
-    private void setPlayer(World world, Player player) {
-        world.setPlayer(player);
+    public File getWorldDirectory() {
+        return worldDirectory;
     }
 
-    public World getWorld(String string) {
-        for (World world : worlds) {
-            if (world.getName().equals(string)) {
-                return world;
+    public void setWorldDirectory(File worldDirectory) {
+        this.worldDirectory = worldDirectory;
+        loadWorld();
+    }
+
+    private void setPlayer(Level level, Player player) {
+        level.setPlayer(player);
+    }
+
+    public Level getLevel(String string) {
+        for (Level level : levels) {
+            if (level.getName().equals(string)) {
+                return level;
             }
         }
         return null;
     }
 
-    public World getWorld() {
-        return world;
+    public Level getLevel() {
+        return level;
     }
 
-    public void setWorld(World world) {
-        setPlayer(world, null);
-        this.world = world;
-        setPlayer(world, player);
+    public void setLevel(Level level) {
+        setPlayer(level, null);
+        this.level = level;
+        setPlayer(level, player);
     }
 
-    public void setWorld(String world) {
-        setWorld(getWorld(world));
+    public void LevelWorld(String world) {
+        setLevel(getLevel(world));
     }
 
     @Override
     public void tick() {
-        world.tick();
+        level.tick();
     }
 
     @Override
     public void render(Graphics graphics) {
-        world.render(graphics);
+        level.render(graphics);
         drawPlayerInfo(graphics);
     }
 

@@ -1,5 +1,6 @@
 package io.github.strikerrocker.entities;
 
+import com.google.gson.annotations.Expose;
 import io.github.strikerrocker.Handler;
 import io.github.strikerrocker.entities.ai.AI;
 import io.github.strikerrocker.entities.player.Player;
@@ -26,8 +27,10 @@ public abstract class Creature extends Entity {
     private static final Timer renderHurtTimer = new Timer();
     public int maxHealth = 10;
     public boolean renderHurt = false;
+    @Expose
     protected int health;
     protected float speed;
+    @Expose
     protected float xMove, yMove;
     protected long lastAttackTimer, attackCooldown = 1500, attackTimer = attackCooldown;
     protected Map<AI, Integer> aiTasks = new HashMap<>();

@@ -1,5 +1,6 @@
 package io.github.strikerrocker.entities;
 
+import com.google.gson.annotations.Expose;
 import io.github.strikerrocker.Handler;
 import io.github.strikerrocker.entities.player.Player;
 
@@ -12,6 +13,7 @@ import java.util.Iterator;
 public class EntityManager {
     private Handler handler;
     private Player player;
+    @Expose
     private ArrayList<Entity> entities;
     private Comparator<Entity> sorter = (a, b) -> {
         if (a.getY() < b.getY()) {

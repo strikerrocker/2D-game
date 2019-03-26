@@ -9,9 +9,8 @@ import io.github.strikerrocker.misc.Utils;
 
 import java.awt.*;
 import java.io.File;
-import java.util.logging.Level;
 
-public class World {
+public class Level {
     protected Handler handler;
     private int worldWidth, worldHeight;
     private BlockPos spawn;
@@ -19,7 +18,7 @@ public class World {
     private EntityManager entityManager;
     private String name;
 
-    public World(Handler handler, File path) {
+    public Level(Handler handler, File path) {
         this.handler = handler;
         this.name = path.getName().replaceFirst(".txt", "");
         entityManager = new EntityManager(handler);
@@ -96,7 +95,7 @@ public class World {
                 try {
                     blocks[x][y] = Integer.parseInt(tokens[(x + y * worldHeight) + 4]);
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    handler.getGame().getLogger().log(Level.INFO, e.getMessage());
+                    handler.getGame().getLogger().log(java.util.logging.Level.INFO, e.getMessage());
                     blocks[x][y] = 0;
                 }
             }

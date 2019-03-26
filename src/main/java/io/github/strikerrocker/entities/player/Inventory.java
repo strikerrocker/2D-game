@@ -1,9 +1,11 @@
 package io.github.strikerrocker.entities.player;
 
+import com.google.gson.annotations.Expose;
 import io.github.strikerrocker.Handler;
 import io.github.strikerrocker.gfx.Assets;
 import io.github.strikerrocker.gfx.Text;
 import io.github.strikerrocker.items.ItemStack;
+import io.github.strikerrocker.items.Items;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -16,6 +18,7 @@ import static io.github.strikerrocker.blocks.Block.BLOCKWIDTH;
 public class Inventory {
     private Handler handler;
     private boolean active = false;
+    @Expose
     private ArrayList<ItemStack> inventoryItems;
     private int invSelectedItem = 0;
     private int hotBarSelectedItem = 0;
@@ -23,6 +26,7 @@ public class Inventory {
     public Inventory(Handler handler) {
         this.handler = handler;
         inventoryItems = new ArrayList<>();
+        inventoryItems.add(new ItemStack(Items.apple));
     }
 
     public void setHotBarSelectedItem(int hotBarSelectedItem) {

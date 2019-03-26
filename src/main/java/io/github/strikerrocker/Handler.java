@@ -3,7 +3,9 @@ package io.github.strikerrocker;
 import io.github.strikerrocker.gfx.GameCamera;
 import io.github.strikerrocker.input.KeyManager;
 import io.github.strikerrocker.input.MouseManager;
-import io.github.strikerrocker.world.World;
+import io.github.strikerrocker.world.Level;
+
+import java.io.File;
 
 public class Handler {
 
@@ -33,15 +35,19 @@ public class Handler {
         return game;
     }
 
-    public World getWorld() {
-        return game.gameState.getWorld();
+    public Level getWorld() {
+        return game.gameState.getLevel();
     }
 
     public void setWorld(String world) {
-        game.gameState.setWorld(world);
+        game.gameState.LevelWorld(world);
     }
 
     public MouseManager getMouseManager() {
         return game.getMouseManager();
+    }
+
+    public File getWorldDirectory() {
+        return game.gameState.getWorldDirectory();
     }
 }
