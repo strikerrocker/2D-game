@@ -31,6 +31,7 @@ public class Game implements Runnable {
     private GameCamera camera;
     private Handler handler;
     private MouseManager mouseManager;
+    private boolean dev = false;
 
     Game(String title, int width, int height) {
         this.title = title;
@@ -40,6 +41,18 @@ public class Game implements Runnable {
         mouseManager = new MouseManager();
 
         logger = Logger.getLogger("Game : ");
+    }
+
+    public int getFps() {
+        return fps;
+    }
+
+    public boolean isDev() {
+        return dev;
+    }
+
+    protected void setDev(boolean dev) {
+        this.dev = dev;
     }
 
     public Logger getLogger() {

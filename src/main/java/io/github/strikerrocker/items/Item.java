@@ -7,12 +7,22 @@ public class Item {
     private final int id;
     protected BufferedImage texture;
     protected String name;
+    private boolean isFood = false;
+    private int heal = 0;
 
     public Item(BufferedImage texture, String name, int id) {
         this.texture = texture;
         this.name = name;
         this.id = id;
         items[id] = this;
+    }
+
+    public int getHeal() {
+        return heal;
+    }
+
+    public boolean isFood() {
+        return isFood;
     }
 
     public int getId() {
@@ -36,6 +46,11 @@ public class Item {
     }
 
     public void tick() {
+    }
 
+    public Item setAsFood(int heathRestore) {
+        isFood = true;
+        this.heal = heathRestore;
+        return this;
     }
 }

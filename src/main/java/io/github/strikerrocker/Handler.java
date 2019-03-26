@@ -2,6 +2,7 @@ package io.github.strikerrocker;
 
 import io.github.strikerrocker.gfx.GameCamera;
 import io.github.strikerrocker.input.KeyManager;
+import io.github.strikerrocker.input.MouseManager;
 import io.github.strikerrocker.world.World;
 
 public class Handler {
@@ -38,5 +39,9 @@ public class Handler {
 
     public void setWorld(String world) {
         game.gameState.setWorld(world);
+    }
+
+    public MouseManager getMouseManager() {
+        return game.getMouseManager();
     }
 }

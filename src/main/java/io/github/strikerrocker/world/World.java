@@ -24,7 +24,6 @@ public class World {
         this.name = path.getName().replaceFirst(".txt", "");
         entityManager = new EntityManager(handler);
         loadWorld(path);
-        //entityManager.addEntity(new Zombie(handler, spawnX, spawnY + 2));
     }
 
     public String getName() {

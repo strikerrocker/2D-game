@@ -1,7 +1,6 @@
 package io.github.strikerrocker.states;
 
 import io.github.strikerrocker.Handler;
-import io.github.strikerrocker.Main;
 import io.github.strikerrocker.entities.player.Player;
 import io.github.strikerrocker.gfx.Assets;
 import io.github.strikerrocker.gfx.Text;
@@ -70,7 +69,7 @@ public class GameState extends State {
     }
 
     private void drawPlayerInfo(Graphics graphics) {
-        Text.drawString(graphics, "FPS : " + Main.game.fps, 0, 20, false, Color.WHITE, Assets.font28);
+        Text.drawString(graphics, "FPS : " + handler.getGame().fps, 0, 20, false, Color.WHITE, Assets.font28);
         Text.drawString(graphics, "Health : " + player.getHealth(), 0, 40, false, Color.WHITE, Assets.font28);
     }
 }

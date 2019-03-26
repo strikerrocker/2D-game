@@ -16,7 +16,7 @@ public class Assets {
     public static BufferedImage[] player_left = new BufferedImage[2];
     public static BufferedImage[] player_right = new BufferedImage[2];
     public static BufferedImage[] startBtn = new BufferedImage[2];
-    public static BufferedImage inventoryScreen;
+    public static BufferedImage inventoryScreen, hotBar;
     public static Font font28;
     private static int width = 32;
     private static int height = 32;
@@ -48,7 +48,6 @@ public class Assets {
         dirt = sheet.crop(width, 0, width, height);
         grass = sheet.crop(width * 2, 0, width, height);
         stone = sheet.crop(width * 3, 0, width, height);
-        wood = sheet.crop(width, height, width, height);
 
         //Entities Texture
         tree = sheet.crop(0, 0, width, height * 2);
@@ -61,8 +60,10 @@ public class Assets {
 
         //Items
         apple = sheet.crop(width * 2, height, width, height);
+        wood = sheet.crop(width, height, width, height);
 
         inventoryScreen = ImageLoader.loadImage("/textures/inventoryScreen.png");
+        hotBar = sheet.crop(width * 3, height, width, height);
     }
 
     private static Font loadFont(String path, float size) {

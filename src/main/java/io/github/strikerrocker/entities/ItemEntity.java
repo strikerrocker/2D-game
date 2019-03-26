@@ -10,10 +10,9 @@ public class ItemEntity extends Creature {
     private ItemStack stack;
 
     public ItemEntity(Handler handler, float x, float y, ItemStack stack) {
-        super(handler, x, y, 32, 32);
+        super(handler, x, y, 32, 32, 1);
         bounds = new Rectangle(0, 0, 0.5f, 0.5f);
         this.stack = stack;
-        setHealth(1);
     }
 
     @Override

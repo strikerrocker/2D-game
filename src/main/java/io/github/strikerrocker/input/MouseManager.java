@@ -23,18 +23,18 @@ public class MouseManager implements MouseListener, MouseMotionListener {
     @Override
     public void mousePressed(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
-            right = true;
-        } else if (e.getButton() == MouseEvent.BUTTON3) {
             left = true;
+        } else if (e.getButton() == MouseEvent.BUTTON3) {
+            right = true;
         }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
-            right = false;
-        } else if (e.getButton() == MouseEvent.BUTTON3) {
             left = false;
+        } else if (e.getButton() == MouseEvent.BUTTON3) {
+            right = false;
         }
         if (uiManager != null) {
             uiManager.onMouseRelease(e);

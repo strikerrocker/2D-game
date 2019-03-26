@@ -2,10 +2,8 @@ package io.github.strikerrocker.entities;
 
 import io.github.strikerrocker.Handler;
 import io.github.strikerrocker.entities.ai.AttackAI;
-import io.github.strikerrocker.entities.ai.MoveToAI;
 import io.github.strikerrocker.gfx.Animation;
 import io.github.strikerrocker.gfx.Assets;
-import io.github.strikerrocker.world.BlockPos;
 
 import java.awt.image.BufferedImage;
 
@@ -17,12 +15,11 @@ public class Zombie extends Creature {
     private Animation left;
 
     public Zombie(Handler handler, float x, float y) {
-        super(handler, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        super(handler, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_HEALTH);
         down = new Animation(500, Assets.zombie_down);
         up = new Animation(500, Assets.zombie_up);
         right = new Animation(500, Assets.zombie_right);
         left = new Animation(500, Assets.zombie_left);
-        setHealth(10);
     }
 
     @Override
@@ -43,7 +40,7 @@ public class Zombie extends Creature {
     @Override
     protected void initAITasks() {
         aiTasks.put(new AttackAI(1, 1), 0);
-        aiTasks.put(new MoveToAI(this, new BlockPos(3, 4)), 1);
+        //aiTasks.put(new MoveToAI(this, new BlockPos(3, 4)), 1);
     }
 
     @Override

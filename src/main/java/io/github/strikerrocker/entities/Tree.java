@@ -16,8 +16,7 @@ public class Tree extends Creature {
     private Timer appleGrowTimer = new Timer();
 
     public Tree(Handler handler, float x, float y) {
-        super(handler, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        setHealth(1);
+        super(handler, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, 1);
     }
 
     @Override

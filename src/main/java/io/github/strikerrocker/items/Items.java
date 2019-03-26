@@ -12,6 +12,6 @@ public class Items {
     public static void init() {
         wood = new Item(Assets.wood, "Wood", 0);
         rock = new Item(Assets.rock, "Rock", 1);
-        apple = new Item(Assets.apple, "Apple", 2);
+        apple = new Item(Assets.apple, "Apple", 2).setAsFood(2);
     }
 }

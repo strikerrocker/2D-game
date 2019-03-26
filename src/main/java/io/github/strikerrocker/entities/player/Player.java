@@ -16,6 +16,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 public class Player extends Creature {
+    protected long lastItemUseTimer, itemUseCooldown = 1500, itemUseTimer = itemUseCooldown;
 
     private Animation down;
     private Animation up;
@@ -24,7 +25,7 @@ public class Player extends Creature {
     private Inventory inventory;
 
     public Player(Handler handler, float x, float y) {
-        super(handler, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        super(handler, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, 10);
 
         down = new Animation(500, Assets.player_down);
         up = new Animation(500, Assets.player_up);
@@ -63,7 +64,7 @@ public class Player extends Creature {
     private void checkAttack() {
         attackTimer += System.currentTimeMillis() - lastAttackTimer;
         lastAttackTimer = System.currentTimeMillis();
-        if (attackTimer > attackCooldown && !inventory.isActive()) {
+        if (attackTimer > attackCooldown && inventory.isActive()) {
 
             Rectangle cb = getCollisionBounds(0, 0);
             Rectangle ar = new Rectangle();
@@ -113,29 +114,59 @@ public class Player extends Creature {
         if (handler.getKeyManager().left) {
             xMove = -speed;
         }
-        if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_X)) {
-            handler.getWorld().getEntityManager().addEntity(new Zombie(handler, x, y + 2));
-        }
-        if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_H)) {
-            setHealth(10);
-        }
-        if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_T)) {
-            handler.getWorld().getEntityManager().addEntity(new Tree(handler, x, y + 2));
-        }
-        if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_B)) {
-            switch (handler.getWorld().getName()) {
-                case "world1":
-                    handler.setWorld("world2");
-                    break;
-                case "world2":
-                    handler.setWorld("world1");
-                    break;
+        getHotBarInput();
+        getMouseInput();
+        if (handler.getGame().isDev()) {
+            if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_X)) {
+                handler.getWorld().getEntityManager().addEntity(new Zombie(handler, x, y + 2));
+            }
+            if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_H)) {
+                setHealth(maxHealth);
+            }
+            if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_T)) {
+                handler.getWorld().getEntityManager().addEntity(new Tree(handler, x, y + 2));
+            }
+            if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_B)) {
+                switch (handler.getWorld().getName()) {
+                    case "world1":
+                        handler.setWorld("world2");
+                        break;
+                    case "world2":
+                        handler.setWorld("world1");
+                        break;
+                }
             }
         }
     }
 
+    private void getMouseInput() {
+        itemUseTimer += System.currentTimeMillis() - lastItemUseTimer;
+        lastItemUseTimer = System.currentTimeMillis();
+        if (handler.getMouseManager().isRightPressed()) {
+            if (itemUseTimer > itemUseCooldown) {
+                if (inventory.getHotbarItem() != null && inventory.getHotbarItem().getItem().isFood() && !(health >= maxHealth)) {
+                    setHealth(getHealth() + inventory.getHotbarItem().getItem().getHeal());
+                    inventory.getHotbarItem().decSize(1);
+                }
+            }
+        }
+    }
+
+    private void getHotBarInput() {
+        if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_1)) inventory.setHotBarSelectedItem(0);
+        if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_2)) inventory.setHotBarSelectedItem(1);
+        if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_3)) inventory.setHotBarSelectedItem(2);
+        if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_4)) inventory.setHotBarSelectedItem(3);
+        if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_5)) inventory.setHotBarSelectedItem(4);
+        if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_6)) inventory.setHotBarSelectedItem(5);
+        if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_7)) inventory.setHotBarSelectedItem(6);
+        if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_8)) inventory.setHotBarSelectedItem(7);
+        if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_9)) inventory.setHotBarSelectedItem(8);
+    }
+
     public void postRender(Graphics graphics) {
-        inventory.render(graphics);
+        inventory.renderHotbar(graphics);
+        inventory.renderInv(graphics);
     }
 
     @Override
