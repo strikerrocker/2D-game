@@ -1,13 +1,17 @@
 package io.github.strikerrocker.entities.player;
 
+import com.google.gson.*;
 import com.google.gson.annotations.Expose;
 import io.github.strikerrocker.Handler;
-import io.github.strikerrocker.entities.*;
+import io.github.strikerrocker.entities.Creature;
+import io.github.strikerrocker.entities.ItemEntity;
+import io.github.strikerrocker.entities.Tree;
+import io.github.strikerrocker.entities.Zombie;
 import io.github.strikerrocker.gfx.Animation;
 import io.github.strikerrocker.gfx.Assets;
 import io.github.strikerrocker.gfx.PixelPos;
 import io.github.strikerrocker.items.ItemStack;
-import io.github.strikerrocker.misc.Rectangle;
+import io.github.strikerrocker.items.Items;
 import io.github.strikerrocker.states.DeathScreen;
 import io.github.strikerrocker.states.State;
 import io.github.strikerrocker.world.BlockPos;
@@ -44,6 +48,10 @@ public class Player extends Creature {
         return inventory;
     }
 
+    protected void setInventory(Inventory inventory) {
+        this.inventory = inventory;
+    }
+
     @Override
     protected void initAITasks() {
 
@@ -56,49 +64,10 @@ public class Player extends Creature {
         up.tick();
         right.tick();
         left.tick();
-        getInput();
         handler.getGameCamera().centreOnEntity(this);
 
-        checkAttack();
+        getInput();
         inventory.tick();
-    }
-
-    private void checkAttack() {
-        attackTimer += System.currentTimeMillis() - lastAttackTimer;
-        lastAttackTimer = System.currentTimeMillis();
-        if (attackTimer > attackCooldown && inventory.isActive()) {
-
-            Rectangle cb = getCollisionBounds(0, 0);
-            Rectangle ar = new Rectangle();
-            int arSize = 20;
-            ar.width = arSize;
-            ar.height = arSize;
-
-            if (handler.getKeyManager().attackUp) {
-                ar.x = cb.x + cb.width / 2 - arSize / 2;
-                ar.y = cb.y - arSize;
-            } else if (handler.getKeyManager().attackDown) {
-                ar.x = cb.x + cb.width / 2 - arSize / 2;
-                ar.y = cb.y + cb.height;
-            } else if (handler.getKeyManager().attackLeft) {
-                ar.x = cb.x - arSize;
-                ar.y = cb.y + cb.height / 2 - arSize / 2;
-            } else if (handler.getKeyManager().attackRight) {
-                ar.x = cb.x + cb.width;
-                ar.y = cb.y + cb.height / 2 - arSize / 2;
-            } else {
-                return;
-            }
-
-            attackTimer = 0;
-
-            for (Entity e : handler.getWorld().getEntityManager().getEntities()) {
-                if (e.getCollisionBounds(0, 0).intersects(ar) && !e.equals(this) && e instanceof Creature) {
-                    ((Creature) e).hurt(1);
-                    return;
-                }
-            }
-        }
     }
 
     private void getInput() {
@@ -125,6 +94,9 @@ public class Player extends Creature {
             if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_H)) {
                 setHealth(maxHealth);
             }
+            if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_L)) {
+                inventory.addStack(new ItemStack(Items.apple));
+            }
             if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_T)) {
                 handler.getWorld().getEntityManager().addEntity(new Tree(handler, x, y + 2));
             }
@@ -144,13 +116,12 @@ public class Player extends Creature {
     private void getMouseInput() {
         itemUseTimer += System.currentTimeMillis() - lastItemUseTimer;
         lastItemUseTimer = System.currentTimeMillis();
-        if (handler.getMouseManager().isRightPressed()) {
-            if (itemUseTimer > itemUseCooldown) {
-                if (inventory.getHotbarItem() != null && inventory.getHotbarItem().getItem().isFood() && !(health >= maxHealth)) {
-                    setHealth(getHealth() + inventory.getHotbarItem().getItem().getHeal());
-                    inventory.getHotbarItem().decSize(1);
-                }
-            }
+        if (handler.getMouseManager().isRightPressed() && itemUseTimer > itemUseCooldown && inventory.getHotbarStack() != null) {
+            inventory.getHotbarStack().onRightClick(handler, this, handler.getMouseManager().getX(), handler.getMouseManager().getY());
+            itemUseTimer = 0;
+        }
+        if (handler.getMouseManager().isLeftPressed() && attackTimer > attackCooldown && inventory.getHotbarStack() != null) {
+            inventory.getHotbarStack().onLeftClick(handler, this, handler.getMouseManager().getX(), handler.getMouseManager().getY());
         }
     }
 

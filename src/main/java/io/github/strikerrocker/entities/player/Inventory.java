@@ -1,5 +1,6 @@
 package io.github.strikerrocker.entities.player;
 
+import com.google.gson.*;
 import com.google.gson.annotations.Expose;
 import io.github.strikerrocker.Handler;
 import io.github.strikerrocker.gfx.Assets;
@@ -9,6 +10,7 @@ import io.github.strikerrocker.items.Items;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -58,7 +60,7 @@ public class Inventory {
             invSelectedItem = 0;
     }
 
-    public ItemStack getHotbarItem() {
+    public ItemStack getHotbarStack() {
         return hotBarSelectedItem < inventoryItems.size() ? inventoryItems.get(hotBarSelectedItem) : null;
     }
 
@@ -107,7 +109,7 @@ public class Inventory {
         Text.drawString(graphics, Integer.toString(stack.getCount()), (int) (guiWidth / 1.22) + guiX, (guiHeight / 3) + guiY, true, Color.WHITE, Assets.font28.deriveFont((float) invListSpacing));
     }
 
-    public void addItem(ItemStack stack) {
+    public void addStack(ItemStack stack) {
         int notInserted = stack.getCount();
         for (ItemStack invStack : inventoryItems) {
             if (invStack.getItem() == stack.getItem()) {

@@ -15,6 +15,15 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Utils {
+
+    public static <K, V extends Comparable> void sortByValue(Map<K, V> unsortMap) {
+        if (unsortMap != null) {
+            CustomComparator comparator = new CustomComparator(unsortMap);
+            Map<K, V> map = new TreeMap<>(comparator);
+            map.putAll(unsortMap);
+        }
+    }
+
     public static String loadFilesAsString(File path) {
         StringBuilder builder = new StringBuilder();
         try {
@@ -41,13 +50,6 @@ public class Utils {
             }
         }
         return tinted;
-    }
-
-    public static <K, V extends Comparable> Map<K, V> sortByValue(Map<K, V> unsortMap) {
-        CustomComparator comparator = new CustomComparator(unsortMap);
-        Map<K, V> map = new TreeMap<>(comparator);
-        map.putAll(unsortMap);
-        return map;
     }
 
     public static boolean hasCollision(Handler handler, BlockPos pos) {

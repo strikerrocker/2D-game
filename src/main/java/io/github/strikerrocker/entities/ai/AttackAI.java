@@ -6,18 +6,17 @@ import io.github.strikerrocker.entities.Zombie;
 import io.github.strikerrocker.misc.Rectangle;
 
 public class AttackAI extends AI {
-    private int growFactor;
+    private int rangeFactor;
     private int hurtAmt;
 
-    public AttackAI(int growFactor, int hurtAmt) {
-        this.growFactor = growFactor;
+    public AttackAI(int rangeFactor, int hurtAmt) {
+        this.rangeFactor = rangeFactor;
         this.hurtAmt = hurtAmt;
     }
 
     @Override
     public boolean canExecute(Creature creature) {
-        Rectangle visibleArea = creature.getCollisionBounds(0, 0);
-        visibleArea.grow(growFactor, growFactor);
+        Rectangle visibleArea = creature.getCollisionBounds(0, 0).grow(rangeFactor, rangeFactor);
         for (Entity e : creature.getHandler().getWorld().getEntityManager().getEntities()) {
             if (e.getCollisionBounds(0, 0).intersects(visibleArea) && !(e instanceof Zombie) && e instanceof Creature) {
                 return true;
@@ -28,13 +27,11 @@ public class AttackAI extends AI {
 
     @Override
     public void execute(Creature creature) {
-        Rectangle visibleArea = creature.getCollisionBounds(0, 0).grow(growFactor, growFactor);
+        Rectangle visibleArea = creature.getCollisionBounds(0, 0).grow(rangeFactor, rangeFactor);
         for (Entity e : creature.getHandler().getWorld().getEntityManager().getEntities()) {
-            if (e.getCollisionBounds(0, 0).intersects(visibleArea) && !(e instanceof Zombie) && e instanceof Creature) {
-                if (creature.getAttackTimer() > creature.getAttackCooldown()) {
-                    ((Creature) e).hurt(hurtAmt);
-                    creature.setAttackTimer(0);
-                }
+            if (e.getCollisionBounds(0, 0).intersects(visibleArea) && !(e instanceof Zombie) && e instanceof Creature && creature.getAttackTimer() > creature.getAttackCooldown()) {
+                ((Creature) e).hurt(hurtAmt);
+                creature.setAttackTimer(0);
             }
         }
     }

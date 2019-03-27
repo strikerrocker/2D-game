@@ -25,7 +25,7 @@ public abstract class Creature extends Entity {
     public static final int DEFAULT_HEIGHT = 64;
     public static final float DEFAULT_SPEED = 0.03f;
     private static final Timer renderHurtTimer = new Timer();
-    public int maxHealth = 10;
+    public int maxHealth;
     public boolean renderHurt = false;
     @Expose
     protected int health;
@@ -33,17 +33,23 @@ public abstract class Creature extends Entity {
     @Expose
     protected float xMove, yMove;
     protected long lastAttackTimer, attackCooldown = 1500, attackTimer = attackCooldown;
-    protected Map<AI, Integer> aiTasks = new HashMap<>();
+    protected Map<AI, Integer> aiTasks;
 
     public Creature(Handler handler, float x, float y, int width, int height, int maxHealth) {
         super(handler, x, y, width, height);
-
+        this.maxHealth = maxHealth;
+        this.health = maxHealth;
         this.speed = DEFAULT_SPEED;
         bounds = new Rectangle(0.25f, 0.5f, 0.5f, 0.5f);
+        aiTasks = new HashMap<>();
         initAITasks();
     }
 
     protected abstract void initAITasks();
+
+    public Map<AI, Integer> getAiTasks() {
+        return aiTasks;
+    }
 
     @Override
     public void tick() {
@@ -97,13 +103,13 @@ public abstract class Creature extends Entity {
                 }
             }, 500);
         }
+        //getPixelCollisionBounds(0, 0).draw(graphics);
         PixelPos pos = getPixelPos();
         graphics.drawImage(toBeRendered, (int) (pos.getX() - handler.getGameCamera().getXOffset()), (int) (pos.getY() - handler.getGameCamera().getYOffset()), (int) width, (int) height, null);
         if (!(this instanceof Player) && renderHurt) {
             Rectangle collisionBound = getPixelCollisionBounds(0, 0);
             Text.drawString(graphics, "" + getHealth(), (int) (collisionBound.getCenterX()), (int) (collisionBound.getY()), true, Color.WHITE, Assets.font28);
         }
-        //getPixelCollisionBounds(0, 0).draw(graphics);
     }
 
     public abstract BufferedImage getCurrentFrame();
@@ -164,7 +170,8 @@ public abstract class Creature extends Entity {
     }
 
     public void setHealth(int health) {
-        if (!(this.health >= maxHealth)) this.health = health;
+        if (this.health >= maxHealth || health >= maxHealth) this.health = maxHealth;
+        else this.health = health;
     }
 
     public float getSpeed() {

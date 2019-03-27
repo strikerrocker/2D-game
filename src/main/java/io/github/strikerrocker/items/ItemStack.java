@@ -1,6 +1,8 @@
 package io.github.strikerrocker.items;
 
 import com.google.gson.annotations.Expose;
+import io.github.strikerrocker.Handler;
+import io.github.strikerrocker.entities.player.Player;
 
 import java.awt.image.BufferedImage;
 
@@ -85,4 +87,14 @@ public class ItemStack {
     public String getName() {
         return item.getName();
     }
+
+    public void onRightClick(Handler handler, Player player, int x, int y) {
+        item.onRightClick(handler, player, this, x, y);
+    }
+
+    public void onLeftClick(Handler handler, Player player, int x, int y) {
+        item.onLeftClick(handler, player, x, y);
+    }
+
+
 }

@@ -20,7 +20,6 @@ public class GameState extends State {
     public GameState(Handler handler) {
         super(handler);
         levels = new ArrayList<>();
-        player = new Player(handler, 2.5f, 2.5f);
         if (worldDirectory != null) loadWorld();
     }
 
@@ -32,6 +31,10 @@ public class GameState extends State {
         return player;
     }
 
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
     public void loadWorld() {
         for (File file1 : worldDirectory.listFiles()) {
             if (file1.getName().endsWith(".txt")) {
@@ -39,7 +42,7 @@ public class GameState extends State {
             }
         }
         level = getLevel("level1");
-        setPlayer(level, player);
+        setPlayerAtLvl(level, player);
     }
 
     public File getWorldDirectory() {
@@ -51,7 +54,7 @@ public class GameState extends State {
         loadWorld();
     }
 
-    private void setPlayer(Level level, Player player) {
+    private void setPlayerAtLvl(Level level, Player player) {
         level.setPlayer(player);
     }
 
@@ -64,18 +67,18 @@ public class GameState extends State {
         return null;
     }
 
-    public Level getLevel() {
+    public Level getCurrentLevel() {
         return level;
     }
 
-    public void setLevel(Level level) {
-        setPlayer(level, null);
+    public void teleportPlayerTo(Level level) {
+        setPlayerAtLvl(level, null);
         this.level = level;
-        setPlayer(level, player);
+        setPlayerAtLvl(level, player);
     }
 
-    public void LevelWorld(String world) {
-        setLevel(getLevel(world));
+    public void teleportPlayerTo(String world) {
+        teleportPlayerTo(getLevel(world));
     }
 
     @Override

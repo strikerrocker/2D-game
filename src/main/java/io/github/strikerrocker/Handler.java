@@ -36,11 +36,11 @@ public class Handler {
     }
 
     public Level getWorld() {
-        return game.gameState.getLevel();
+        return game.gameState.getCurrentLevel();
     }
 
     public void setWorld(String world) {
-        game.gameState.LevelWorld(world);
+        game.gameState.teleportPlayerTo(world);
     }
 
     public MouseManager getMouseManager() {

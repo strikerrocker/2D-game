@@ -116,11 +116,11 @@ public abstract class Entity {
         return active;
     }
 
-    public Rectangle getBounds() {
-        return bounds;
-    }
-
     public Handler getHandler() {
         return handler;
+    }
+
+    public void setHandler(Handler handler) {
+        this.handler = handler;
     }
 }
