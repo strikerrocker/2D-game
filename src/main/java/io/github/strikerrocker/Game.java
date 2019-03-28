@@ -3,47 +3,44 @@ package io.github.strikerrocker;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.github.strikerrocker.blocks.Blocks;
+import io.github.strikerrocker.entities.Entity;
 import io.github.strikerrocker.entities.EntityManager;
 import io.github.strikerrocker.entities.player.Player;
+import io.github.strikerrocker.entities.type.EntityTypes;
 import io.github.strikerrocker.gfx.Assets;
 import io.github.strikerrocker.gfx.Display;
 import io.github.strikerrocker.gfx.GameCamera;
 import io.github.strikerrocker.input.KeyManager;
 import io.github.strikerrocker.input.MouseManager;
 import io.github.strikerrocker.items.Items;
+import io.github.strikerrocker.misc.Deserializers;
+import io.github.strikerrocker.misc.GameData;
+import io.github.strikerrocker.misc.Serializers;
 import io.github.strikerrocker.states.GameState;
 import io.github.strikerrocker.states.MenuState;
 import io.github.strikerrocker.states.State;
-import io.github.strikerrocker.world.Level;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.logging.Logger;
 
 public class Game implements Runnable {
-    public int fps = 0;
-    public GameState gameState;
+    private GameState gameState;
+    private int fps = 0;
     private Logger logger;
     private String title;
     private int height, width;
     private Display display;
     private Thread thread;
     private boolean running = false;
-    private BufferStrategy bufferStrategy;
-    private Graphics graphics;
     private State menuState;
     private KeyManager keyManager;
     private GameCamera camera;
     private Handler handler;
     private MouseManager mouseManager;
     private boolean dev = false;
+    private Gson gson;
 
     Game(String title, int width, int height) {
         this.title = title;
@@ -53,6 +50,10 @@ public class Game implements Runnable {
         mouseManager = new MouseManager();
 
         logger = Logger.getLogger("Game : ");
+    }
+
+    public GameState getGameState() {
+        return gameState;
     }
 
     public int getFps() {
@@ -91,6 +92,10 @@ public class Game implements Runnable {
         return mouseManager;
     }
 
+    public Gson getGson() {
+        return gson;
+    }
+
     private void init() {
         display = new Display(title, width, height);
         display.getFrame().addKeyListener(keyManager);
@@ -104,6 +109,13 @@ public class Game implements Runnable {
         camera = new GameCamera(handler, 0, 0);
         Blocks.init();
         Items.init();
+        EntityTypes.init();
+        gson = new GsonBuilder().disableHtmlEscaping()
+                .excludeFieldsWithoutExposeAnnotation().serializeNulls()
+                .registerTypeAdapter(Player.class, Deserializers.playerJsonDeserializer)
+                .registerTypeAdapter(EntityManager.class, Deserializers.managerJsonDeserializer)
+                .registerTypeAdapter(Entity.class, Serializers.entityJsonSerializer)
+                .create();
         menuState = new MenuState(handler);
         gameState = new GameState(handler);
         State.setCurrentState(menuState);
@@ -117,12 +129,12 @@ public class Game implements Runnable {
     }
 
     private void render() {
-        bufferStrategy = display.getCanvas().getBufferStrategy();
+        BufferStrategy bufferStrategy = display.getCanvas().getBufferStrategy();
         if (bufferStrategy == null) {
             display.getCanvas().createBufferStrategy(3);
             return;
         }
-        graphics = bufferStrategy.getDrawGraphics();
+        Graphics graphics = bufferStrategy.getDrawGraphics();
         graphics.clearRect(0, 0, width, height);
         if (State.getCurrentState() != null) {
             State.getCurrentState().render(graphics);
@@ -164,33 +176,9 @@ public class Game implements Runnable {
     }
 
     public synchronized void save() {
-        Gson gson = new GsonBuilder().serializeNulls().disableHtmlEscaping().excludeFieldsWithoutExposeAnnotation().registerTypeAdapter(Player.class, new Player.Deserializer()).create();
         File worldDir = gameState.getWorldDirectory();
-        saveEntityData(worldDir, gson);
+        GameData.saveEntityData(gameState, worldDir, gson);
     }
-
-    public void saveEntityData(File worldDir, Gson gson) {
-        try {
-            Player player = gameState.getPlayer();
-            Path playerData = Paths.get(worldDir.getPath() + "/player.json");
-            Files.deleteIfExists(playerData);
-            PrintWriter playerDataWriter = new PrintWriter(new FileWriter(playerData.toFile()));
-            playerDataWriter.println(gson.toJson(player));
-            playerDataWriter.close();
-            for (Level lvl : gameState.getLevels()) {
-                Path lvlEntityData = Paths.get(worldDir.getPath() + "/" + lvl.getName() + "Entities.json");
-                Files.deleteIfExists(lvlEntityData);
-                PrintWriter writer = new PrintWriter(new FileWriter(lvlEntityData.toFile()));
-                EntityManager manager = lvl.getEntityManager();
-                manager.getEntities().removeIf(entity1 -> (entity1 instanceof Player));
-                writer.println(gson.toJson(manager.getEntities()));
-                writer.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 
     synchronized void start() {
         if (running)

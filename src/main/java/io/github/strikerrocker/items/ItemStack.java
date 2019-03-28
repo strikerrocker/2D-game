@@ -95,6 +95,4 @@ public class ItemStack {
     public void onLeftClick(Handler handler, Player player, int x, int y) {
         item.onLeftClick(handler, player, x, y);
     }
-
-
 }

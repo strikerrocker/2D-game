@@ -1,12 +1,12 @@
 package io.github.strikerrocker.entities.player;
 
-import com.google.gson.*;
 import com.google.gson.annotations.Expose;
 import io.github.strikerrocker.Handler;
 import io.github.strikerrocker.entities.Creature;
 import io.github.strikerrocker.entities.ItemEntity;
 import io.github.strikerrocker.entities.Tree;
 import io.github.strikerrocker.entities.Zombie;
+import io.github.strikerrocker.entities.type.EntityTypes;
 import io.github.strikerrocker.gfx.Animation;
 import io.github.strikerrocker.gfx.Assets;
 import io.github.strikerrocker.gfx.PixelPos;
@@ -31,7 +31,7 @@ public class Player extends Creature {
     private Inventory inventory;
 
     public Player(Handler handler, float x, float y) {
-        super(handler, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, 10);
+        super(EntityTypes.player, handler, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, 10);
 
         down = new Animation(500, Assets.player_down);
         up = new Animation(500, Assets.player_up);
@@ -48,7 +48,7 @@ public class Player extends Creature {
         return inventory;
     }
 
-    protected void setInventory(Inventory inventory) {
+    public void setInventory(Inventory inventory) {
         this.inventory = inventory;
     }
 
@@ -162,7 +162,7 @@ public class Player extends Creature {
         System.out.println("You Suck");
         for (ItemStack stack : inventory.getInventoryItems()) {
             BlockPos pos = new PixelPos(x, y).toBlockPos();
-            handler.getWorld().getEntityManager().addEntity(new ItemEntity(handler, pos.getX(), pos.getY(), stack));
+            handler.getWorld().getEntityManager().addEntity(new ItemEntity(handler, pos.getX(), pos.getY()).setStack(stack));
         }
         State.setCurrentState(new DeathScreen(handler));
     }

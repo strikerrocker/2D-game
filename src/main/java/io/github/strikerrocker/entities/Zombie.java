@@ -2,6 +2,7 @@ package io.github.strikerrocker.entities;
 
 import io.github.strikerrocker.Handler;
 import io.github.strikerrocker.entities.ai.AttackAI;
+import io.github.strikerrocker.entities.type.EntityTypes;
 import io.github.strikerrocker.gfx.Animation;
 import io.github.strikerrocker.gfx.Assets;
 
@@ -15,7 +16,7 @@ public class Zombie extends Creature {
     private Animation left;
 
     public Zombie(Handler handler, float x, float y) {
-        super(handler, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_HEALTH);
+        super(EntityTypes.zombie, handler, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_HEALTH);
         down = new Animation(500, Assets.zombie_down);
         up = new Animation(500, Assets.zombie_up);
         right = new Animation(500, Assets.zombie_right);

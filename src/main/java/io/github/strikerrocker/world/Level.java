@@ -21,7 +21,7 @@ public class Level {
     public Level(Handler handler, File path) {
         this.handler = handler;
         this.name = path.getName().replaceFirst(".txt", "");
-        entityManager = new EntityManager(handler);
+        entityManager = new EntityManager();
         loadWorld(path);
     }
 
@@ -38,6 +38,10 @@ public class Level {
 
     public EntityManager getEntityManager() {
         return entityManager;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
     public int getWorldWidth() {

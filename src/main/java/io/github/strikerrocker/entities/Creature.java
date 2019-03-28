@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import io.github.strikerrocker.Handler;
 import io.github.strikerrocker.entities.ai.AI;
 import io.github.strikerrocker.entities.player.Player;
+import io.github.strikerrocker.entities.type.EntityType;
 import io.github.strikerrocker.gfx.Assets;
 import io.github.strikerrocker.gfx.PixelPos;
 import io.github.strikerrocker.gfx.Text;
@@ -35,8 +36,8 @@ public abstract class Creature extends Entity {
     protected long lastAttackTimer, attackCooldown = 1500, attackTimer = attackCooldown;
     protected Map<AI, Integer> aiTasks;
 
-    public Creature(Handler handler, float x, float y, int width, int height, int maxHealth) {
-        super(handler, x, y, width, height);
+    public Creature(EntityType type, Handler handler, float x, float y, int width, int height, int maxHealth) {
+        super(type, handler, x, y, width, height);
         this.maxHealth = maxHealth;
         this.health = maxHealth;
         this.speed = DEFAULT_SPEED;
@@ -47,10 +48,6 @@ public abstract class Creature extends Entity {
 
     protected abstract void initAITasks();
 
-    public Map<AI, Integer> getAiTasks() {
-        return aiTasks;
-    }
-
     @Override
     public void tick() {
         if (canMove())
@@ -58,10 +55,12 @@ public abstract class Creature extends Entity {
         attackTimer += System.currentTimeMillis() - lastAttackTimer;
         lastAttackTimer = System.currentTimeMillis();
         sortByValue(aiTasks);
-        for (AI ai : aiTasks.keySet()) {
-            if (ai.canExecute(this)) {
-                ai.execute(this);
-                return;
+        if (aiTasks != null) {
+            for (AI ai : aiTasks.keySet()) {
+                if (ai.canExecute(this)) {
+                    ai.execute(this);
+                    return;
+                }
             }
         }
     }
@@ -170,7 +169,7 @@ public abstract class Creature extends Entity {
     }
 
     public void setHealth(int health) {
-        if (this.health >= maxHealth || health >= maxHealth) this.health = maxHealth;
+        if (health >= maxHealth) this.health = maxHealth;
         else this.health = health;
     }
 
@@ -184,5 +183,13 @@ public abstract class Creature extends Entity {
 
     public void setYMove(float yMove) {
         this.yMove = yMove;
+    }
+
+    public float getXMove() {
+        return xMove;
+    }
+
+    public float getYMove() {
+        return yMove;
     }
 }

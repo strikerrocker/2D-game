@@ -1,11 +1,10 @@
 package io.github.strikerrocker;
 
+import com.google.gson.Gson;
 import io.github.strikerrocker.gfx.GameCamera;
 import io.github.strikerrocker.input.KeyManager;
 import io.github.strikerrocker.input.MouseManager;
 import io.github.strikerrocker.world.Level;
-
-import java.io.File;
 
 public class Handler {
 
@@ -36,18 +35,18 @@ public class Handler {
     }
 
     public Level getWorld() {
-        return game.gameState.getCurrentLevel();
+        return game.getGameState().getCurrentLevel();
     }
 
     public void setWorld(String world) {
-        game.gameState.teleportPlayerTo(world);
+        game.getGameState().teleportPlayerTo(world);
     }
 
     public MouseManager getMouseManager() {
         return game.getMouseManager();
     }
 
-    public File getWorldDirectory() {
-        return game.gameState.getWorldDirectory();
+    public Gson getGson() {
+        return game.getGson();
     }
 }

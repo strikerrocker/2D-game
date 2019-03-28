@@ -4,6 +4,7 @@ import io.github.strikerrocker.Handler;
 import io.github.strikerrocker.entities.player.Player;
 import io.github.strikerrocker.gfx.Assets;
 import io.github.strikerrocker.gfx.Text;
+import io.github.strikerrocker.misc.GameData;
 import io.github.strikerrocker.world.Level;
 
 import java.awt.*;
@@ -20,7 +21,6 @@ public class GameState extends State {
     public GameState(Handler handler) {
         super(handler);
         levels = new ArrayList<>();
-        if (worldDirectory != null) loadWorld();
     }
 
     public List<Level> getLevels() {
@@ -42,7 +42,6 @@ public class GameState extends State {
             }
         }
         level = getLevel("level1");
-        setPlayerAtLvl(level, player);
     }
 
     public File getWorldDirectory() {
@@ -52,6 +51,8 @@ public class GameState extends State {
     public void setWorldDirectory(File worldDirectory) {
         this.worldDirectory = worldDirectory;
         loadWorld();
+        GameData.readEntityData(worldDirectory, handler.getGson(), handler);
+        setPlayerAtLvl(level, player);
     }
 
     private void setPlayerAtLvl(Level level, Player player) {
@@ -93,7 +94,7 @@ public class GameState extends State {
     }
 
     private void drawPlayerInfo(Graphics graphics) {
-        Text.drawString(graphics, "FPS : " + handler.getGame().fps, 0, 20, false, Color.WHITE, Assets.font28);
+        Text.drawString(graphics, "FPS : " + handler.getGame().getFps(), 0, 20, false, Color.WHITE, Assets.font28);
         Text.drawString(graphics, "Health : " + player.getHealth(), 0, 40, false, Color.WHITE, Assets.font28);
     }
 }

@@ -1,7 +1,6 @@
 package io.github.strikerrocker.entities;
 
 import com.google.gson.annotations.Expose;
-import io.github.strikerrocker.Handler;
 import io.github.strikerrocker.entities.player.Player;
 
 import java.awt.*;
@@ -11,7 +10,6 @@ import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 
 public class EntityManager {
-    private Handler handler;
     private Player player;
     @Expose
     private ArrayList<Entity> entities;
@@ -22,8 +20,7 @@ public class EntityManager {
         return 1;
     };
 
-    public EntityManager(Handler handler) {
-        this.handler = handler;
+    public EntityManager() {
         entities = new ArrayList<>();
     }
 
@@ -66,7 +63,7 @@ public class EntityManager {
                     iterator.remove();
                 }
             }
-        } catch (ConcurrentModificationException e) {
+        } catch (ConcurrentModificationException ignored) {
         }
         entities.sort(sorter);
     }

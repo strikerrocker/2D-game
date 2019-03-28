@@ -3,6 +3,7 @@ package io.github.strikerrocker.entities;
 import com.google.gson.annotations.Expose;
 import io.github.strikerrocker.Handler;
 import io.github.strikerrocker.entities.player.Player;
+import io.github.strikerrocker.entities.type.EntityType;
 import io.github.strikerrocker.gfx.PixelPos;
 import io.github.strikerrocker.misc.Rectangle;
 import io.github.strikerrocker.world.BlockPos;
@@ -19,8 +20,11 @@ public abstract class Entity {
     protected Handler handler;
     protected Rectangle bounds;
     protected boolean active = true;
+    @Expose
+    protected String name;
 
-    public Entity(Handler handler, float x, float y, float width, float height) {
+    public Entity(EntityType type, Handler handler, float x, float y, float width, float height) {
+        this.name = type.getName();
         this.handler = handler;
         this.x = x;
         this.y = y;
@@ -30,14 +34,12 @@ public abstract class Entity {
         bounds = new Rectangle(0, 0, width, height);
     }
 
-    public BlockPos getPos() {
-        return new BlockPos(x, y);
+    public String getName() {
+        return name;
     }
 
-    public void setPos(PixelPos pos) {
-        BlockPos blockPos = pos.toBlockPos();
-        this.x = blockPos.getX();
-        this.y = blockPos.getY();
+    public BlockPos getPos() {
+        return new BlockPos(x, y);
     }
 
     public void setPos(BlockPos pos) {

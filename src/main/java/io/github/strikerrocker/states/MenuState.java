@@ -24,8 +24,8 @@ public class MenuState extends State {
             File world = listFiles[i];
             if (world.getName().startsWith("world")) {
                 uiManager.add(new UIButton(handler.getWidth() / 2 - 64, (i) * 64, 128, 64, world.getName(), () -> {
-                    handler.getGame().gameState.setWorldDirectory(world);
-                    setCurrentState(handler.getGame().gameState);
+                    handler.getGame().getGameState().setWorldDirectory(world);
+                    setCurrentState(handler.getGame().getGameState());
                 }));
             }
         }
