@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import io.github.strikerrocker.Handler;
 import io.github.strikerrocker.gfx.Assets;
 import io.github.strikerrocker.gfx.Text;
-import io.github.strikerrocker.items.ItemStack;
+import io.github.strikerrocker.items.Item;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -18,7 +18,7 @@ public class Inventory {
     private Handler handler;
     private boolean active = false;
     @Expose
-    private ArrayList<ItemStack> inventoryItems;
+    private ArrayList<Item> inventoryItems;
     private int invSelectedItem = 0;
     private int hotBarSelectedItem = 0;
 
@@ -31,7 +31,7 @@ public class Inventory {
         this.hotBarSelectedItem = hotBarSelectedItem;
     }
 
-    public ArrayList<ItemStack> getInventoryItems() {
+    public ArrayList<Item> getInventoryItems() {
         return inventoryItems;
     }
 
@@ -40,7 +40,7 @@ public class Inventory {
             active = !active;
         if (active && handler.getKeyManager().keyJustPressed(KeyEvent.VK_ESCAPE))
             active = false;
-        getInventoryItems().forEach(ItemStack::tick);
+        getInventoryItems().forEach(Item::tick);
         getInventoryItems().stream().filter(Objects::nonNull).filter(itemStack -> itemStack.getCount() <= 0).forEach(itemStack -> inventoryItems.remove(itemStack));
         if (!active)
             return;
@@ -56,7 +56,7 @@ public class Inventory {
             invSelectedItem = 0;
     }
 
-    public ItemStack getHotbarStack() {
+    public Item getHotbarStack() {
         return hotBarSelectedItem < inventoryItems.size() ? inventoryItems.get(hotBarSelectedItem) : null;
     }
 
@@ -69,6 +69,7 @@ public class Inventory {
         graphics.drawImage(Assets.hotBar, hotBarX - guiWidth / 12, hotBarY - guiHeight / 12, guiWidth, guiHeight, null);
         if (hotBarSelectedItem < inventoryItems.size()) {
             graphics.drawImage(inventoryItems.get(hotBarSelectedItem).getTexture(), hotBarX, hotBarY, guiWidth - guiWidth / 6, guiHeight - guiHeight / 6, null);
+            Text.drawString(graphics, "" + inventoryItems.get(hotBarSelectedItem).getCount(), hotBarX + (guiWidth / 2), hotBarY + (guiHeight * 4 / 5), false, Color.WHITE, Assets.font28.deriveFont(25f));
         }
     }
 
@@ -100,15 +101,15 @@ public class Inventory {
             }
         }
 
-        ItemStack stack = inventoryItems.get(invSelectedItem);
+        Item stack = inventoryItems.get(invSelectedItem);
         graphics.drawImage(stack.getTexture(), (int) (guiWidth / 1.34) + guiX, (guiHeight / 14) + guiY, (int) (guiWidth / 6.7), (guiHeight / 5), null);
         Text.drawString(graphics, Integer.toString(stack.getCount()), (int) (guiWidth / 1.22) + guiX, (guiHeight / 3) + guiY, true, Color.WHITE, Assets.font28.deriveFont((float) invListSpacing));
     }
 
-    public void addStack(ItemStack stack) {
+    public void addStack(Item stack) {
         int notInserted = stack.getCount();
-        for (ItemStack invStack : inventoryItems) {
-            if (invStack.getItem() == stack.getItem()) {
+        for (Item invStack : inventoryItems) {
+            if (invStack.getItemData() == stack.getItemData()) {
                 notInserted = invStack.incSize(notInserted);
             }
         }

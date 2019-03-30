@@ -7,20 +7,20 @@ import io.github.strikerrocker.entities.player.Inventory;
 import io.github.strikerrocker.entities.player.Player;
 import io.github.strikerrocker.entities.type.EntityType;
 import io.github.strikerrocker.items.Item;
-import io.github.strikerrocker.items.ItemStack;
+import io.github.strikerrocker.items.ItemData;
 
 public class Deserializers {
-    public static JsonDeserializer<ItemStack> itemStackJsonDeserializer = (json, typeOfT, context) -> {
+    public static JsonDeserializer<Item> itemJsonDeserializer = (json, typeOfT, context) -> {
         JsonObject object = json.getAsJsonObject();
-        Item item = Item.getFromId(object.get("item").getAsJsonObject().get("id").getAsInt());
+        ItemData itemData = ItemData.getFromId(object.get("itemData").getAsJsonObject().get("id").getAsInt());
         int count = object.get("count").getAsInt();
-        return new ItemStack(item, count);
+        return new Item(itemData, count);
     };
     public static JsonDeserializer<Inventory> inventoryJsonDeserializer = (json, typeOfT, context) -> {
         Inventory inventory = new Inventory(null);
-        Gson gson = new GsonBuilder().registerTypeAdapter(ItemStack.class, itemStackJsonDeserializer).create();
+        Gson gson = new GsonBuilder().registerTypeAdapter(Item.class, itemJsonDeserializer).create();
         for (JsonElement element : json.getAsJsonObject().get("inventoryItems").getAsJsonArray()) {
-            inventory.addStack(gson.fromJson(element, ItemStack.class));
+            inventory.addStack(gson.fromJson(element, Item.class));
         }
         return inventory;
     };

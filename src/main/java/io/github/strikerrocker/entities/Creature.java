@@ -1,5 +1,7 @@
 package io.github.strikerrocker.entities;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
 import io.github.strikerrocker.Handler;
 import io.github.strikerrocker.entities.ai.AI;
@@ -185,11 +187,22 @@ public abstract class Creature extends Entity {
         this.yMove = yMove;
     }
 
-    public float getXMove() {
-        return xMove;
+    @Override
+    public JsonElement serialize() {
+        JsonObject object = super.serialize().getAsJsonObject();
+        object.addProperty("health", health);
+        object.addProperty("xMove", xMove);
+        object.addProperty("yMove", yMove);
+        return object;
     }
 
-    public float getYMove() {
-        return yMove;
+    @Override
+    public Entity deserialize(JsonElement element) {
+        super.deserialize(element);
+        JsonObject object = element.getAsJsonObject();
+        this.xMove = object.get("xMove").getAsFloat();
+        this.yMove = object.get("yMove").getAsFloat();
+        this.health = object.get("health").getAsInt();
+        return this;
     }
 }

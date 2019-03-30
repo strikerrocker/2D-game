@@ -1,0 +1,19 @@
+{
+  "inventory": {
+    "inventoryItems": [
+      {
+        "itemData": {
+          "id": 0,
+          "name": "Wood"
+        },
+        "count": 3
+      }
+    ]
+  },
+  "health": 8,
+  "xMove": 0.0,
+  "yMove": 0.0,
+  "x": 2.2300007,
+  "y": 2.7200005,
+  "name": "player"
+}

@@ -1,9 +1,11 @@
 package io.github.strikerrocker.entities;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import io.github.strikerrocker.Handler;
 import io.github.strikerrocker.entities.type.EntityTypes;
 import io.github.strikerrocker.gfx.Assets;
-import io.github.strikerrocker.items.ItemStack;
+import io.github.strikerrocker.items.Item;
 import io.github.strikerrocker.items.Items;
 
 import java.awt.image.BufferedImage;
@@ -30,13 +32,13 @@ public class Tree extends Creature {
 
     @Override
     public void onKilled() {
-        handler.getWorld().getEntityManager().addEntity(new ItemEntity(handler, x, y).setStack(new ItemStack(Items.wood)));
+        handler.getWorld().getEntityManager().addEntity(new ItemEntity(handler, x, y).setItem(new Item(Items.wood)));
     }
 
     @Override
     public void hurt(int amt) {
         if (hasApple) {
-            handler.getWorld().getEntityManager().addEntity(new ItemEntity(handler, (float) (x + 0.5), (float) (y + 0.5)).setStack(new ItemStack(Items.apple, new Random().nextInt(2) + 1)));
+            handler.getWorld().getEntityManager().addEntity(new ItemEntity(handler, (float) (x + 0.5), (float) (y + 0.5)).setItem(new Item(Items.apple, new Random().nextInt(2) + 1)));
             hasApple = false;
         } else
             super.hurt(amt);
@@ -68,5 +70,19 @@ public class Tree extends Creature {
     @Override
     public BufferedImage getCurrentFrame() {
         return hasApple ? Assets.appleTree : Assets.tree;
+    }
+
+    @Override
+    public JsonElement serialize() {
+        JsonObject object = super.serialize().getAsJsonObject();
+        object.addProperty("hasApple", hasApple());
+        return object;
+    }
+
+    @Override
+    public Entity deserialize(JsonElement element) {
+        super.deserialize(element);
+        setHasApple(element.getAsJsonObject().get("hasApple").getAsBoolean());
+        return this;
     }
 }

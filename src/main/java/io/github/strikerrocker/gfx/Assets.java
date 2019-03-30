@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class Assets {
-    public static BufferedImage player, dirt, grass, stone, tree, rock, wood, apple, appleTree;
+    public static BufferedImage player, dirt, grass, wall, tree, rock, wood, apple, appleTree;
     public static BufferedImage[] player_down = new BufferedImage[2];
     public static BufferedImage[] zombie_down = new BufferedImage[2];
     public static BufferedImage[] zombie_up = new BufferedImage[2];
@@ -48,7 +48,7 @@ public class Assets {
         //Blocks Texture
         dirt = sheet.crop(width, 0, width, height);
         grass = sheet.crop(width * 2, 0, width, height);
-        stone = sheet.crop(width * 3, 0, width, height);
+        wall = sheet.crop(width * 3, 0, width, height);
 
         //Entities Texture
         tree = sheet.crop(0, 0, width, height * 2);

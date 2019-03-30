@@ -2,27 +2,27 @@ package io.github.strikerrocker.entities.player;
 
 import com.google.gson.annotations.Expose;
 import io.github.strikerrocker.Handler;
-import io.github.strikerrocker.entities.Creature;
-import io.github.strikerrocker.entities.ItemEntity;
-import io.github.strikerrocker.entities.Tree;
-import io.github.strikerrocker.entities.Zombie;
+import io.github.strikerrocker.entities.*;
 import io.github.strikerrocker.entities.type.EntityTypes;
 import io.github.strikerrocker.gfx.Animation;
 import io.github.strikerrocker.gfx.Assets;
-import io.github.strikerrocker.gfx.PixelPos;
-import io.github.strikerrocker.items.ItemStack;
+import io.github.strikerrocker.items.Item;
 import io.github.strikerrocker.items.Items;
+import io.github.strikerrocker.misc.Rectangle;
 import io.github.strikerrocker.states.DeathScreen;
 import io.github.strikerrocker.states.State;
-import io.github.strikerrocker.world.BlockPos;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
-public class Player extends Creature {
-    protected long lastItemUseTimer, itemUseCooldown = 1500, itemUseTimer = itemUseCooldown;
+import static io.github.strikerrocker.blocks.Block.BLOCKHEIGHT;
+import static io.github.strikerrocker.blocks.Block.BLOCKWIDTH;
 
+public class Player extends Creature {
+    protected long lastItemUseTimer;
+    protected long itemUseCooldown = 1500;
+    protected long itemUseTimer = itemUseCooldown;
     private Animation down;
     private Animation up;
     private Animation right;
@@ -42,6 +42,10 @@ public class Player extends Creature {
         attackCooldown = 500;
         attackTimer = 500;
         speed = 0.07f;
+    }
+
+    public void setItemUseTimer(long itemUseTimer) {
+        this.itemUseTimer = itemUseTimer;
     }
 
     public Inventory getInventory() {
@@ -95,7 +99,7 @@ public class Player extends Creature {
                 setHealth(maxHealth);
             }
             if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_L)) {
-                inventory.addStack(new ItemStack(Items.apple));
+                inventory.addStack(new Item(Items.apple));
             }
             if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_T)) {
                 handler.getWorld().getEntityManager().addEntity(new Tree(handler, x, y + 2));
@@ -120,8 +124,20 @@ public class Player extends Creature {
             inventory.getHotbarStack().onRightClick(handler, this, handler.getMouseManager().getX(), handler.getMouseManager().getY());
             itemUseTimer = 0;
         }
-        if (handler.getMouseManager().isLeftPressed() && attackTimer > attackCooldown && inventory.getHotbarStack() != null) {
-            inventory.getHotbarStack().onLeftClick(handler, this, handler.getMouseManager().getX(), handler.getMouseManager().getY());
+        if (handler.getMouseManager().isLeftPressed() && attackTimer > attackCooldown) {
+            int attackDamage = inventory.getHotbarStack() != null ? inventory.getHotbarStack().getItemData().getAttackDamage() : 1;
+            Rectangle pixelBound = getPixelCollisionBounds(0, 0).grow(BLOCKWIDTH, BLOCKHEIGHT);
+            for (Entity entity : handler.getWorld().getEntityManager().getEntities()) {
+                if (!(entity instanceof Player) && entity instanceof Creature && pixelBound.contains(handler.getMouseManager().getX(), handler.getMouseManager().getY())
+                        && entity.getPixelCollisionBounds(0, 0).contains(handler.getMouseManager().getX(), handler.getMouseManager().getY())
+                        && getAttackTimer() > getAttackCooldown() && !getInventory().isActive()) {
+                    ((Creature) entity).hurt(attackDamage);
+                    setAttackTimer(0);
+                    return;
+                }
+            }
+            if (inventory.getHotbarStack() != null)
+                inventory.getHotbarStack().onLeftClick(handler, this, handler.getMouseManager().getX(), handler.getMouseManager().getY());
         }
     }
 
@@ -160,9 +176,8 @@ public class Player extends Creature {
     @Override
     public void onKilled() {
         System.out.println("You Suck");
-        for (ItemStack stack : inventory.getInventoryItems()) {
-            BlockPos pos = new PixelPos(x, y).toBlockPos();
-            handler.getWorld().getEntityManager().addEntity(new ItemEntity(handler, pos.getX(), pos.getY()).setStack(stack));
+        for (Item stack : inventory.getInventoryItems()) {
+            handler.getWorld().getEntityManager().addEntity(((ItemEntity) EntityTypes.item.createNew(handler, x, y)).setItem(stack));
         }
         State.setCurrentState(new DeathScreen(handler));
     }

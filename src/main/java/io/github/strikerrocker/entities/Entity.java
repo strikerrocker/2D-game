@@ -1,5 +1,7 @@
 package io.github.strikerrocker.entities;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
 import io.github.strikerrocker.Handler;
 import io.github.strikerrocker.entities.player.Player;
@@ -124,5 +126,20 @@ public abstract class Entity {
 
     public void setHandler(Handler handler) {
         this.handler = handler;
+    }
+
+    public JsonElement serialize() {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("x", x);
+        jsonObject.addProperty("y", y);
+        jsonObject.addProperty("name", name);
+        return jsonObject;
+    }
+
+    public Entity deserialize(JsonElement element) {
+        JsonObject object = element.getAsJsonObject();
+        this.x = object.get("x").getAsFloat();
+        this.y = object.get("y").getAsFloat();
+        return this;
     }
 }
