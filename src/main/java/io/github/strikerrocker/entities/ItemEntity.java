@@ -37,7 +37,7 @@ public class ItemEntity extends Creature {
 
     @Override
     public void onKilled() {
-        handler.getWorld().getEntityManager().getPlayer().getInventory().addStack(getItem());
+        handler.getCurrentLevel().getEntityManager().getPlayer().getInventory().addStack(getItem());
     }
 
     public Item getItem() {

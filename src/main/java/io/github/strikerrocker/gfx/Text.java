@@ -3,8 +3,8 @@ package io.github.strikerrocker.gfx;
 import java.awt.*;
 
 public class Text {
-    public static void drawString(Graphics g, String text, int xPos, int yPos, boolean center, Color c, Font font) {
-        g.setColor(c);
+    public static void drawString(Graphics g, String text, int xPos, int yPos, boolean center, Color color, Font font) {
+        g.setColor(color);
         g.setFont(font);
         int x = xPos;
         int y = yPos;

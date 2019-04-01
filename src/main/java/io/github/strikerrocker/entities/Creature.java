@@ -163,7 +163,7 @@ public abstract class Creature extends Entity {
     }
 
     private boolean blockCollision(int x, int y) {
-        return handler.getWorld().getBlock(x, y).isSolid();
+        return handler.getCurrentLevel().getBlock(x, y).isSolid();
     }
 
     public int getHealth() {

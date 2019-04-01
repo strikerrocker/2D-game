@@ -22,7 +22,6 @@ import io.github.strikerrocker.states.State;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import java.io.File;
 import java.util.logging.Logger;
 
 public class Game implements Runnable {
@@ -120,7 +119,7 @@ public class Game implements Runnable {
         gameState = new GameState(handler);
         State.setCurrentState(menuState);
 
-        Runtime.getRuntime().addShutdownHook(new Thread(this::save));
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> GameData.save(gameState, gson)));
     }
 
     private void tick() {
@@ -173,11 +172,6 @@ public class Game implements Runnable {
             }
         }
         stop();
-    }
-
-    public synchronized void save() {
-        File worldDir = gameState.getWorldDirectory();
-        GameData.saveEntityData(gameState, worldDir, gson);
     }
 
     synchronized void start() {

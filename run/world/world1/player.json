@@ -7,13 +7,20 @@
           "name": "Wood"
         },
         "count": 3
+      },
+      {
+        "itemData": {
+          "id": 3,
+          "name": "grass"
+        },
+        "count": 1
       }
     ]
   },
-  "health": 8,
+  "health": 10,
   "xMove": 0.0,
   "yMove": 0.0,
-  "x": 2.2300007,
-  "y": 2.7200005,
+  "x": 3.8399994,
+  "y": 2.5,
   "name": "player"
 }

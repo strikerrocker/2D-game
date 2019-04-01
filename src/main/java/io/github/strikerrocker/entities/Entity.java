@@ -63,7 +63,7 @@ public abstract class Entity {
     }
 
     public boolean entityColliding(float xOffset, float yOffset) {
-        for (Entity entity : handler.getWorld().getEntityManager().getEntities()) {
+        for (Entity entity : handler.getCurrentLevel().getEntityManager().getEntities()) {
             if (entity != this && entity.getCollisionBounds(0, 0).intersects(getCollisionBounds(xOffset, yOffset))) {
                 return true;
             }
@@ -72,7 +72,7 @@ public abstract class Entity {
     }
 
     public boolean entityCollidingExceptPlayer(float xOffset, float yOffset) {
-        for (Entity entity : handler.getWorld().getEntityManager().getEntities()) {
+        for (Entity entity : handler.getCurrentLevel().getEntityManager().getEntities()) {
             if (entity != this && !(entity instanceof Player) && entity.getCollisionBounds(1 / 64, 1 / 64).intersects(getCollisionBounds(xOffset, yOffset))) {
                 return true;
             }

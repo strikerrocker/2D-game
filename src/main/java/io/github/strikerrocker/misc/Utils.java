@@ -53,7 +53,7 @@ public class Utils {
     }
 
     public static boolean hasCollision(Handler handler, BlockPos pos) {
-        return handler.getWorld().getBlock(pos.getX(), pos.getY()).isSolid();
+        return handler.getCurrentLevel().getBlock(pos.getX(), pos.getY()).isSolid();
     }
 
     private static class CustomComparator<K, V extends Comparable> implements Comparator<K> {

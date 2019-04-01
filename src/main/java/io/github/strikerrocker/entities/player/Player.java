@@ -2,7 +2,10 @@ package io.github.strikerrocker.entities.player;
 
 import com.google.gson.annotations.Expose;
 import io.github.strikerrocker.Handler;
-import io.github.strikerrocker.entities.*;
+import io.github.strikerrocker.entities.Creature;
+import io.github.strikerrocker.entities.Entity;
+import io.github.strikerrocker.entities.ItemEntity;
+import io.github.strikerrocker.entities.Zombie;
 import io.github.strikerrocker.entities.type.EntityTypes;
 import io.github.strikerrocker.gfx.Animation;
 import io.github.strikerrocker.gfx.Assets;
@@ -93,19 +96,16 @@ public class Player extends Creature {
         getMouseInput();
         if (handler.getGame().isDev()) {
             if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_X)) {
-                handler.getWorld().getEntityManager().addEntity(new Zombie(handler, x, y + 2));
+                handler.getCurrentLevel().getEntityManager().addEntity(new Zombie(handler, x, y + 2));
             }
             if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_H)) {
                 setHealth(maxHealth);
             }
-            if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_L)) {
-                inventory.addStack(new Item(Items.apple));
-            }
-            if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_T)) {
-                handler.getWorld().getEntityManager().addEntity(new Tree(handler, x, y + 2));
+            if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_G)) {
+                inventory.addStack(new Item(Items.grass));
             }
             if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_B)) {
-                switch (handler.getWorld().getName()) {
+                switch (handler.getCurrentLevel().getName()) {
                     case "world1":
                         handler.setWorld("world2");
                         break;
@@ -127,7 +127,7 @@ public class Player extends Creature {
         if (handler.getMouseManager().isLeftPressed() && attackTimer > attackCooldown) {
             int attackDamage = inventory.getHotbarStack() != null ? inventory.getHotbarStack().getItemData().getAttackDamage() : 1;
             Rectangle pixelBound = getPixelCollisionBounds(0, 0).grow(BLOCKWIDTH, BLOCKHEIGHT);
-            for (Entity entity : handler.getWorld().getEntityManager().getEntities()) {
+            for (Entity entity : handler.getCurrentLevel().getEntityManager().getEntities()) {
                 if (!(entity instanceof Player) && entity instanceof Creature && pixelBound.contains(handler.getMouseManager().getX(), handler.getMouseManager().getY())
                         && entity.getPixelCollisionBounds(0, 0).contains(handler.getMouseManager().getX(), handler.getMouseManager().getY())
                         && getAttackTimer() > getAttackCooldown() && !getInventory().isActive()) {
@@ -177,7 +177,7 @@ public class Player extends Creature {
     public void onKilled() {
         System.out.println("You Suck");
         for (Item stack : inventory.getInventoryItems()) {
-            handler.getWorld().getEntityManager().addEntity(((ItemEntity) EntityTypes.item.createNew(handler, x, y)).setItem(stack));
+            handler.getCurrentLevel().getEntityManager().addEntity(((ItemEntity) EntityTypes.item.createNew(handler, x, y)).setItem(stack));
         }
         State.setCurrentState(new DeathScreen(handler));
     }

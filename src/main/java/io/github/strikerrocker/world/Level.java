@@ -1,5 +1,6 @@
 package io.github.strikerrocker.world;
 
+import com.google.gson.annotations.Expose;
 import io.github.strikerrocker.Handler;
 import io.github.strikerrocker.blocks.Block;
 import io.github.strikerrocker.blocks.Blocks;
@@ -12,11 +13,15 @@ import java.io.File;
 
 public class Level {
     protected Handler handler;
+    @Expose
+    private String name;
+    @Expose
     private int worldWidth, worldHeight;
     private BlockPos spawn;
+    @Expose
     private int[][] blocks;
     private EntityManager entityManager;
-    private String name;
+    private boolean isConquered = true;
 
     public Level(Handler handler, File path) {
         this.handler = handler;
@@ -25,8 +30,16 @@ public class Level {
         loadWorld(path);
     }
 
+    public boolean isConquered() {
+        return isConquered;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public BlockPos getSpawn() {
+        return spawn;
     }
 
     public void setPlayer(Player player) {
@@ -53,8 +66,8 @@ public class Level {
     }
 
     public void tick() {
-        for (int y = 0; y > worldHeight; y++) {
-            for (int x = 0; x > worldWidth; x++) {
+        for (int y = 0; y < worldHeight; y++) {
+            for (int x = 0; x < worldWidth; x++) {
                 getBlock(x, y).tick();
             }
         }
@@ -85,6 +98,11 @@ public class Level {
         }
         if (block == null) return Blocks.dirt;
         return block;
+    }
+
+    public void setBlock(int x, int y, Block block) {
+        if (x < 0 || x > worldWidth || y < 0 || y > worldHeight) return;
+        blocks[x][y] = block.getId();
     }
 
     private void loadWorld(File path) {

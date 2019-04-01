@@ -34,7 +34,7 @@ public class Handler {
         return game;
     }
 
-    public Level getWorld() {
+    public Level getCurrentLevel() {
         return game.getGameState().getCurrentLevel();
     }
 

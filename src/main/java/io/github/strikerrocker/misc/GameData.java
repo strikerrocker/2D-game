@@ -17,6 +17,30 @@ import java.util.Iterator;
 
 public class GameData {
 
+    public static void saveWorldData(GameState state, File worldDir, Gson gson) {
+        try {
+            for (Level level : state.getLevels()) {
+                Path levelDir = Paths.get(worldDir.getPath() + "/" + level.getName() + ".txt");
+                Files.deleteIfExists(levelDir);
+                levelDir.toFile().createNewFile();
+                PrintWriter playerDataWriter = new PrintWriter(new FileWriter(levelDir.toFile()));
+                playerDataWriter.print(level.getWorldWidth());
+                playerDataWriter.println(" " + level.getWorldHeight());
+                playerDataWriter.print(((int) level.getSpawn().getX()));
+                playerDataWriter.println(" " + ((int) level.getSpawn().getY()));
+                for (int y = 0; y < level.getWorldHeight(); y++) {
+                    for (int x = 0; x < level.getWorldWidth(); x++) {
+                        playerDataWriter.print(((x != 0) ? " " : "") + level.getBlock(x, y).getId());
+                    }
+                    playerDataWriter.println();
+                }
+                playerDataWriter.close();
+            }
+        } catch (IOException e) {
+
+        }
+    }
+
     public static void saveEntityData(GameState gameState, File worldDir, Gson gson) {
         try {
             Player player = gameState.getPlayer();
@@ -73,5 +97,11 @@ public class GameData {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public static synchronized void save(GameState gameState, Gson gson) {
+        File worldDir = gameState.getWorldDirectory();
+        saveWorldData(gameState, worldDir, gson);
+        saveEntityData(gameState, worldDir, gson);
     }
 }

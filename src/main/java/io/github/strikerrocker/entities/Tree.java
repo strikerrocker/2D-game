@@ -32,13 +32,13 @@ public class Tree extends Creature {
 
     @Override
     public void onKilled() {
-        handler.getWorld().getEntityManager().addEntity(new ItemEntity(handler, x, y).setItem(new Item(Items.wood)));
+        handler.getCurrentLevel().getEntityManager().addEntity(new ItemEntity(handler, x, y).setItem(new Item(Items.wood)));
     }
 
     @Override
     public void hurt(int amt) {
         if (hasApple) {
-            handler.getWorld().getEntityManager().addEntity(new ItemEntity(handler, (float) (x + 0.5), (float) (y + 0.5)).setItem(new Item(Items.apple, new Random().nextInt(2) + 1)));
+            handler.getCurrentLevel().getEntityManager().addEntity(new ItemEntity(handler, (float) (x + 0.5), (float) (y + 0.5)).setItem(new Item(Items.apple, new Random().nextInt(2) + 1)));
             hasApple = false;
         } else
             super.hurt(amt);
