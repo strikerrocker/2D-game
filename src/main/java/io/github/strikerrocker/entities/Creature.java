@@ -65,6 +65,11 @@ public abstract class Creature extends Entity {
                 }
             }
         }
+        if (health <= 0) {
+            active = false;
+            renderHurt = false;
+            onKilled();
+        }
     }
 
     public boolean canMove() {
@@ -74,11 +79,6 @@ public abstract class Creature extends Entity {
     public void hurt(int amt) {
         health -= amt;
         renderHurt = true;
-        if (health <= 0) {
-            renderHurt = false;
-            active = false;
-            onKilled();
-        }
     }
 
     public long getAttackCooldown() {
@@ -117,7 +117,7 @@ public abstract class Creature extends Entity {
 
     public abstract void onKilled();
 
-    protected void move() {
+    private void move() {
         if (!entityColliding(xMove, 0))
             moveX();
         if (!entityColliding(0, yMove))
@@ -127,14 +127,14 @@ public abstract class Creature extends Entity {
     private void moveX() {
         if (xMove > 0) {
             int tx = (int) (x + xMove + bounds.x + bounds.width);
-            if (!blockCollision(tx, (int) ((y + bounds.y))) && !blockCollision(tx, (int) (y + bounds.y + bounds.height))) {
+            if (!isSolid(tx, (int) ((y + bounds.y))) && !isSolid(tx, (int) (y + bounds.y + bounds.height))) {
                 x += xMove;
             } else {
                 x += tx - Math.floor(tx);
             }
         } else if (xMove < 0) {
             int tx = (int) ((x + xMove + bounds.x));
-            if (!blockCollision(tx, (int) (y + bounds.y)) && !blockCollision(tx, (int) (y + bounds.y + bounds.height))) {
+            if (!isSolid(tx, (int) (y + bounds.y)) && !isSolid(tx, (int) (y + bounds.y + bounds.height))) {
                 x += xMove;
             } else {
                 x = tx + bounds.x + bounds.width;
@@ -145,16 +145,16 @@ public abstract class Creature extends Entity {
     private void moveY() {
         if (yMove < 0) {
             int ty = (int) (y + yMove + bounds.y);
-            if (!blockCollision((int) (x + bounds.x), ty) &&
-                    !blockCollision((int) (x + bounds.x + bounds.width), ty)) {
+            if (!isSolid((int) (x + bounds.x), ty) &&
+                    !isSolid((int) (x + bounds.x + bounds.width), ty)) {
                 y += yMove;
             } else {
                 y = ty + bounds.y;
             }
         } else if (yMove > 0) {
             int ty = (int) (y + yMove + bounds.y + bounds.height);
-            if (!blockCollision((int) (x + bounds.x), ty) &&
-                    !blockCollision((int) (x + bounds.x + bounds.width), ty)) {
+            if (!isSolid((int) (x + bounds.x), ty) &&
+                    !isSolid((int) (x + bounds.x + bounds.width), ty)) {
                 y += yMove;
             } else {
                 y += ty - Math.floor(ty);
@@ -162,7 +162,7 @@ public abstract class Creature extends Entity {
         }
     }
 
-    private boolean blockCollision(int x, int y) {
+    private boolean isSolid(int x, int y) {
         return handler.getCurrentLevel().getBlock(x, y).isSolid();
     }
 

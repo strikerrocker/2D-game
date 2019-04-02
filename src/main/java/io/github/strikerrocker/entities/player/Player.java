@@ -12,7 +12,7 @@ import io.github.strikerrocker.gfx.Assets;
 import io.github.strikerrocker.items.Item;
 import io.github.strikerrocker.items.Items;
 import io.github.strikerrocker.misc.Rectangle;
-import io.github.strikerrocker.states.DeathScreen;
+import io.github.strikerrocker.states.DeathState;
 import io.github.strikerrocker.states.State;
 
 import java.awt.*;
@@ -179,7 +179,7 @@ public class Player extends Creature {
         for (Item stack : inventory.getInventoryItems()) {
             handler.getCurrentLevel().getEntityManager().addEntity(((ItemEntity) EntityTypes.item.createNew(handler, x, y)).setItem(stack));
         }
-        State.setCurrentState(new DeathScreen(handler));
+        State.setCurrentState(new DeathState(handler));
     }
 
     @Override

@@ -17,7 +17,7 @@ import java.util.Iterator;
 
 public class GameData {
 
-    public static void saveWorldData(GameState state, File worldDir, Gson gson) {
+    private static void saveWorldData(GameState state, File worldDir) {
         try {
             for (Level level : state.getLevels()) {
                 Path levelDir = Paths.get(worldDir.getPath() + "/" + level.getName() + ".txt");
@@ -37,22 +37,24 @@ public class GameData {
                 playerDataWriter.close();
             }
         } catch (IOException e) {
-
+            e.printStackTrace();
         }
     }
 
-    public static void saveEntityData(GameState gameState, File worldDir, Gson gson) {
+    private static void saveEntityData(GameState gameState, File worldDir, Gson gson) {
         try {
-            Player player = gameState.getPlayer();
-            Path playerData = Paths.get(worldDir.getPath() + "/player.json");
-            Files.deleteIfExists(playerData);
-            playerData.toFile().createNewFile();
-            PrintWriter playerDataWriter = new PrintWriter(new FileWriter(playerData.toFile()));
-            playerDataWriter.println(gson.toJson(player));
-            playerDataWriter.close();
-            Paths.get(worldDir.getPath() + "/entity").toFile().mkdirs();
+            if (gameState.getPlayer() != null) {
+                Player player = gameState.getPlayer();
+                Path playerData = Paths.get(worldDir.getPath() + "/player.json");
+                Files.deleteIfExists(playerData);
+                playerData.toFile().createNewFile();
+                PrintWriter playerDataWriter = new PrintWriter(new FileWriter(playerData.toFile()));
+                playerDataWriter.println(gson.toJson(player));
+                playerDataWriter.close();
+            }
+            Paths.get(worldDir.getPath() + "/entities").toFile().mkdirs();
             for (Level lvl : gameState.getLevels()) {
-                Path lvlEntityData = Paths.get(worldDir.getPath() + "/entity/" + lvl.getName() + "Entities.json");
+                Path lvlEntityData = Paths.get(worldDir.getPath() + "/entities/" + lvl.getName() + "Entities.json");
                 Files.deleteIfExists(lvlEntityData);
                 lvlEntityData.toFile().createNewFile();
                 PrintWriter writer = new PrintWriter(new FileWriter(lvlEntityData.toFile()));
@@ -87,7 +89,7 @@ public class GameData {
                 handler.getGame().getGameState().setPlayer(new Player(handler, 3, 3));
             }
             for (Level lvl : handler.getGame().getGameState().getLevels()) {
-                Path lvlEntityData = Paths.get(worldDir.getPath() + "/entity/" + lvl.getName() + "Entities.json");
+                Path lvlEntityData = Paths.get(worldDir.getPath() + "/entities/" + lvl.getName() + "Entities.json");
                 if (lvlEntityData.toFile().exists()) {
                     EntityManager manager = gson.fromJson(new FileReader(lvlEntityData.toFile()), EntityManager.class);
                     manager.getEntities().forEach(entity -> entity.setHandler(handler));
@@ -101,7 +103,7 @@ public class GameData {
 
     public static synchronized void save(GameState gameState, Gson gson) {
         File worldDir = gameState.getWorldDirectory();
-        saveWorldData(gameState, worldDir, gson);
+        saveWorldData(gameState, worldDir);
         saveEntityData(gameState, worldDir, gson);
     }
 }

@@ -33,7 +33,6 @@ public class Game implements Runnable {
     private Display display;
     private Thread thread;
     private boolean running = false;
-    private State menuState;
     private KeyManager keyManager;
     private GameCamera camera;
     private Handler handler;
@@ -115,7 +114,7 @@ public class Game implements Runnable {
                 .registerTypeAdapter(EntityManager.class, Deserializers.managerJsonDeserializer)
                 .registerTypeAdapter(Entity.class, Serializers.entityJsonSerializer)
                 .create();
-        menuState = new MenuState(handler);
+        State menuState = new MenuState(handler);
         gameState = new GameState(handler);
         State.setCurrentState(menuState);
 

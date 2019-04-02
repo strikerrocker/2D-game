@@ -63,4 +63,11 @@ public abstract class UIBase {
     public void setHeight(int height) {
         this.height = height;
     }
+
+    public void resize(float x, float y, int width, int height) {
+        setX(x);
+        setY(y);
+        setWidth(width);
+        setHeight(height);
+    }
 }

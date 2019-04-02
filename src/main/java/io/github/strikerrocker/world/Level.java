@@ -92,7 +92,7 @@ public class Level {
         if (x < 0 || x > worldWidth || y < 0 || y > worldHeight) return Blocks.grass;
         Block block;
         try {
-            block = Block.blocks[blocks[(int) x][(int) y]];
+            block = Block.getFromId(blocks[(int) x][(int) y]);
         } catch (ArrayIndexOutOfBoundsException e) {
             block = null;
         }

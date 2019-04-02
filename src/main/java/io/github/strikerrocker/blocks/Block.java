@@ -2,6 +2,7 @@ package io.github.strikerrocker.blocks;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class Block {
     /*
@@ -9,14 +10,18 @@ public class Block {
      */
     public static final int BLOCKWIDTH = 64;
     public static final int BLOCKHEIGHT = 64;
-    public static Block[] blocks = new Block[256];
+    public static ArrayList<Block> blocks = new ArrayList<>();
     protected final int id;
     protected BufferedImage texture;
 
-    public Block(BufferedImage texture, int id) {
+    public Block(BufferedImage texture) {
         this.texture = texture;
-        this.id = id;
-        blocks[id] = this;
+        blocks.add(this);
+        this.id = blocks.indexOf(this);
+    }
+
+    public static Block getFromId(int id) {
+        return blocks.get(id);
     }
 
     public void tick() {

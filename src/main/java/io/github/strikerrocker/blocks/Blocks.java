@@ -8,8 +8,8 @@ public class Blocks {
     public static Block wall;
 
     public static void init() {
-        grass = new Block(Assets.grass, 0);
-        dirt = new Block(Assets.dirt, 1);
-        wall = new SolidBlock(Assets.wall, 2);
+        grass = new Block(Assets.grass);
+        dirt = new Block(Assets.dirt);
+        wall = new SolidBlock(Assets.wall);
     }
 }

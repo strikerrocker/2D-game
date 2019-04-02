@@ -9,11 +9,15 @@ public class Items {
     public static ItemData rock;
     public static ItemData apple;
     public static ItemData grass;
+    public static ItemData pick;
+    public static ItemData sword;
 
     public static void init() {
-        wood = new ItemData(Assets.wood, "Wood", 0);
-        rock = new ItemData(Assets.rock, "Rock", 1);
-        apple = new ItemData(Assets.apple, "Apple", 2).setAsFood(2);
-        grass = new ItemData(Assets.grass, "grass", 3).setAsItemBlock(Blocks.grass);
+        wood = new ItemData(Assets.wood, "Wood");
+        rock = new ItemData(Assets.rock, "Rock");
+        apple = new ItemData(Assets.apple, "Apple").setAsFood(2);
+        grass = new ItemData(Assets.grass, "grass").setAsItemBlock(Blocks.grass);
+        pick = new ItemData(Assets.rock, "Pick").setAsPickaxe();
+        sword = new ItemData(Assets.rock, "Sword").setAttackDamage(4);
     }
 }
