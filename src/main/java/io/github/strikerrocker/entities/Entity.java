@@ -20,10 +20,10 @@ public abstract class Entity {
     protected float x, y;
     protected float width, height;
     protected Handler handler;
-    protected Rectangle bounds;
-    protected boolean active = true;
+    boolean active = true;
+    Rectangle bounds;
     @Expose
-    protected String name;
+    private String name;
 
     public Entity(EntityType type, Handler handler, float x, float y, float width, float height) {
         this.name = type.getName();
@@ -62,7 +62,7 @@ public abstract class Entity {
         return new Rectangle((int) (pos.getX() + xOffset) + (bounds.x * BLOCKWIDTH) - handler.getGameCamera().getXOffset(), (int) (pos.getY() + yOffset) + (bounds.y * BLOCKHEIGHT) - handler.getGameCamera().getYOffset(), bounds.width * BLOCKWIDTH, bounds.height * BLOCKHEIGHT);
     }
 
-    public boolean entityColliding(float xOffset, float yOffset) {
+    boolean hasEntityCollision(float xOffset, float yOffset) {
         for (Entity entity : handler.getCurrentLevel().getEntityManager().getEntities()) {
             if (entity != this && entity.getCollisionBounds(0, 0).intersects(getCollisionBounds(xOffset, yOffset))) {
                 return true;
@@ -71,7 +71,7 @@ public abstract class Entity {
         return false;
     }
 
-    public boolean entityCollidingExceptPlayer(float xOffset, float yOffset) {
+    public boolean hasEntityCollisionExceptPlayer(float xOffset, float yOffset) {
         for (Entity entity : handler.getCurrentLevel().getEntityManager().getEntities()) {
             if (entity != this && !(entity instanceof Player) && entity.getCollisionBounds(1 / 64, 1 / 64).intersects(getCollisionBounds(xOffset, yOffset))) {
                 return true;

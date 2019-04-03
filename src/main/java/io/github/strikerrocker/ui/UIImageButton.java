@@ -4,8 +4,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class UIImageButton extends UIBase {
-    protected BufferedImage[] frames;
-    protected ClickListener clickListener;
+    private BufferedImage[] frames;
+    private ClickListener clickListener;
 
     public UIImageButton(float x, float y, int width, int height, BufferedImage[] frames, ClickListener listener) {
         super(x, y, width, height);

@@ -35,7 +35,7 @@ public class GameState extends State {
         this.player = player;
     }
 
-    public void loadWorld() {
+    private void loadWorld() {
         for (File file1 : worldDirectory.listFiles()) {
             if (file1.getName().endsWith(".txt")) {
                 levels.add(new Level(handler, file1));
@@ -48,7 +48,7 @@ public class GameState extends State {
         return worldDirectory;
     }
 
-    public void setWorldDirectory(File worldDirectory) {
+    void setWorldDirectory(File worldDirectory) {
         this.worldDirectory = worldDirectory;
         loadWorld();
         GameData.readEntityData(worldDirectory, handler.getGson(), handler);

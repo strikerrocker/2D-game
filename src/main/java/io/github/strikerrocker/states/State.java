@@ -8,7 +8,7 @@ public abstract class State {
     private static State currentState = null;
     protected Handler handler;
 
-    public State(Handler handler) {
+    State(Handler handler) {
         this.handler = handler;
     }
 

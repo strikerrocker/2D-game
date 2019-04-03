@@ -23,9 +23,7 @@ import static io.github.strikerrocker.blocks.Block.BLOCKHEIGHT;
 import static io.github.strikerrocker.blocks.Block.BLOCKWIDTH;
 
 public class Player extends Creature {
-    protected long lastItemUseTimer;
-    protected long itemUseCooldown = 1500;
-    protected long itemUseTimer = itemUseCooldown;
+    private long lastItemUseTimer, itemUseCooldown = 1500, itemUseTimer = itemUseCooldown;
     private Animation down;
     private Animation up;
     private Animation right;

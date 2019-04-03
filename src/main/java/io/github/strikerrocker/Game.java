@@ -46,7 +46,6 @@ public class Game implements Runnable {
         this.height = height;
         keyManager = new KeyManager();
         mouseManager = new MouseManager();
-
         logger = Logger.getLogger("Game : ");
     }
 
@@ -62,15 +61,15 @@ public class Game implements Runnable {
         return dev;
     }
 
-    protected void setDev(boolean dev) {
-        this.dev = dev;
+    void setDev() {
+        this.dev = true;
     }
 
     public Logger getLogger() {
         return logger;
     }
 
-    public GameCamera getCamera() {
+    GameCamera getCamera() {
         return camera;
     }
 
@@ -82,7 +81,7 @@ public class Game implements Runnable {
         return width;
     }
 
-    public KeyManager getKeyManager() {
+    KeyManager getKeyManager() {
         return keyManager;
     }
 
@@ -114,10 +113,8 @@ public class Game implements Runnable {
                 .registerTypeAdapter(EntityManager.class, Deserializers.managerJsonDeserializer)
                 .registerTypeAdapter(Entity.class, Serializers.entityJsonSerializer)
                 .create();
-        State menuState = new MenuState(handler);
         gameState = new GameState(handler);
-        State.setCurrentState(menuState);
-
+        State.setCurrentState(new MenuState(handler));
         Runtime.getRuntime().addShutdownHook(new Thread(() -> GameData.save(gameState, gson)));
     }
 

@@ -22,14 +22,6 @@ public class Tree extends Creature {
         super(EntityTypes.tree, handler, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, 1);
     }
 
-    public boolean hasApple() {
-        return hasApple;
-    }
-
-    public void setHasApple(boolean hasApple) {
-        this.hasApple = hasApple;
-    }
-
     @Override
     public void onKilled() {
         handler.getCurrentLevel().getEntityManager().addEntity(new ItemEntity(handler, x, y).setItem(new Item(Items.wood)));
@@ -75,14 +67,14 @@ public class Tree extends Creature {
     @Override
     public JsonElement serialize() {
         JsonObject object = super.serialize().getAsJsonObject();
-        object.addProperty("hasApple", hasApple());
+        object.addProperty("hasApple", hasApple);
         return object;
     }
 
     @Override
     public Entity deserialize(JsonElement element) {
         super.deserialize(element);
-        setHasApple(element.getAsJsonObject().get("hasApple").getAsBoolean());
+        hasApple = element.getAsJsonObject().get("hasApple").getAsBoolean();
         return this;
     }
 }

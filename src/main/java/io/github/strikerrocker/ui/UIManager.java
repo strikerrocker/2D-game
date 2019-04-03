@@ -1,17 +1,13 @@
 package io.github.strikerrocker.ui;
 
-import io.github.strikerrocker.Handler;
-
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class UIManager {
-    private Handler handler;
     private ArrayList<UIBase> objects;
 
-    public UIManager(Handler handler) {
-        this.handler = handler;
+    public UIManager() {
         objects = new ArrayList<>();
     }
 

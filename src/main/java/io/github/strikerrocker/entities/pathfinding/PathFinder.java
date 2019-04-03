@@ -123,7 +123,7 @@ public class PathFinder {
     }
 
     private boolean hasCollision(BlockPos pos) {
-        return entity.entityCollidingExceptPlayer(0, 0) || Utils.hasCollision(handler, pos);
+        return entity.hasEntityCollisionExceptPlayer(0, 0) || Utils.hasCollision(handler, pos);
     }
 
     private boolean isBlocked(BlockPos pos) {

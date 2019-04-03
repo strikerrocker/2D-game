@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) {
         game = new Game("test", 640, 480);
         if (new ArrayList<>(Arrays.asList(args)).contains("-dev")) {
-            game.setDev(true);
+            game.setDev();
         }
         game.start();
     }

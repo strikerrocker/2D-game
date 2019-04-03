@@ -6,10 +6,10 @@ import java.awt.event.MouseEvent;
 public abstract class UIBase {
     protected float x, y;
     protected int width, height;
-    protected boolean hovering = false;
-    protected Rectangle bounds;
+    boolean hovering = false;
+    private Rectangle bounds;
 
-    public UIBase(float x, float y, int width, int height) {
+    UIBase(float x, float y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;

@@ -19,13 +19,13 @@ public class Assets {
     public static BufferedImage button;
     public static BufferedImage inventoryScreen, hotBar;
     public static Font font28;
-    private static int width = 32;
-    private static int height = 32;
 
     public static void init() {
         SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/sheet.png"));
         font28 = loadFont(Assets.class.getResourceAsStream("/fonts/slkscr.ttf"), 28);
         //Player textures
+        int width = 32;
+        int height = 32;
         player_down[0] = sheet.crop(width * 4, 0, width, height);
         player_down[1] = sheet.crop(width * 5, 0, width, height);
         player_up[0] = sheet.crop(width * 6, 0, width, height);

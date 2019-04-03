@@ -12,7 +12,7 @@ public class DeathState extends State {
 
     public DeathState(Handler handler) {
         super(handler);
-        uiManager = new UIManager(handler);
+        uiManager = new UIManager();
         handler.getGame().getMouseManager().setUIManager(uiManager);
         menu = new UIButton(handler.getWidth() / 2 - 64, handler.getWidth() / 2 - 64, 128, 64, "MENU", () -> {
             setCurrentState(new MenuState(handler));

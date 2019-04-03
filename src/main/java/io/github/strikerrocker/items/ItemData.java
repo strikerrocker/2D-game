@@ -19,12 +19,12 @@ public class ItemData {
     private String name;
     private BufferedImage texture;
     private boolean isFood = false;
-    private boolean isPickaxe = false;
-    private int heal = 0;
+    private boolean isPick = false;
+    private int healAmt = 0;
     private int attackDamage = 1;
     private Block block;
 
-    public ItemData(BufferedImage texture, String name) {
+    ItemData(BufferedImage texture, String name) {
         this.texture = texture;
         this.name = name;
         itemData.add(this);
@@ -35,18 +35,14 @@ public class ItemData {
         return itemData.get(id);
     }
 
-    public boolean isPickaxe() {
-        return isPickaxe;
-    }
-
-    public ItemData setAsPickaxe() {
-        isPickaxe = true;
+    ItemData setAsPick() {
+        isPick = true;
         return this;
     }
 
-    public void onRightClick(Handler handler, Player player, Item stack, int x, int y) {
-        if (isFood() && !(player.getHealth() >= player.maxHealth)) {
-            player.setHealth(player.getHealth() + getHeal());
+    void onRightClick(Handler handler, Player player, Item stack, int x, int y) {
+        if (isFood && !(player.getHealth() >= player.maxHealth)) {
+            player.setHealth(player.getHealth() + healAmt);
             stack.decSize(1);
             player.setItemUseTimer(0);
         }
@@ -61,31 +57,23 @@ public class ItemData {
         return attackDamage;
     }
 
-    public ItemData setAttackDamage(int attackDamage) {
+    ItemData setAttackDamage(int attackDamage) {
         this.attackDamage = attackDamage;
         return this;
     }
 
-    public void onLeftClick(Handler handler, Player player, int x, int y) {
-        if (handler.getCurrentLevel().isConquered() && isPickaxe()) {
+    void onLeftClick(Handler handler, Player player, int x, int y) {
+        if (handler.getCurrentLevel().isConquered() && isPick) {
             BlockPos pos = new PixelPos(x, y).toBlockPos();
             handler.getCurrentLevel().setBlock((int) pos.getX(), (int) pos.getY(), Blocks.grass);
         }
-    }
-
-    public int getHeal() {
-        return heal;
-    }
-
-    public boolean isFood() {
-        return isFood;
     }
 
     public int getId() {
         return id;
     }
 
-    public BufferedImage getTexture() {
+    BufferedImage getTexture() {
         return texture;
     }
 
@@ -96,13 +84,13 @@ public class ItemData {
     public void tick() {
     }
 
-    public ItemData setAsFood(int heathRestore) {
+    ItemData setAsFood(int healAmt) {
         isFood = true;
-        this.heal = heathRestore;
+        this.healAmt = healAmt;
         return this;
     }
 
-    public ItemData setAsItemBlock(Block block) {
+    ItemData setAsItemBlock(Block block) {
         this.block = block;
         return this;
     }

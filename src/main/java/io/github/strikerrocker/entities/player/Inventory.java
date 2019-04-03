@@ -27,11 +27,11 @@ public class Inventory {
         inventoryItems = new ArrayList<>();
     }
 
-    public void setHotBarSelectedItem(int hotBarSelectedItem) {
+    void setHotBarSelectedItem(int hotBarSelectedItem) {
         this.hotBarSelectedItem = hotBarSelectedItem;
     }
 
-    public ArrayList<Item> getInventoryItems() {
+    ArrayList<Item> getInventoryItems() {
         return inventoryItems;
     }
 
@@ -56,11 +56,11 @@ public class Inventory {
             invSelectedItem = 0;
     }
 
-    public Item getHotbarStack() {
+    Item getHotbarStack() {
         return hotBarSelectedItem < inventoryItems.size() ? inventoryItems.get(hotBarSelectedItem) : null;
     }
 
-    public void renderHotbar(Graphics graphics) {
+    void renderHotbar(Graphics graphics) {
         if (active)
             return;
         int guiWidth = BLOCKWIDTH * 3 / 4, guiHeight = BLOCKHEIGHT * 3 / 4;
@@ -73,7 +73,7 @@ public class Inventory {
         }
     }
 
-    public void renderInv(Graphics graphics) {
+    void renderInv(Graphics graphics) {
         if (!active)
             return;
         int guiX = 64;
@@ -124,7 +124,7 @@ public class Inventory {
         this.handler = handler;
     }
 
-    public boolean isActive() {
+    boolean isActive() {
         return active;
     }
 }

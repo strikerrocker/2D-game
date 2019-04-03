@@ -17,7 +17,7 @@ public class Items {
         rock = new ItemData(Assets.rock, "Rock");
         apple = new ItemData(Assets.apple, "Apple").setAsFood(2);
         grass = new ItemData(Assets.grass, "grass").setAsItemBlock(Blocks.grass);
-        pick = new ItemData(Assets.rock, "Pick").setAsPickaxe();
+        pick = new ItemData(Assets.rock, "Pick").setAsPick();
         sword = new ItemData(Assets.rock, "Sword").setAttackDamage(4);
     }
 }

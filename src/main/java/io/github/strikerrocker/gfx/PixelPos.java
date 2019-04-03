@@ -20,16 +20,8 @@ public class PixelPos {
         return y;
     }
 
-    public void setYPixel(float y) {
-        this.y = y;
-    }
-
     public float getX() {
         return x;
-    }
-
-    public void setXPixel(float x) {
-        this.x = x;
     }
 
     public BlockPos toBlockPos() {

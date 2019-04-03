@@ -11,8 +11,8 @@ public class Block {
     public static final int BLOCKWIDTH = 64;
     public static final int BLOCKHEIGHT = 64;
     public static ArrayList<Block> blocks = new ArrayList<>();
-    protected final int id;
-    protected BufferedImage texture;
+    private final int id;
+    private BufferedImage texture;
 
     public Block(BufferedImage texture) {
         this.texture = texture;

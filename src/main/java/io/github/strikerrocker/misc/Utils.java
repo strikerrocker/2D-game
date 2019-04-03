@@ -9,19 +9,16 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Utils {
 
-    public static <K, V extends Comparable> void sortByValue(Map<K, V> unsortMap) {
-        if (unsortMap != null) {
-            CustomComparator comparator = new CustomComparator(unsortMap);
-            Map<K, V> map = new TreeMap<>(comparator);
-            map.putAll(unsortMap);
-        }
+    public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> unsortMap) {
+        List<Map.Entry<K, V>> list = new LinkedList<>(unsortMap.entrySet());
+        list.sort(Comparator.comparing(Map.Entry::getValue));
+        return list.stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b, HashMap::new));
     }
 
     public static String loadFilesAsString(File path) {
@@ -54,18 +51,5 @@ public class Utils {
 
     public static boolean hasCollision(Handler handler, BlockPos pos) {
         return handler.getCurrentLevel().getBlock(pos.getX(), pos.getY()).isSolid();
-    }
-
-    private static class CustomComparator<K, V extends Comparable> implements Comparator<K> {
-        private Map<K, V> map;
-
-        CustomComparator(Map<K, V> map) {
-            this.map = new HashMap<>(map);
-        }
-
-        @Override
-        public int compare(K s1, K s2) {
-            return map.get(s1).compareTo(map.get(s2));
-        }
     }
 }

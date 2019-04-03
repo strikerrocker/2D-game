@@ -23,20 +23,20 @@ import static io.github.strikerrocker.misc.Utils.sortByValue;
 import static io.github.strikerrocker.misc.Utils.tintRed;
 
 public abstract class Creature extends Entity {
-    public static final int DEFAULT_HEALTH = 10;
-    public static final int DEFAULT_WIDTH = 64;
-    public static final int DEFAULT_HEIGHT = 64;
-    public static final float DEFAULT_SPEED = 0.03f;
+    protected static final int DEFAULT_WIDTH = 64;
+    protected static final int DEFAULT_HEIGHT = 64;
+    static final int DEFAULT_HEALTH = 10;
+    private static final float DEFAULT_SPEED = 0.03f;
     private static final Timer renderHurtTimer = new Timer();
     public int maxHealth;
-    public boolean renderHurt = false;
-    @Expose
-    protected int health;
     protected float speed;
     @Expose
     protected float xMove, yMove;
     protected long lastAttackTimer, attackCooldown = 1500, attackTimer = attackCooldown;
-    protected Map<AI, Integer> aiTasks;
+    Map<AI, Integer> aiTasks;
+    private boolean renderHurt = false;
+    @Expose
+    private int health;
 
     public Creature(EntityType type, Handler handler, float x, float y, int width, int height, int maxHealth) {
         super(type, handler, x, y, width, height);
@@ -56,7 +56,7 @@ public abstract class Creature extends Entity {
             move();
         attackTimer += System.currentTimeMillis() - lastAttackTimer;
         lastAttackTimer = System.currentTimeMillis();
-        sortByValue(aiTasks);
+        aiTasks = sortByValue(aiTasks);
         if (aiTasks != null) {
             for (AI ai : aiTasks.keySet()) {
                 if (ai.canExecute(this)) {
@@ -118,9 +118,9 @@ public abstract class Creature extends Entity {
     public abstract void onKilled();
 
     private void move() {
-        if (!entityColliding(xMove, 0))
+        if (!hasEntityCollision(xMove, 0))
             moveX();
-        if (!entityColliding(0, yMove))
+        if (!hasEntityCollision(0, yMove))
             moveY();
     }
 

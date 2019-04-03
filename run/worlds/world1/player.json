@@ -2,9 +2,9 @@
   "inventory": {
     "inventoryItems": []
   },
-  "health": 10,
   "xMove": 0.0,
   "yMove": 0.0,
+  "health": 10,
   "x": 3.0,
   "y": 3.0,
   "name": "player"

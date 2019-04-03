@@ -11,13 +11,13 @@ import java.util.ArrayList;
 public class MenuState extends State {
     private static File worldsFolder = new File("run/worlds");
     private UIManager uiManager;
-    private ArrayList<UIButton> buttonList;
+    private ArrayList<UIButton> worldButtons;
 
 
     public MenuState(Handler handler) {
         super(handler);
-        uiManager = new UIManager(handler);
-        buttonList = new ArrayList<>();
+        uiManager = new UIManager();
+        worldButtons = new ArrayList<>();
         handler.getGame().getMouseManager().setUIManager(uiManager);
         File[] listFiles = worldsFolder.listFiles();
         for (int i = 0; i < listFiles.length; i++) {
@@ -28,7 +28,7 @@ public class MenuState extends State {
                     setCurrentState(handler.getGame().getGameState());
                     handler.getGame().getMouseManager().setUIManager(null);
                 });
-                buttonList.add(worldButton);
+                worldButtons.add(worldButton);
                 uiManager.add(worldButton);
             }
         }
@@ -36,8 +36,8 @@ public class MenuState extends State {
 
     @Override
     public void tick() {
-        for (int i = 0; i < buttonList.size(); i++) {
-            UIButton button = buttonList.get(i);
+        for (int i = 0; i < worldButtons.size(); i++) {
+            UIButton button = worldButtons.get(i);
             button.resize(handler.getWidth() / 2 - 64, (i) * 64, 128, 64);
         }
         uiManager.tick();
