@@ -33,6 +33,7 @@ public abstract class Creature extends Entity {
     @Expose
     protected float xMove, yMove;
     protected long lastAttackTimer, attackCooldown = 1500, attackTimer = attackCooldown;
+    protected long lastMoveTimer, moveCooldown = 1000, moveTimer = moveCooldown;
     Map<AI, Integer> aiTasks;
     private boolean renderHurt = false;
     @Expose
@@ -48,12 +49,41 @@ public abstract class Creature extends Entity {
         initAITasks();
     }
 
+    public long getMoveCooldown() {
+        return moveCooldown;
+    }
+
+    public void setMoveCooldown(long moveCooldown) {
+        this.moveCooldown = moveCooldown;
+    }
+
+    public long getMoveTimer() {
+        return moveTimer;
+    }
+
+    public void setMoveTimer(long moveTimer) {
+        this.moveTimer = moveTimer;
+    }
+
     protected abstract void initAITasks();
+
+    public long getLastMoveTimer() {
+        return lastMoveTimer;
+    }
+
+    public void setLastMoveTimer(long lastMoveTimer) {
+        this.lastMoveTimer = lastMoveTimer;
+    }
 
     @Override
     public void tick() {
         if (canMove())
             move();
+        if (health <= 0) {
+            active = false;
+            renderHurt = false;
+            onKilled();
+        }
         attackTimer += System.currentTimeMillis() - lastAttackTimer;
         lastAttackTimer = System.currentTimeMillis();
         aiTasks = sortByValue(aiTasks);
@@ -64,11 +94,6 @@ public abstract class Creature extends Entity {
                     return;
                 }
             }
-        }
-        if (health <= 0) {
-            active = false;
-            renderHurt = false;
-            onKilled();
         }
     }
 

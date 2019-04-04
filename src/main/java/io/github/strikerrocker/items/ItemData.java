@@ -48,8 +48,8 @@ public class ItemData {
         }
         if (handler.getCurrentLevel().isConquered() && isItemBlock()) {
             BlockPos pos = new PixelPos(x, y).toBlockPos();
-            handler.getCurrentLevel().setBlock((int) pos.getX(), (int) pos.getY(), block);
-            stack.decSize(1);
+            if (handler.getCurrentLevel().setBlock((int) pos.getX(), (int) pos.getY(), block))
+                stack.decSize(1);
         }
     }
 

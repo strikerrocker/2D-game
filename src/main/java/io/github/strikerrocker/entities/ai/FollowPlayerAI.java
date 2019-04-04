@@ -2,7 +2,6 @@ package io.github.strikerrocker.entities.ai;
 
 import io.github.strikerrocker.entities.Creature;
 import io.github.strikerrocker.entities.player.Player;
-import io.github.strikerrocker.misc.Rectangle;
 import io.github.strikerrocker.world.BlockPos;
 
 public class FollowPlayerAI extends MoveToAI {
@@ -10,39 +9,38 @@ public class FollowPlayerAI extends MoveToAI {
 
     public FollowPlayerAI(Creature creature) {
         super(creature, null);
-        Player player = creature.getHandler().getCurrentLevel().getEntityManager().getPlayer();
-        lastPlayerPos = player.getPos();
+    }
+
+    private void setLastPlayerPos(BlockPos lastPlayerPos) {
+        this.lastPlayerPos = lastPlayerPos;
         setTargetPos(lastPlayerPos, creature);
     }
 
-
     @Override
     public boolean canExecute(Creature creature) {
-        int factor = 128;
-        Player player = creature.getHandler().getCurrentLevel().getEntityManager().getPlayer();
-        Rectangle visibleArea = creature.getCollisionBounds(0, 0);
-        visibleArea.grow(factor, factor);
-        Rectangle attackRange = creature.getCollisionBounds(0, 0);
-        attackRange.grow(1, 1);
-        if (player.getCollisionBounds(0, 0).intersects(visibleArea) && player.isActive() && !player.getCollisionBounds(0, 0).intersects(attackRange) && super.canExecute(creature)) {
-            return true;
-        } else {
-            creature.setXMove(0);
-            creature.setYMove(0);
-            return false;
+        creature.setMoveTimer(creature.getMoveTimer() + System.currentTimeMillis() - creature.getLastMoveTimer());
+        creature.setLastMoveTimer(System.currentTimeMillis());
+        if (creature.getMoveTimer() > creature.getMoveCooldown()) {
+            int factor = 2;
+            Player player = creature.getHandler().getCurrentLevel().getEntityManager().getPlayer();
+            if (lastPlayerPos == null) setLastPlayerPos(player.getPos());
+            if (player.getCollisionBounds(0, 0).intersects(creature.getCollisionBounds(0, 0).grow(factor, factor)) &&
+                    player.isActive() && !player.getCollisionBounds(0, 0).intersects(creature.getCollisionBounds(0, 0).grow(1, 1))) {
+                return super.canExecute(creature);
+            }
         }
+        return false;
     }
 
     @Override
     public void execute(Creature creature) {
         Player player = creature.getHandler().getCurrentLevel().getEntityManager().getPlayer();
+        if (lastPlayerPos == null) setLastPlayerPos(player.getPos());
         //TODO fix the random hang up in game
         if (!lastPlayerPos.equals(player.getPos())) {
-            lastPlayerPos = player.getPos();
-            setTargetPos(lastPlayerPos, creature);
+            setLastPlayerPos(player.getPos());
         } else {
             super.execute(creature);
         }
-        lastPlayerPos = player.getPos();
     }
 }

@@ -2,10 +2,10 @@ package io.github.strikerrocker.entities.pathfinding;
 
 import io.github.strikerrocker.Handler;
 import io.github.strikerrocker.entities.Entity;
-import io.github.strikerrocker.misc.Utils;
 import io.github.strikerrocker.world.BlockPos;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.logging.Level;
 
 public class PathFinder {
@@ -28,7 +28,7 @@ public class PathFinder {
     }
 
     private static int computeAdjMoveCost(PathStep start, PathStep end) {
-        return -1;
+        return 1;
     }
 
     public ArrayList<BlockPos> tryGetPath() {
@@ -39,7 +39,7 @@ public class PathFinder {
         startStep.setH(computeH(startStep.getPos(), target));
         openList.add(startStep);
         do {
-            openList.sort((o1, o2) -> Integer.compare(o2.getF(), o1.getF()));
+            openList.sort(Comparator.comparingInt(PathStep::getF));
             PathStep currentStep = openList.get(0);
             closedList.add(currentStep);
             openList.remove(0);
@@ -49,10 +49,8 @@ public class PathFinder {
                 getPathFromSteps(currentStep, posArrayList);
                 break;
             }
-            //If not found
             tryNewPath(currentStep);
-        }
-        while (!openList.isEmpty());
+        } while (openList.size() > 0);
         if (!pathFound) {
             handler.getGame().getLogger().log(Level.INFO, "Path not found for " + entity);
         } //else handler.getGame().getLogger().log(Level.INFO, "Path found for entity");
@@ -69,35 +67,29 @@ public class PathFinder {
             posArrayList.set(i, posArrayList.get(posArrayList.size() - i - 1));
             posArrayList.set(posArrayList.size() - i - 1, temp);
         }
-        openList = new ArrayList<>();
-        closedList = new ArrayList<>();
     }
 
     private void tryNewPath(PathStep currentStep) {
         ArrayList<BlockPos> adjMovable = adjMovablePos(currentStep.getPos());
         for (BlockPos pos : adjMovable) {
             PathStep step = new PathStep(pos);
-            if (isBlocked(pos)) continue;
+            if (isClosed(pos)) continue;
             int moveCost = computeAdjMoveCost(currentStep, step);
             int index = openList.indexOf(step);
             if (index == -1) {
                 step.setParent(currentStep);
                 step.setG(currentStep.getG() + moveCost);
                 step.setH(computeH(step.getPos(), target));
-                insertInOpen(step);
+                openList.add(step);
             } else {
                 step = openList.get(index);
                 if ((currentStep.getG() + moveCost) < step.getG()) {
                     step.setG(currentStep.getG() + moveCost);
                     openList.remove(index);
-                    insertInOpen(step);
+                    openList.add(step);
                 }
             }
         }
-    }
-
-    private void insertInOpen(PathStep step) {
-        openList.stream().filter(pathStep -> step.getF() <= pathStep.getF()).findFirst().ifPresent(pathStep -> openList.add(openList.indexOf(pathStep), step));
     }
 
     private ArrayList<BlockPos> adjMovablePos(BlockPos pos) {
@@ -123,10 +115,10 @@ public class PathFinder {
     }
 
     private boolean hasCollision(BlockPos pos) {
-        return entity.hasEntityCollisionExceptPlayer(0, 0) || Utils.hasCollision(handler, pos);
+        return entity.hasEntityCollisionExceptPlayer(0, 0) || handler.getCurrentLevel().getBlock(pos.getX(), pos.getY()).isSolid();
     }
 
-    private boolean isBlocked(BlockPos pos) {
+    private boolean isClosed(BlockPos pos) {
         for (PathStep step : closedList) {
             if (step.getPos().equals(pos)) {
                 return true;

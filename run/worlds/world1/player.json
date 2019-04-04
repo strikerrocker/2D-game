@@ -1,11 +1,19 @@
 {
   "inventory": {
-    "inventoryItems": []
+    "inventoryItems": [
+      {
+        "itemData": {
+          "id": 3,
+          "name": "grass"
+        },
+        "count": 1
+      }
+    ]
   },
-  "xMove": 0.0,
+  "xMove": 0.07,
   "yMove": 0.0,
-  "health": 10,
-  "x": 3.0,
-  "y": 3.0,
+  "health": 9,
+  "x": 2.5100005,
+  "y": 0.5,
   "name": "player"
 }

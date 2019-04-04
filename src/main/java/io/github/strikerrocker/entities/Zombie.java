@@ -2,6 +2,7 @@ package io.github.strikerrocker.entities;
 
 import io.github.strikerrocker.Handler;
 import io.github.strikerrocker.entities.ai.AttackAI;
+import io.github.strikerrocker.entities.ai.FollowPlayerAI;
 import io.github.strikerrocker.entities.type.EntityTypes;
 import io.github.strikerrocker.gfx.Animation;
 import io.github.strikerrocker.gfx.Assets;
@@ -42,6 +43,7 @@ public class Zombie extends Creature {
     protected void initAITasks() {
         aiTasks.put(new AttackAI(1, 1), 0);
         //aiTasks.put(new MoveToAI(this, new BlockPos(3, 4)), 1);
+        aiTasks.put(new FollowPlayerAI(this), 1);
     }
 
     @Override

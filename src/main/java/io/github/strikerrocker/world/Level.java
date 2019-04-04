@@ -100,9 +100,11 @@ public class Level {
         return block;
     }
 
-    public void setBlock(int x, int y, Block block) {
-        if (x < 0 || x > worldWidth || y < 0 || y > worldHeight) return;
+    public boolean setBlock(int x, int y, Block block) {
+        if (x < 0 || x > worldWidth || y < 0 || y > worldHeight) return false;
+        if (getBlock(x, y).getId() == block.getId()) return false;
         blocks[x][y] = block.getId();
+        return true;
     }
 
     private void loadWorld(File path) {

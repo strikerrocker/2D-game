@@ -1,8 +1,5 @@
 package io.github.strikerrocker.misc;
 
-import io.github.strikerrocker.Handler;
-import io.github.strikerrocker.world.BlockPos;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -47,9 +44,5 @@ public class Utils {
             }
         }
         return tinted;
-    }
-
-    public static boolean hasCollision(Handler handler, BlockPos pos) {
-        return handler.getCurrentLevel().getBlock(pos.getX(), pos.getY()).isSolid();
     }
 }

@@ -7,18 +7,16 @@ import io.github.strikerrocker.world.BlockPos;
 import java.util.ArrayList;
 
 public class MoveToAI extends AI {
+    protected Creature creature;
     private BlockPos targetPos;
     private BlockPos creaturePos;
     private BlockPos tempTarget;
     private ArrayList<BlockPos> path;
 
     public MoveToAI(Creature creature, BlockPos targetPos) {
+        this.creature = creature;
         this.targetPos = targetPos;
         this.creaturePos = creature.getPos();
-        tempTarget = creaturePos;
-        if (targetPos != null) {
-            updatePath(creature);
-        }
     }
 
     public void setTargetPos(BlockPos targetPos, Creature creature) {
@@ -28,18 +26,18 @@ public class MoveToAI extends AI {
 
     @Override
     public boolean canExecute(Creature creature) {
-        if (!creature.getPos().intForm().equals(targetPos.intForm()) || !(path.size() == 0)) {
-            return true;
-        } else {
+        if (creature.getPos().intForm().equals(targetPos.intForm())) {
             creature.setXMove(0);
             creature.setYMove(0);
             return false;
+        } else {
+            return true;
         }
     }
 
     @Override
     public void execute(Creature creature) {
-        if (path == null) updatePath(creature);
+        if (path == null || path.size() == 0) updatePath(creature);
         if ((tempTarget == null || tempTarget.intForm().equals(creaturePos.intForm())) && path.size() > 0) {
             BlockPos movePos = path.get(0);
             double x = (movePos.getX() - creature.getX());

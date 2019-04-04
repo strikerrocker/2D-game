@@ -92,7 +92,11 @@ public class GameData {
                 Path lvlEntityData = Paths.get(worldDir.getPath() + "/entities/" + lvl.getName() + "Entities.json");
                 if (lvlEntityData.toFile().exists()) {
                     EntityManager manager = gson.fromJson(new FileReader(lvlEntityData.toFile()), EntityManager.class);
-                    manager.getEntities().forEach(entity -> entity.setHandler(handler));
+                    if (manager != null) {
+                        manager.getEntities().forEach(entity -> entity.setHandler(handler));
+                    } else {
+                        manager = new EntityManager();
+                    }
                     lvl.setEntityManager(manager);
                 }
             }
