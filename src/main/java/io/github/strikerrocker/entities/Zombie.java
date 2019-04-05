@@ -47,6 +47,11 @@ public class Zombie extends Creature {
     }
 
     @Override
+    public boolean isHostile() {
+        return true;
+    }
+
+    @Override
     public void onKilled() {
         System.out.println("You killed successfully");
     }

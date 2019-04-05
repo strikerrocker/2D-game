@@ -3,6 +3,7 @@ package io.github.strikerrocker.entities.ai;
 import io.github.strikerrocker.entities.Creature;
 import io.github.strikerrocker.entities.Entity;
 import io.github.strikerrocker.entities.Zombie;
+import io.github.strikerrocker.entities.player.Player;
 import io.github.strikerrocker.misc.Rectangle;
 
 public class AttackAI extends AI {
@@ -29,7 +30,7 @@ public class AttackAI extends AI {
     public void execute(Creature creature) {
         Rectangle visibleArea = creature.getCollisionBounds(0, 0).grow(rangeFactor, rangeFactor);
         for (Entity e : creature.getHandler().getCurrentLevel().getEntityManager().getEntities()) {
-            if (e.getCollisionBounds(0, 0).intersects(visibleArea) && !(e instanceof Zombie) && e instanceof Creature && creature.getAttackTimer() > creature.getAttackCooldown()) {
+            if (e.getCollisionBounds(0, 0).intersects(visibleArea) && e instanceof Player && creature.getAttackTimer() > creature.getAttackCooldown()) {
                 ((Creature) e).hurt(hurtAmt);
                 creature.setAttackTimer(0);
             }

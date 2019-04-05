@@ -6,6 +6,7 @@ import io.github.strikerrocker.entities.EntityManager;
 import io.github.strikerrocker.entities.player.Inventory;
 import io.github.strikerrocker.entities.player.Player;
 import io.github.strikerrocker.entities.type.EntityType;
+import io.github.strikerrocker.entities.type.EntityTypes;
 import io.github.strikerrocker.items.Item;
 import io.github.strikerrocker.items.ItemData;
 
@@ -28,17 +29,7 @@ public class Deserializers {
         JsonObject object = json.getAsJsonObject();
         float x = object.get("x").getAsFloat();
         float y = object.get("y").getAsFloat();
-        float xMove = object.get("xMove").getAsFloat();
-        float yMove = object.get("yMove").getAsFloat();
-        int health = object.get("health").getAsInt();
-        Gson gson = new GsonBuilder().registerTypeAdapter(Inventory.class, inventoryJsonDeserializer).create();
-        Inventory inventory = gson.fromJson(object.get("inventory"), Inventory.class);
-        Player player = new Player(null, x, y);
-        player.setHealth(health);
-        player.setXMove(xMove);
-        player.setYMove(yMove);
-        player.setInventory(inventory);
-        return player;
+        return (Player) EntityTypes.player.createNew(null, x, y).deserialize(json);
     };
     public static JsonDeserializer<Entity> entityJsonDeserializer = (json, typeOfT, context) -> {
         Entity entity = null;

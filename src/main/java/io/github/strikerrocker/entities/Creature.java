@@ -53,10 +53,6 @@ public abstract class Creature extends Entity {
         return moveCooldown;
     }
 
-    public void setMoveCooldown(long moveCooldown) {
-        this.moveCooldown = moveCooldown;
-    }
-
     public long getMoveTimer() {
         return moveTimer;
     }
@@ -86,8 +82,8 @@ public abstract class Creature extends Entity {
         }
         attackTimer += System.currentTimeMillis() - lastAttackTimer;
         lastAttackTimer = System.currentTimeMillis();
-        aiTasks = sortByValue(aiTasks);
         if (aiTasks != null) {
+            aiTasks = sortByValue(aiTasks);
             for (AI ai : aiTasks.keySet()) {
                 if (ai.canExecute(this)) {
                     ai.execute(this);
@@ -229,5 +225,9 @@ public abstract class Creature extends Entity {
         this.yMove = object.get("yMove").getAsFloat();
         this.health = object.get("health").getAsInt();
         return this;
+    }
+
+    public boolean isHostile() {
+        return false;
     }
 }

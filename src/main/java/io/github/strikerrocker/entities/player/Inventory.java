@@ -31,7 +31,7 @@ public class Inventory {
         this.hotBarSelectedItem = hotBarSelectedItem;
     }
 
-    ArrayList<Item> getInventoryItems() {
+    public ArrayList<Item> getInventoryItems() {
         return inventoryItems;
     }
 

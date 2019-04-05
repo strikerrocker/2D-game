@@ -1,10 +1,7 @@
 package io.github.strikerrocker.entities.type;
 
 import io.github.strikerrocker.Handler;
-import io.github.strikerrocker.entities.Entity;
-import io.github.strikerrocker.entities.ItemEntity;
-import io.github.strikerrocker.entities.Tree;
-import io.github.strikerrocker.entities.Zombie;
+import io.github.strikerrocker.entities.*;
 import io.github.strikerrocker.entities.player.Player;
 
 import java.util.ArrayList;
@@ -13,6 +10,7 @@ public class EntityTypes {
     public static EntityType zombie;
     public static EntityType tree;
     public static EntityType item;
+    public static EntityType portal;
     public static EntityType player;
 
     public static void init() {
@@ -39,6 +37,12 @@ public class EntityTypes {
             @Override
             public Entity createNew(Handler handler, float x, float y) {
                 return new Tree(handler, x, y);
+            }
+        };
+        portal = new EntityType("portal") {
+            @Override
+            public Entity createNew(Handler handler, float x, float y) {
+                return new Portal(handler, x, y);
             }
         };
     }

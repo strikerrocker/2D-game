@@ -49,7 +49,7 @@ public class GameData {
                 Files.deleteIfExists(playerData);
                 playerData.toFile().createNewFile();
                 PrintWriter playerDataWriter = new PrintWriter(new FileWriter(playerData.toFile()));
-                playerDataWriter.println(gson.toJson(player));
+                playerDataWriter.println(gson.toJson(player, Player.class));
                 playerDataWriter.close();
             }
             Paths.get(worldDir.getPath() + "/entities").toFile().mkdirs();

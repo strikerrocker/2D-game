@@ -41,7 +41,8 @@ public class GameState extends State {
                 levels.add(new Level(handler, file1));
             }
         }
-        level = getLevel("level1");
+        GameData.readEntityData(worldDirectory, handler.getGson(), handler);
+        level = getLevel(player.getLevel());
     }
 
     public File getWorldDirectory() {
@@ -51,7 +52,6 @@ public class GameState extends State {
     void setWorldDirectory(File worldDirectory) {
         this.worldDirectory = worldDirectory;
         loadWorld();
-        GameData.readEntityData(worldDirectory, handler.getGson(), handler);
         setPlayerAtLvl(level, player);
     }
 
@@ -76,6 +76,7 @@ public class GameState extends State {
         setPlayerAtLvl(level, null);
         this.level = level;
         setPlayerAtLvl(level, player);
+        player.setLevel(level.getName());
     }
 
     public void teleportPlayerTo(String world) {

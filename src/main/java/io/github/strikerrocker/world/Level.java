@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import io.github.strikerrocker.Handler;
 import io.github.strikerrocker.blocks.Block;
 import io.github.strikerrocker.blocks.Blocks;
+import io.github.strikerrocker.entities.Creature;
 import io.github.strikerrocker.entities.EntityManager;
 import io.github.strikerrocker.entities.player.Player;
 import io.github.strikerrocker.misc.Utils;
@@ -72,6 +73,7 @@ public class Level {
             }
         }
         entityManager.tick();
+        entityManager.getEntities().forEach(entity -> isConquered = !(entity instanceof Creature) || !((Creature) entity).isHostile());
     }
 
     public void render(Graphics graphics) {

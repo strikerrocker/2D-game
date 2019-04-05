@@ -38,7 +38,7 @@ public class Handler {
         return game.getGameState().getCurrentLevel();
     }
 
-    public void setWorld(String world) {
+    public void teleportPlayerTo(String world) {
         game.getGameState().teleportPlayerTo(world);
     }
 

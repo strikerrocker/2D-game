@@ -1,17 +1,19 @@
 package io.github.strikerrocker.entities.player;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
 import io.github.strikerrocker.Handler;
-import io.github.strikerrocker.entities.Creature;
-import io.github.strikerrocker.entities.Entity;
-import io.github.strikerrocker.entities.ItemEntity;
-import io.github.strikerrocker.entities.Zombie;
+import io.github.strikerrocker.entities.*;
 import io.github.strikerrocker.entities.type.EntityTypes;
 import io.github.strikerrocker.gfx.Animation;
 import io.github.strikerrocker.gfx.Assets;
 import io.github.strikerrocker.items.Item;
 import io.github.strikerrocker.items.Items;
 import io.github.strikerrocker.misc.Rectangle;
+import io.github.strikerrocker.misc.Serializers;
 import io.github.strikerrocker.states.DeathState;
 import io.github.strikerrocker.states.State;
 
@@ -21,6 +23,7 @@ import java.awt.image.BufferedImage;
 
 import static io.github.strikerrocker.blocks.Block.BLOCKHEIGHT;
 import static io.github.strikerrocker.blocks.Block.BLOCKWIDTH;
+import static io.github.strikerrocker.misc.Deserializers.inventoryJsonDeserializer;
 
 public class Player extends Creature {
     private long lastItemUseTimer, itemUseCooldown = 1500, itemUseTimer = itemUseCooldown;
@@ -30,6 +33,8 @@ public class Player extends Creature {
     private Animation left;
     @Expose
     private Inventory inventory;
+
+    private String lvlName;
 
     public Player(Handler handler, float x, float y) {
         super(EntityTypes.player, handler, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, 10);
@@ -43,6 +48,23 @@ public class Player extends Creature {
         attackCooldown = 500;
         attackTimer = 500;
         speed = 0.07f;
+        lvlName = "level1";
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "down=" + down +
+                ", up=" + up +
+                ", right=" + right +
+                ", left=" + left +
+                ", inventory=" + inventory +
+                ", lvlName='" + lvlName + '\'' +
+                ", xMove=" + xMove +
+                ", yMove=" + yMove +
+                ", x=" + x +
+                ", y=" + y +
+                '}';
     }
 
     public void setItemUseTimer(long itemUseTimer) {
@@ -60,19 +82,6 @@ public class Player extends Creature {
     @Override
     protected void initAITasks() {
 
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
-        down.tick();
-        up.tick();
-        right.tick();
-        left.tick();
-        handler.getGameCamera().centreOnEntity(this);
-
-        getInput();
-        inventory.tick();
     }
 
     private void getInput() {
@@ -99,20 +108,45 @@ public class Player extends Creature {
             if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_H)) {
                 setHealth(maxHealth);
             }
+            if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_P)) {
+                handler.getCurrentLevel().getEntityManager().addEntity(new Portal(handler, x, y));
+            }
             if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_G)) {
                 inventory.addStack(new Item(Items.grass));
             }
             if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_B)) {
                 switch (handler.getCurrentLevel().getName()) {
                     case "world1":
-                        handler.setWorld("world2");
+                        handler.teleportPlayerTo("world2");
                         break;
                     case "world2":
-                        handler.setWorld("world1");
+                        handler.teleportPlayerTo("world1");
                         break;
                 }
             }
         }
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        down.tick();
+        up.tick();
+        right.tick();
+        left.tick();
+        handler.getGameCamera().centreOnEntity(this);
+
+        getInput();
+        inventory.tick();
+    }
+
+    @Override
+    public JsonElement serialize() {
+        JsonObject object = super.serialize().getAsJsonObject();
+        Gson gson = new GsonBuilder().registerTypeAdapter(Inventory.class, Serializers.inventoryJsonSerializer).create();
+        object.add("inventory", gson.toJsonTree(inventory, Inventory.class));
+        object.addProperty("level", lvlName);
+        return object;
     }
 
     private void getMouseInput() {
@@ -183,5 +217,22 @@ public class Player extends Creature {
     @Override
     public boolean canMove() {
         return !inventory.isActive();
+    }
+
+    @Override
+    public Entity deserialize(JsonElement element) {
+        super.deserialize(element);
+        Gson gson = new GsonBuilder().registerTypeAdapter(Inventory.class, inventoryJsonDeserializer).create();
+        setInventory(gson.fromJson(element.getAsJsonObject().get("inventory"), Inventory.class));
+        lvlName = element.getAsJsonObject().has("level") ? element.getAsJsonObject().get("level").getAsString() : "level1";
+        return this;
+    }
+
+    public String getLevel() {
+        return lvlName;
+    }
+
+    public void setLevel(String lvlName) {
+        this.lvlName = lvlName;
     }
 }

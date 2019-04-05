@@ -64,7 +64,7 @@ public abstract class Entity {
 
     boolean hasEntityCollision(float xOffset, float yOffset) {
         for (Entity entity : handler.getCurrentLevel().getEntityManager().getEntities()) {
-            if (entity != this && entity.getCollisionBounds(0, 0).intersects(getCollisionBounds(xOffset, yOffset))) {
+            if (entity != this && entity.getCollisionBounds(0, 0).intersects(getCollisionBounds(xOffset, yOffset)) && !(entity instanceof Portal)) {
                 return true;
             }
         }

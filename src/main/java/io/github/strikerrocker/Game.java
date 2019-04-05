@@ -110,6 +110,7 @@ public class Game implements Runnable {
         gson = new GsonBuilder().disableHtmlEscaping()
                 .excludeFieldsWithoutExposeAnnotation().serializeNulls()
                 .registerTypeAdapter(Player.class, Deserializers.playerJsonDeserializer)
+                .registerTypeAdapter(Player.class, Serializers.playerJsonSerialize)
                 .registerTypeAdapter(EntityManager.class, Deserializers.managerJsonDeserializer)
                 .registerTypeAdapter(Entity.class, Serializers.entityJsonSerializer)
                 .create();
