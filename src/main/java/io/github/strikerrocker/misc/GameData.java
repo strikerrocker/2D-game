@@ -110,4 +110,9 @@ public class GameData {
         saveWorldData(gameState, worldDir);
         saveEntityData(gameState, worldDir, gson);
     }
+
+    public static void setupNewWorld(File worldDir) {
+        File world = new File(ClassLoader.getSystemClassLoader().getResource("worlds/").getFile());
+        Utils.copyFolder(world, worldDir);
+    }
 }

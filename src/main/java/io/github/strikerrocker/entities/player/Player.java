@@ -116,11 +116,11 @@ public class Player extends Creature {
             }
             if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_B)) {
                 switch (handler.getCurrentLevel().getName()) {
-                    case "world1":
+                    case "worlds/world1":
                         handler.teleportPlayerTo("world2");
                         break;
                     case "world2":
-                        handler.teleportPlayerTo("world1");
+                        handler.teleportPlayerTo("worlds/world1");
                         break;
                 }
             }

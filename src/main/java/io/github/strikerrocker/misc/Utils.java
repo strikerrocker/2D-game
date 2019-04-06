@@ -2,10 +2,7 @@ package io.github.strikerrocker.misc;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -44,5 +41,33 @@ public class Utils {
             }
         }
         return tinted;
+    }
+
+    public static void copyFolder(File src, File dest) {
+        try {
+            if (src.isDirectory()) {
+                if (!dest.exists()) {
+                    dest.mkdir();
+                }
+                String[] files = src.list();
+
+                for (String file : files) {
+                    copyFolder(new File(src, file), new File(dest, file));
+                }
+            } else {
+                InputStream in = new FileInputStream(src);
+                OutputStream out = new FileOutputStream(dest);
+                byte[] buffer = new byte[1024];
+                int length;
+                //copy the file content in bytes
+                while ((length = in.read(buffer)) > 0) {
+                    out.write(buffer, 0, length);
+                }
+                in.close();
+                out.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

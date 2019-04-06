@@ -1,0 +1,20 @@
+{
+  "x": 3.0,
+  "y": 3.0,
+  "name": "player",
+  "health": 10,
+  "xMove": 0.0,
+  "yMove": 0.0,
+  "inventory": {
+    "inventoryItems": [
+      {
+        "itemData": {
+          "id": 3,
+          "name": "grass"
+        },
+        "count": 2
+      }
+    ]
+  },
+  "level": "level1"
+}
