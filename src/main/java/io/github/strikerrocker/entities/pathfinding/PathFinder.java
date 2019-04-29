@@ -19,7 +19,20 @@ public class PathFinder {
         this.start = entity.getPos().intForm();
         this.target = target;
         this.entity = entity;
-        openList = new ArrayList<>();
+        openList = new ArrayList<PathStep>() {
+
+            @Override
+            public void add(int index, PathStep element) {
+                add(element);
+            }
+
+            @Override
+            public boolean add(PathStep pathStep) {
+                super.add(pathStep);
+                this.sort(Comparator.comparingInt(PathStep::getF));
+                return true;
+            }
+        };
         closedList = new ArrayList<>();
     }
 
@@ -28,24 +41,21 @@ public class PathFinder {
     }
 
     private static int computeAdjMoveCost(PathStep start, PathStep end) {
-        return -1;
+        return 1;
     }
 
     public ArrayList<BlockPos> tryGetPath() {
-        boolean pathFound = false;
         ArrayList<BlockPos> posArrayList = new ArrayList<>();
         PathStep startStep = new PathStep(start);
         startStep.setG(1);
         startStep.setH(computeH(startStep.getPos(), target));
         openList.add(startStep);
         do {
-            openList.sort(Comparator.comparingInt(PathStep::getF));
             PathStep currentStep = openList.get(0);
             closedList.add(currentStep.getPos());
             openList.remove(0);
             //If path found
             if (currentStep.getPos().equals(target)) {
-                pathFound = true;
                 getPathFromSteps(currentStep, posArrayList);
                 break;
             }
@@ -93,26 +103,32 @@ public class PathFinder {
         ArrayList<BlockPos> arrayList = new ArrayList<>();
         BlockPos adj;
         adj = new BlockPos(pos.getX(), pos.getY() - 1);
-        if (!hasCollision(adj)) {
+        if (isValidPos(adj)) {
             arrayList.add(adj);
         }
         adj = new BlockPos(pos.getX() - 1, pos.getY());
-        if (!hasCollision(adj)) {
+        if (isValidPos(adj)) {
             arrayList.add(adj);
         }
         adj = new BlockPos(pos.getX(), pos.getY() + 1);
-        if (!hasCollision(adj)) {
+        if (isValidPos(adj)) {
             arrayList.add(adj);
         }
         adj = new BlockPos(pos.getX() + 1, pos.getY());
-        if (!hasCollision(adj)) {
+        if (isValidPos(adj)) {
             arrayList.add(adj);
         }
+
         return arrayList;
     }
 
     private boolean hasCollision(BlockPos pos) {
-        return entity.hasEntityCollision(0, 0, entity.getHandler().getCurrentLevel().getEntityManager().getPlayer()) || handler.getCurrentLevel().getBlock(pos.getX(), pos.getY()).isSolid();
+        return entity.hasEntityCollision(0, 0, entity.getHandler().getCurrentLevel().getEntityManager().getPlayer())
+                || handler.getCurrentLevel().getBlock(pos.getX(), pos.getY()).isSolid();
+    }
+
+    private boolean isValidPos(BlockPos pos) {
+        return !hasCollision(pos) && !(pos.getX() < 0) && !(pos.getX() > entity.getHandler().getCurrentLevel().getWorldWidth()) && !(pos.getY() < 0) && !(pos.getY() > entity.getHandler().getCurrentLevel().getWorldHeight());
     }
 
     private boolean isClosed(BlockPos pos) {

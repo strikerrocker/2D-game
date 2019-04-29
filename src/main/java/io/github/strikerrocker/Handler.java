@@ -1,6 +1,7 @@
 package io.github.strikerrocker;
 
 import com.google.gson.Gson;
+import io.github.strikerrocker.entities.player.Player;
 import io.github.strikerrocker.gfx.GameCamera;
 import io.github.strikerrocker.input.KeyManager;
 import io.github.strikerrocker.input.MouseManager;
@@ -48,5 +49,9 @@ public class Handler {
 
     public Gson getGson() {
         return game.getGson();
+    }
+
+    public Player getPlayer() {
+        return game.getGameState().getPlayer();
     }
 }
