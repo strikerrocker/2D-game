@@ -1,13 +1,12 @@
 {
   "entities": [
     {
-      "x": 24.0,
-      "y": 22.0,
-      "name": "portal",
-      "health": 1,
+      "x": 3.0305283,
+      "y": 3.299766,
+      "name": "zombie",
+      "health": 5,
       "xMove": 0.0,
-      "yMove": 0.0,
-      "target": "level2"
+      "yMove": 0.0
     }
   ]
 }

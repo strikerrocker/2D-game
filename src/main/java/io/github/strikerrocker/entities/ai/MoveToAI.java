@@ -37,8 +37,8 @@ public class MoveToAI extends AI {
     @Override
     public void execute(Creature creature) {
         if (path == null || path.size() == 0) updatePath(creature);
-        if ((tempTarget == null || tempTarget.intForm().equals(creaturePos.intForm())) && path.size() > 0) {
-            BlockPos movePos = path.get(0);
+        if ((tempTarget == null || tempTarget.intForm().equals(creaturePos)) && path.size() > 0) {
+            BlockPos movePos = path.get(0).intForm();
             double x = (movePos.getX() - creature.getX());
             double y = (movePos.getY() - creature.getY());
             double total = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
@@ -48,7 +48,7 @@ public class MoveToAI extends AI {
             tempTarget = movePos;
             path.remove(tempTarget);
         }
-        creaturePos = creature.getPos();
+        creaturePos = creature.getPos().intForm();
     }
 
     private void updatePath(Creature creature) {

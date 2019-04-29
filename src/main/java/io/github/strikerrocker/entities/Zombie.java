@@ -53,6 +53,6 @@ public class Zombie extends Creature {
 
     @Override
     public void onKilled() {
-        System.out.println("You killed successfully");
+        System.out.println("You killed a Zombie");
     }
 }

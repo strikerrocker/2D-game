@@ -6,10 +6,10 @@ import io.github.strikerrocker.world.BlockPos;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.logging.Level;
 
 public class PathFinder {
-    private ArrayList<PathStep> openList, closedList;
+    private ArrayList<PathStep> openList;
+    private ArrayList<BlockPos> closedList;
     private BlockPos start, target;
     private Handler handler;
     private Entity entity;
@@ -28,7 +28,7 @@ public class PathFinder {
     }
 
     private static int computeAdjMoveCost(PathStep start, PathStep end) {
-        return 1;
+        return -1;
     }
 
     public ArrayList<BlockPos> tryGetPath() {
@@ -41,7 +41,7 @@ public class PathFinder {
         do {
             openList.sort(Comparator.comparingInt(PathStep::getF));
             PathStep currentStep = openList.get(0);
-            closedList.add(currentStep);
+            closedList.add(currentStep.getPos());
             openList.remove(0);
             //If path found
             if (currentStep.getPos().equals(target)) {
@@ -51,9 +51,6 @@ public class PathFinder {
             }
             tryNewPath(currentStep);
         } while (openList.size() > 0);
-        if (!pathFound) {
-            handler.getGame().getLogger().log(Level.INFO, "Path not found for " + entity);
-        } //else handler.getGame().getLogger().log(Level.INFO, "Path found for entity");
         return posArrayList;
     }
 
@@ -72,8 +69,8 @@ public class PathFinder {
     private void tryNewPath(PathStep currentStep) {
         ArrayList<BlockPos> adjMovable = adjMovablePos(currentStep.getPos());
         for (BlockPos pos : adjMovable) {
-            PathStep step = new PathStep(pos);
             if (isClosed(pos)) continue;
+            PathStep step = new PathStep(pos);
             int moveCost = computeAdjMoveCost(currentStep, step);
             int index = openList.indexOf(step);
             if (index == -1) {
@@ -115,15 +112,10 @@ public class PathFinder {
     }
 
     private boolean hasCollision(BlockPos pos) {
-        return entity.hasEntityCollisionExceptPlayer(0, 0) || handler.getCurrentLevel().getBlock(pos.getX(), pos.getY()).isSolid();
+        return entity.hasEntityCollision(0, 0, entity.getHandler().getCurrentLevel().getEntityManager().getPlayer()) || handler.getCurrentLevel().getBlock(pos.getX(), pos.getY()).isSolid();
     }
 
     private boolean isClosed(BlockPos pos) {
-        for (PathStep step : closedList) {
-            if (step.getPos().equals(pos)) {
-                return true;
-            }
-        }
-        return false;
+        return closedList.contains(pos);
     }
 }

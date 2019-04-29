@@ -4,7 +4,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
 import io.github.strikerrocker.Handler;
-import io.github.strikerrocker.entities.player.Player;
 import io.github.strikerrocker.entities.type.EntityType;
 import io.github.strikerrocker.gfx.PixelPos;
 import io.github.strikerrocker.misc.Rectangle;
@@ -71,9 +70,9 @@ public abstract class Entity {
         return false;
     }
 
-    public boolean hasEntityCollisionExceptPlayer(float xOffset, float yOffset) {
+    public boolean hasEntityCollision(float xOffset, float yOffset, Entity exceptEntity) {
         for (Entity entity : handler.getCurrentLevel().getEntityManager().getEntities()) {
-            if (entity != this && !(entity instanceof Player) && entity.getCollisionBounds(1 / 64, 1 / 64).intersects(getCollisionBounds(xOffset, yOffset))) {
+            if (entity != this && entity != exceptEntity && entity.getCollisionBounds(0, 0).intersects(getCollisionBounds(xOffset, yOffset))) {
                 return true;
             }
         }

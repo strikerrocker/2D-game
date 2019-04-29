@@ -33,7 +33,7 @@ public abstract class Creature extends Entity {
     @Expose
     protected float xMove, yMove;
     protected long lastAttackTimer, attackCooldown = 1500, attackTimer = attackCooldown;
-    protected long lastMoveTimer, moveCooldown = 1000, moveTimer = moveCooldown;
+    protected long lastMoveTimer, moveCooldown = 2000, moveTimer = moveCooldown;
     Map<AI, Integer> aiTasks;
     private boolean renderHurt = false;
     @Expose
