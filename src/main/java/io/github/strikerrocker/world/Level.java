@@ -11,6 +11,10 @@ import io.github.strikerrocker.misc.Utils;
 
 import java.awt.*;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
 
 public class Level {
     protected Handler handler;
@@ -23,12 +27,14 @@ public class Level {
     private int[][] blocks;
     private EntityManager entityManager;
     private boolean isConquered = true;
+    private File path;
 
     public Level(Handler handler, File path) {
         this.handler = handler;
+        this.path = path;
         this.name = path.getName().replaceFirst(".txt", "");
         entityManager = new EntityManager();
-        loadWorld(path);
+        read();
     }
 
     public boolean isConquered() {
@@ -37,10 +43,6 @@ public class Level {
 
     public String getName() {
         return name;
-    }
-
-    public BlockPos getSpawn() {
-        return spawn;
     }
 
     public void setPlayer(Player player) {
@@ -109,22 +111,43 @@ public class Level {
         return true;
     }
 
-    private void loadWorld(File path) {
+    public void read() {
         String file = Utils.loadFilesAsString(path);
         String[] tokens = file.split("\\s+");
         worldWidth = Integer.parseInt(tokens[0]);
         worldHeight = Integer.parseInt(tokens[1]);
-        spawn = new BlockPos(Float.parseFloat(tokens[2]), Float.parseFloat(tokens[3]));
         blocks = new int[worldWidth][worldHeight];
+        spawn = new BlockPos(Float.parseFloat(tokens[2]), Float.parseFloat(tokens[3]));
         for (int y = 0; y < worldHeight; y++) {
             for (int x = 0; x < worldWidth; x++) {
                 try {
                     blocks[x][y] = Integer.parseInt(tokens[(x + y * worldHeight) + 4]);
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    handler.getGame().getLogger().log(java.util.logging.Level.INFO, e.getMessage());
-                    blocks[x][y] = 0;
+                    handler.getGame().getLogger().log(java.util.logging.Level.SEVERE, e.getMessage());
                 }
             }
+        }
+    }
+
+    public void save() {
+        try {
+            Files.deleteIfExists(path.toPath());
+            if (path.createNewFile()) {
+                PrintWriter levelDataWriter = new PrintWriter(new FileWriter(path));
+                levelDataWriter.print(worldWidth + " ");
+                levelDataWriter.println(worldHeight);
+                levelDataWriter.print(((int) spawn.getX()) + " ");
+                levelDataWriter.println(((int) spawn.getY()));
+                for (int y = 0; y < worldHeight; y++) {
+                    for (int x = 0; x < worldWidth; x++) {
+                        levelDataWriter.print(((x != 0) ? " " : "") + blocks[x][y]);
+                    }
+                    levelDataWriter.println();
+                }
+                levelDataWriter.close();
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 }

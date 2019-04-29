@@ -30,9 +30,8 @@ public class MoveToAI extends AI {
             creature.setXMove(0);
             creature.setYMove(0);
             return false;
-        } else {
-            return true;
         }
+        return true;
     }
 
     @Override
