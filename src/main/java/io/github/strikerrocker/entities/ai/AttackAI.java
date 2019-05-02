@@ -17,9 +17,9 @@ public class AttackAI extends AI {
 
     @Override
     public boolean canExecute(Creature creature) {
-        Rectangle visibleArea = creature.getCollisionBounds(0, 0).grow(rangeFactor, rangeFactor);
+        Rectangle visibleArea = creature.getCollisionBounds().grow(rangeFactor, rangeFactor);
         for (Entity e : creature.getHandler().getCurrentLevel().getEntityManager().getEntities()) {
-            if (e.getCollisionBounds(0, 0).intersects(visibleArea) && !(e instanceof Zombie) && e instanceof Creature) {
+            if (e.getCollisionBounds().intersects(visibleArea) && !(e instanceof Zombie) && e instanceof Creature) {
                 return true;
             }
         }
@@ -28,9 +28,9 @@ public class AttackAI extends AI {
 
     @Override
     public void execute(Creature creature) {
-        Rectangle visibleArea = creature.getCollisionBounds(0, 0).grow(rangeFactor, rangeFactor);
+        Rectangle visibleArea = creature.getCollisionBounds().grow(rangeFactor, rangeFactor);
         for (Entity e : creature.getHandler().getCurrentLevel().getEntityManager().getEntities()) {
-            if (e.getCollisionBounds(0, 0).intersects(visibleArea) && e instanceof Player && creature.getAttackTimer() > creature.getAttackCooldown()) {
+            if (e.getCollisionBounds().intersects(visibleArea) && e instanceof Player && creature.getAttackTimer() > creature.getAttackCooldown()) {
                 ((Creature) e).hurt(hurtAmt);
                 creature.setAttackTimer(0);
             }

@@ -56,6 +56,10 @@ public abstract class Entity {
         return new Rectangle((int) (x + bounds.x + xOffset), (int) (y + bounds.y + yOffset), bounds.width, bounds.height);
     }
 
+    public Rectangle getCollisionBounds() {
+        return getCollisionBounds(0, 0);
+    }
+
     public Rectangle getPixelCollisionBounds(float xOffset, float yOffset) {
         PixelPos pos = getPixelPos();
         return new Rectangle((int) (pos.getX() + xOffset) + (bounds.x * BLOCKWIDTH) - handler.getGameCamera().getXOffset(), (int) (pos.getY() + yOffset) + (bounds.y * BLOCKHEIGHT) - handler.getGameCamera().getYOffset(), bounds.width * BLOCKWIDTH, bounds.height * BLOCKHEIGHT);
@@ -63,7 +67,7 @@ public abstract class Entity {
 
     boolean hasEntityCollision(float xOffset, float yOffset) {
         for (Entity entity : handler.getCurrentLevel().getEntityManager().getEntities()) {
-            if (entity != this && entity.getCollisionBounds(0, 0).intersects(getCollisionBounds(xOffset, yOffset)) && !(entity instanceof Portal)) {
+            if (entity != this && entity.getCollisionBounds().intersects(getCollisionBounds(xOffset, yOffset)) && !(entity instanceof Portal)) {
                 return true;
             }
         }
@@ -72,7 +76,7 @@ public abstract class Entity {
 
     public boolean hasEntityCollision(float xOffset, float yOffset, Entity exceptEntity) {
         for (Entity entity : handler.getCurrentLevel().getEntityManager().getEntities()) {
-            if (entity != this && entity != exceptEntity && entity.getCollisionBounds(0, 0).intersects(getCollisionBounds(xOffset, yOffset))) {
+            if (entity != this && entity != exceptEntity && entity.getCollisionBounds().intersects(getCollisionBounds(xOffset, yOffset))) {
                 return true;
             }
         }

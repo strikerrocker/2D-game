@@ -35,7 +35,7 @@ public class Portal extends Creature {
         super.tick();
         if (handler.getCurrentLevel().getEntityManager().getEntities().contains(this)) {
             if (handler.getCurrentLevel().isConquered()
-                    && getCollisionBounds(0, 0).intersects(handler.getCurrentLevel().getEntityManager().getPlayer().getCollisionBounds(0, 0)) && target != null) {
+                    && getCollisionBounds().intersects(handler.getCurrentLevel().getEntityManager().getPlayer().getCollisionBounds()) && target != null) {
                 handler.teleportPlayerTo(target);
             }
         }
