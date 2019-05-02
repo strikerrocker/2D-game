@@ -26,11 +26,6 @@ public class ItemEntity extends Creature {
     }
 
     @Override
-    public boolean canMove() {
-        return false;
-    }
-
-    @Override
     public BufferedImage getCurrentFrame() {
         return item.getTexture();
     }

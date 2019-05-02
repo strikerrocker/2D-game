@@ -52,7 +52,7 @@ public class Portal extends Creature {
 
     @Override
     public BufferedImage getCurrentFrame() {
-        return Assets.rock;
+        return Assets.portal;
     }
 
     @Override

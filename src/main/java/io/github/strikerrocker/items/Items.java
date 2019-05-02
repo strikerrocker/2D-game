@@ -1,6 +1,5 @@
 package io.github.strikerrocker.items;
 
-import io.github.strikerrocker.blocks.Blocks;
 import io.github.strikerrocker.gfx.Assets;
 
 public class Items {
@@ -16,7 +15,6 @@ public class Items {
         wood = new ItemData(Assets.wood, "Wood");
         rock = new ItemData(Assets.rock, "Rock");
         apple = new ItemData(Assets.apple, "Apple").setAsFood(2);
-        grass = new ItemData(Assets.grass, "grass").setAsItemBlock(Blocks.grass);
         pick = new ItemData(Assets.rock, "Pick").setAsPick();
         sword = new ItemData(Assets.rock, "Sword").setAttackDamage(4);
     }

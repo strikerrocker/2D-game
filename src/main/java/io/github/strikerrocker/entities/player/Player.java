@@ -115,14 +115,7 @@ public class Player extends Creature {
                 inventory.addStack(new Item(Items.grass));
             }
             if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_B)) {
-                switch (handler.getCurrentLevel().getName()) {
-                    case "worlds/world1":
-                        handler.teleportPlayerTo("world2");
-                        break;
-                    case "world2":
-                        handler.teleportPlayerTo("worlds/world1");
-                        break;
-                }
+                handler.getCurrentLevel().getEntityManager().addEntity(new Bullet(handler, x + 1, y).setDamage(2));
             }
         }
     }

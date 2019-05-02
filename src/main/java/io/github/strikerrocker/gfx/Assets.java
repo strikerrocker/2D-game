@@ -6,7 +6,20 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class Assets {
-    public static BufferedImage player, dirt, grass, wall, tree, rock, wood, apple, appleTree;
+    public static BufferedImage player;
+    public static BufferedImage dirt;
+    public static BufferedImage grass;
+    public static BufferedImage wall;
+    public static BufferedImage tree;
+    public static BufferedImage rock;
+    public static BufferedImage wood;
+    public static BufferedImage apple;
+    public static BufferedImage appleTree;
+    public static BufferedImage portal;
+    public static BufferedImage bullet;
+    public static BufferedImage button;
+    public static BufferedImage inventoryScreen;
+    public static BufferedImage hotBar;
     public static BufferedImage[] player_down = new BufferedImage[2];
     public static BufferedImage[] zombie_down = new BufferedImage[2];
     public static BufferedImage[] zombie_up = new BufferedImage[2];
@@ -16,8 +29,6 @@ public class Assets {
     public static BufferedImage[] player_left = new BufferedImage[2];
     public static BufferedImage[] player_right = new BufferedImage[2];
     public static BufferedImage[] startBtn = new BufferedImage[2];
-    public static BufferedImage button;
-    public static BufferedImage inventoryScreen, hotBar;
     public static Font font28;
 
     public static void init() {
@@ -54,6 +65,8 @@ public class Assets {
         tree = sheet.crop(0, 0, width, height * 2);
         rock = sheet.crop(0, height * 2, width, height);
         appleTree = sheet.crop(0, height * 3, width, height * 2);
+        portal = sheet.crop(width, height * 3, width, height * 2);
+        bullet = sheet.crop(width, height * 2, width, height);
 
         //Button Texture
         startBtn[0] = sheet.crop(width * 6, height * 4, width * 2, height);

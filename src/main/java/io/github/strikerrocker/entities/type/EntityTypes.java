@@ -12,6 +12,7 @@ public class EntityTypes {
     public static EntityType item;
     public static EntityType portal;
     public static EntityType player;
+    public static EntityType bullet;
 
     public static void init() {
         EntityType.types = new ArrayList<>();
@@ -43,6 +44,12 @@ public class EntityTypes {
             @Override
             public Entity createNew(Handler handler, float x, float y) {
                 return new Portal(handler, x, y);
+            }
+        };
+        bullet = new EntityType("bullet") {
+            @Override
+            public Entity createNew(Handler handler, float x, float y) {
+                return new Bullet(handler, x, y);
             }
         };
     }

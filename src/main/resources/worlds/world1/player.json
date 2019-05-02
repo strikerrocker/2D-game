@@ -7,13 +7,6 @@
   "yMove": 0.0,
   "inventory": {
     "inventoryItems": [
-      {
-        "itemData": {
-          "id": 3,
-          "name": "grass"
-        },
-        "count": 2
-      }
     ]
   },
   "level": "level1"

@@ -1,12 +1,13 @@
 {
   "entities": [
     {
-      "x": 3.0305283,
-      "y": 3.299766,
-      "name": "zombie",
-      "health": 5,
+      "x": 2.1,
+      "y": 3.0,
+      "name": "bullet",
+      "health": 1,
       "xMove": 0.0,
-      "yMove": 0.0
+      "yMove": 0.0,
+      "damageDealt": 2
     }
   ]
 }

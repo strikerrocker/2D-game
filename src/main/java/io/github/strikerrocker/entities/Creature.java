@@ -94,7 +94,7 @@ public abstract class Creature extends Entity {
     }
 
     public boolean canMove() {
-        return true;
+        return false;
     }
 
     public void hurt(int amt) {
@@ -183,7 +183,7 @@ public abstract class Creature extends Entity {
         }
     }
 
-    private boolean isSolid(int x, int y) {
+    public boolean isSolid(int x, int y) {
         return handler.getCurrentLevel().getBlock(x, y).isSolid();
     }
 

@@ -46,11 +46,6 @@ public class ItemData {
             stack.decSize(1);
             player.setItemUseTimer(0);
         }
-        if (handler.getCurrentLevel().isConquered() && isItemBlock()) {
-            BlockPos pos = new PixelPos(x, y).toBlockPos();
-            if (handler.getCurrentLevel().setBlock((int) pos.getX(), (int) pos.getY(), block))
-                stack.decSize(1);
-        }
     }
 
     public int getAttackDamage() {
@@ -88,14 +83,5 @@ public class ItemData {
         isFood = true;
         this.healAmt = healAmt;
         return this;
-    }
-
-    ItemData setAsItemBlock(Block block) {
-        this.block = block;
-        return this;
-    }
-
-    public boolean isItemBlock() {
-        return block != null;
     }
 }

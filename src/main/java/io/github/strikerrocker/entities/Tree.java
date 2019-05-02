@@ -55,11 +55,6 @@ public class Tree extends Creature {
     }
 
     @Override
-    public boolean canMove() {
-        return false;
-    }
-
-    @Override
     public BufferedImage getCurrentFrame() {
         return hasApple ? Assets.appleTree : Assets.tree;
     }
