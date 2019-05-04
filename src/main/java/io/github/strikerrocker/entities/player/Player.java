@@ -26,7 +26,7 @@ import static io.github.strikerrocker.blocks.Block.BLOCKWIDTH;
 import static io.github.strikerrocker.misc.Deserializers.inventoryJsonDeserializer;
 
 public class Player extends Creature {
-    private long lastItemUseTimer, itemUseCooldown = 1500, itemUseTimer = itemUseCooldown;
+    private long lastItemUseTimer, itemUseCooldown = 1000, itemUseTimer = itemUseCooldown;
     private Animation down;
     private Animation up;
     private Animation right;
@@ -111,13 +111,13 @@ public class Player extends Creature {
             if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_P)) {
                 handler.getCurrentLevel().getEntityManager().addEntity(new Portal(handler, x, y));
             }
-            if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_G)) {
-                inventory.addStack(new Item(Items.grass));
-            }
             if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_B)) {
                 Bullet bullet = new Bullet(handler, x + 1, y).setDamage(2);
                 handler.getCurrentLevel().getEntityManager().addEntity(bullet);
                 bullet.move(2);
+            }
+            if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_G)) {
+                inventory.addStack(new Item(Items.gun));
             }
         }
     }

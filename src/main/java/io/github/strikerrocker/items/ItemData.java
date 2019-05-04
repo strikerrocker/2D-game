@@ -47,7 +47,6 @@ public class ItemData {
     }
 
     void onLeftClick(Handler handler, Player player, int x, int y) {
-
     }
 
     public int getId() {

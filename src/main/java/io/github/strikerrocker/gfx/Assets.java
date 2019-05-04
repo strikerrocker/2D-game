@@ -14,9 +14,11 @@ public class Assets {
     public static BufferedImage rock;
     public static BufferedImage wood;
     public static BufferedImage apple;
+    public static BufferedImage gun;
     public static BufferedImage appleTree;
     public static BufferedImage portal;
     public static BufferedImage bullet;
+    public static BufferedImage invertedBullet;
     public static BufferedImage button;
     public static BufferedImage inventoryScreen;
     public static BufferedImage hotBar;
@@ -34,9 +36,16 @@ public class Assets {
     public static void init() {
         SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/sheet.png"));
         font28 = loadFont(Assets.class.getResourceAsStream("/fonts/slkscr.ttf"), 28);
-        //Player textures
         int width = 32;
         int height = 32;
+        //Entities Texture
+        tree = sheet.crop(0, 0, width, height * 2);
+        rock = sheet.crop(0, height * 2, width, height);
+        appleTree = sheet.crop(0, height * 3, width, height * 2);
+        portal = sheet.crop(width, height * 3, width, height * 2);
+        bullet = sheet.crop(width, height * 2, width, height);
+        invertedBullet = sheet.crop(width * 2, height * 3, width, height);
+        //Player textures
         player_down[0] = sheet.crop(width * 4, 0, width, height);
         player_down[1] = sheet.crop(width * 5, 0, width, height);
         player_up[0] = sheet.crop(width * 6, 0, width, height);
@@ -61,13 +70,6 @@ public class Assets {
         grass = sheet.crop(width * 2, 0, width, height);
         wall = sheet.crop(width * 3, 0, width, height);
 
-        //Entities Texture
-        tree = sheet.crop(0, 0, width, height * 2);
-        rock = sheet.crop(0, height * 2, width, height);
-        appleTree = sheet.crop(0, height * 3, width, height * 2);
-        portal = sheet.crop(width, height * 3, width, height * 2);
-        bullet = sheet.crop(width, height * 2, width, height);
-
         //Button Texture
         startBtn[0] = sheet.crop(width * 6, height * 4, width * 2, height);
         startBtn[1] = sheet.crop(width * 6, height * 5, width * 2, height);
@@ -76,6 +78,7 @@ public class Assets {
         //Items
         apple = sheet.crop(width * 2, height, width, height);
         wood = sheet.crop(width, height, width, height);
+        gun = sheet.crop(width * 2, height * 2, width, height);
 
         inventoryScreen = ImageLoader.loadImage("/textures/inventoryScreen.png");
         hotBar = sheet.crop(width * 3, height, width, height);
