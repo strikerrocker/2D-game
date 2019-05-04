@@ -62,7 +62,7 @@ public class Rectangle extends Rectangle2D.Float {
         return this;
     }
 
-    public void draw(Graphics graphics) {
+    public void render(Graphics graphics) {
         graphics.setColor(Color.RED);
         graphics.fillRect((int) x, (int) y, (int) width, (int) height);
     }

@@ -7,7 +7,6 @@ import io.github.strikerrocker.entities.type.EntityTypes;
 import io.github.strikerrocker.gfx.Assets;
 import io.github.strikerrocker.misc.Rectangle;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Bullet extends Creature {
@@ -16,10 +15,7 @@ public class Bullet extends Creature {
     public Bullet(Handler handler, float x, float y) {
         super(EntityTypes.bullet, handler, x, y, 32, 32, 1);
         bounds = new Rectangle(0, 0, 0.5f, 0.5f);
-    }
-
-    public int getDamage() {
-        return damage;
+        speed = 0.03f;
     }
 
     public Bullet setDamage(int damage) {
@@ -29,18 +25,24 @@ public class Bullet extends Creature {
 
     @Override
     protected void initAITasks() {
+    }
 
+    @Override
+    public boolean canMove() {
+        return true;
     }
 
     @Override
     public void tick() {
         super.tick();
-        Rectangle attackArea = new Rectangle(x + width, y, 1, 1);
+        Rectangle attackArea = new Rectangle((float) (x + getCollisionBounds().getWidth()), y, 0.5f, 0.5f);
         for (Entity entity : handler.getCurrentLevel().getEntityManager().getEntities()) {
-            if (entity != this && entity.getCollisionBounds(0, 0).intersects(attackArea)
-                    && !(entity instanceof Portal) && entity instanceof Creature) {
+            if (entity != this && entity.getCollisionBounds().intersects(attackArea)
+                    && !(entity instanceof Portal) && entity instanceof Creature && attackTimer > attackCooldown) {
+                setAttackTimer(0);
                 ((Creature) entity).hurt(damage);
                 this.hurt(1);
+                return;
             }
         }
         if (xMove > 0) {
@@ -53,12 +55,19 @@ public class Bullet extends Creature {
             if (isSolid(tx, (int) (y + bounds.y)) || isSolid(tx, (int) (y + bounds.y + bounds.height))) {
                 this.hurt(1);
             }
+        } else if (yMove < 0) {
+            int ty = (int) (y + yMove + bounds.y);
+            if (!isSolid((int) (x + bounds.x), ty) &&
+                    !isSolid((int) (x + bounds.x + bounds.width), ty)) {
+                this.hurt(1);
+            }
+        } else if (yMove > 0) {
+            int ty = (int) (y + yMove + bounds.y + bounds.height);
+            if (!isSolid((int) (x + bounds.x), ty) &&
+                    !isSolid((int) (x + bounds.x + bounds.width), ty)) {
+                this.hurt(1);
+            }
         }
-    }
-
-    @Override
-    public void render(Graphics graphics) {
-        super.render(graphics);
     }
 
     @Override
@@ -82,5 +91,27 @@ public class Bullet extends Creature {
         super.deserialize(element);
         damage = element.getAsJsonObject().get("damageDealt").getAsInt();
         return this;
+    }
+
+    /**
+     * @param side 1:up ,2:right ,3:down ,4:left
+     */
+    public void move(int side) {
+        switch (side) {
+            case 1:
+                yMove = -speed;
+                break;
+            case 2:
+                xMove = speed;
+                break;
+            case 3:
+                yMove = speed;
+                break;
+            case 4:
+                xMove = -speed;
+                break;
+            default:
+                break;
+        }
     }
 }

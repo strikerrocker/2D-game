@@ -115,7 +115,9 @@ public class Player extends Creature {
                 inventory.addStack(new Item(Items.grass));
             }
             if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_B)) {
-                handler.getCurrentLevel().getEntityManager().addEntity(new Bullet(handler, x + 1, y).setDamage(2));
+                Bullet bullet = new Bullet(handler, x + 1, y).setDamage(2);
+                handler.getCurrentLevel().getEntityManager().addEntity(bullet);
+                bullet.move(2);
             }
         }
     }

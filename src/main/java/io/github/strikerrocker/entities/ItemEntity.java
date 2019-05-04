@@ -32,11 +32,7 @@ public class ItemEntity extends Creature {
 
     @Override
     public void onKilled() {
-        handler.getCurrentLevel().getEntityManager().getPlayer().getInventory().addStack(getItem());
-    }
-
-    public Item getItem() {
-        return item;
+        handler.getCurrentLevel().getEntityManager().getPlayer().getInventory().addStack(item);
     }
 
     public ItemEntity setItem(Item item) {

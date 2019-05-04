@@ -50,7 +50,6 @@ public class MoveToAI extends AI {
             creature.setYMove(move.getY());
             tempTarget = movePos;
             path.remove(tempTarget);
-
         }
         creaturePos = creature.getPos().intForm();
     }

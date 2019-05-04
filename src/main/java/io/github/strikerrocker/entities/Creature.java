@@ -125,7 +125,7 @@ public abstract class Creature extends Entity {
                 }
             }, 500);
         }
-        //getPixelCollisionBounds(0, 0).draw(graphics);
+        //getPixelCollisionBounds(0, 0).render(graphics);
         PixelPos pos = getPixelPos();
         graphics.drawImage(toBeRendered, (int) (pos.getX() - handler.getGameCamera().getXOffset()), (int) (pos.getY() - handler.getGameCamera().getYOffset()), (int) width, (int) height, null);
         if (!(this instanceof Player) && renderHurt) {
