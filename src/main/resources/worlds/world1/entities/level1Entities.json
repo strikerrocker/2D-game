@@ -7,7 +7,11 @@
       "health": 1,
       "xMove": 0.0,
       "yMove": 0.0,
-      "target": "level2"
+      "targetDim": "level2",
+      "targetPos": {
+        "targetX": 1,
+        "targetY": 1
+      }
     }
   ]
 }

@@ -23,7 +23,7 @@ public class MenuState extends State {
         worldsDir.mkdirs();
         addWorldButtons();
         if (worldButtons.isEmpty()) {
-            GameData.setupNewWorld(worldsDir);
+            GameData.loadDefaultWorld(worldsDir);
             addWorldButtons();
         }
     }

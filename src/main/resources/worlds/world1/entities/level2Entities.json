@@ -7,7 +7,24 @@
       "health": 1,
       "xMove": 0.0,
       "yMove": 0.0,
-      "target": "level1"
+      "targetDim": "level1",
+      "targetPos": {
+        "targetX": 23,
+        "targetY": 22
+      }
+    },
+    {
+      "x": 24.0,
+      "y": 22.0,
+      "name": "portal",
+      "health": 1,
+      "xMove": 0.0,
+      "yMove": 0.0,
+      "targetDim": "level3",
+      "targetPos": {
+        "targetX": 1,
+        "targetY": 1
+      }
     }
   ]
 }

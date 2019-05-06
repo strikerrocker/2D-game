@@ -109,7 +109,9 @@ public class Player extends Creature {
                 setHealth(maxHealth);
             }
             if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_P)) {
-                handler.getCurrentLevel().getEntityManager().addEntity(new Portal(handler, x, y));
+                Portal portal = new Portal(handler, x, y);
+                handler.getCurrentLevel().getEntityManager().addEntity(portal);
+                portal.setTargetPos(portal.getPos());
             }
             if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_B)) {
                 Bullet bullet = new Bullet(handler, x + 1, y).setDamage(2);

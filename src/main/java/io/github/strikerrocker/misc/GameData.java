@@ -87,8 +87,9 @@ public class GameData {
         saveEntityData(gameState, worldDir, gson);
     }
 
-    public static void setupNewWorld(File worldDir) {
-        File world = new File(ClassLoader.getSystemClassLoader().getResource("worlds/").getFile());
+    public static void loadDefaultWorld(File worldDir) {
+        //TODO fix this not working in non-dev env
+        File world = new File(GameData.class.getClassLoader().getResource("worlds/").getFile());
         Utils.copyFolder(world, worldDir);
     }
 }
