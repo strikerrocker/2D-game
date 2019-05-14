@@ -2,7 +2,6 @@ package io.github.strikerrocker.entities;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.annotations.Expose;
 import io.github.strikerrocker.Handler;
 import io.github.strikerrocker.entities.type.EntityType;
 import io.github.strikerrocker.gfx.PixelPos;
@@ -15,13 +14,13 @@ import static io.github.strikerrocker.blocks.Block.BLOCKHEIGHT;
 import static io.github.strikerrocker.blocks.Block.BLOCKWIDTH;
 
 public abstract class Entity {
-    @Expose
-    protected float x, y;
-    protected float width, height;
+    protected float x;
+    protected float y;
+    protected float width;
+    protected float height;
     protected Handler handler;
     boolean active = true;
     Rectangle bounds;
-    @Expose
     private String name;
 
     public Entity(EntityType type, Handler handler, float x, float y, float width, float height) {

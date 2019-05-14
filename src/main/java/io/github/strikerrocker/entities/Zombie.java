@@ -18,10 +18,10 @@ public class Zombie extends Creature {
 
     public Zombie(Handler handler, float x, float y) {
         super(EntityTypes.zombie, handler, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_HEALTH);
-        down = new Animation(500, Assets.zombie_down);
-        up = new Animation(500, Assets.zombie_up);
-        right = new Animation(500, Assets.zombie_right);
-        left = new Animation(500, Assets.zombie_left);
+        down = new Animation(500, Assets.zombieDown);
+        up = new Animation(500, Assets.zombieUp);
+        right = new Animation(500, Assets.zombieRight);
+        left = new Animation(500, Assets.zombieLeft);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class Zombie extends Creature {
         } else if (yMove > 0) {
             return down.getCurrentFrame();
         } else {
-            return Assets.zombie_down[0];
+            return Assets.zombieDown[0];
         }
     }
 

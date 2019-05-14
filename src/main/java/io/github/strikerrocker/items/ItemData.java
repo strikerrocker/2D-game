@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class ItemData {
-    private static ArrayList<ItemData> itemData = new ArrayList<>();
+    private static ArrayList<ItemData> itemDatas = new ArrayList<>();
     @Expose
     private final int id;
     @Expose
@@ -21,16 +21,16 @@ public class ItemData {
     ItemData(BufferedImage texture, String name) {
         this.texture = texture;
         this.name = name;
-        itemData.add(this);
-        this.id = itemData.indexOf(this);
+        itemDatas.add(this);
+        this.id = itemDatas.indexOf(this);
     }
 
     public static ItemData getFromId(int id) {
-        return itemData.get(id);
+        return itemDatas.get(id);
     }
 
     void onRightClick(Handler handler, Player player, Item stack, int x, int y) {
-        if (isFood && !(player.getHealth() >= player.maxHealth)) {
+        if (isFood && player.maxHealth <= player.getHealth()) {
             player.setHealth(player.getHealth() + healAmt);
             stack.decSize(1);
             player.setItemUseTimer(0);

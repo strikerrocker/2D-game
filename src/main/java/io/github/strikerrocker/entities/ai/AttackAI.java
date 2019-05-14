@@ -6,7 +6,7 @@ import io.github.strikerrocker.entities.Zombie;
 import io.github.strikerrocker.entities.player.Player;
 import io.github.strikerrocker.misc.Rectangle;
 
-public class AttackAI extends AI {
+public class AttackAI implements AI {
     private int rangeFactor;
     private int hurtAmt;
 

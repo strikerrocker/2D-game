@@ -17,6 +17,9 @@ import java.util.Iterator;
 
 public class GameData {
 
+    private GameData() {
+    }
+
     private static void saveEntityData(GameState gameState, File worldDir, Gson gson) {
         try {
             if (gameState.getPlayer() != null) {
@@ -24,31 +27,30 @@ public class GameData {
                 Path playerData = Paths.get(worldDir.getPath() + "/player.json");
                 Files.deleteIfExists(playerData);
                 playerData.toFile().createNewFile();
-                PrintWriter playerDataWriter = new PrintWriter(new FileWriter(playerData.toFile()));
-                playerDataWriter.println(gson.toJson(player, Player.class));
-                playerDataWriter.close();
+                try (PrintWriter playerDataWriter = new PrintWriter(new FileWriter(playerData.toFile()))) {
+                    playerDataWriter.println(gson.toJson(player, Player.class));
+                }
             }
             Paths.get(worldDir.getPath() + "/entities").toFile().mkdirs();
             for (Level lvl : gameState.getLevels()) {
                 Path lvlEntityData = Paths.get(worldDir.getPath() + "/entities/" + lvl.getName() + "Entities.json");
                 Files.deleteIfExists(lvlEntityData);
                 lvlEntityData.toFile().createNewFile();
-                PrintWriter writer = new PrintWriter(new FileWriter(lvlEntityData.toFile()));
-                EntityManager manager = lvl.getEntityManager();
-                Iterator<Entity> iterator = manager.getEntities().iterator();
-                while (iterator.hasNext()) {
-                    Entity entity1 = iterator.next();
-                    entity1.tick();
-                    if (entity1 instanceof Player) {
-                        iterator.remove();
+                try (PrintWriter writer = new PrintWriter(new FileWriter(lvlEntityData.toFile()))) {
+                    EntityManager manager = lvl.getEntityManager();
+                    Iterator<Entity> iterator = manager.getEntities().iterator();
+                    while (iterator.hasNext()) {
+                        Entity entity1 = iterator.next();
+                        entity1.tick();
+                        if (entity1 instanceof Player) {
+                            iterator.remove();
+                        }
                     }
+                    writer.println(gson.toJson(manager));
                 }
-                writer.println(gson.toJson(manager));
-                writer.close();
             }
-        } catch (IOException e) {
+        } catch (IOException | ConcurrentModificationException e) {
             e.printStackTrace();
-        } catch (ConcurrentModificationException ignored) {
         }
     }
 

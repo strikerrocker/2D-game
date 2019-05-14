@@ -3,9 +3,11 @@ package io.github.strikerrocker.gfx;
 import java.awt.image.BufferedImage;
 
 public class Animation {
-    private int speed, index;
+    private int speed;
+    private int index;
     private BufferedImage[] frames;
-    private long lastTime, timer;
+    private long lastTime;
+    private long timer;
 
     public Animation(int speed, BufferedImage[] frames) {
         this.speed = speed;

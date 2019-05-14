@@ -5,8 +5,13 @@ import java.awt.event.KeyListener;
 
 public class KeyManager implements KeyListener {
 
-    public boolean up, down, left, right;
-    private boolean[] keys, justPressed, cantPress;
+    public boolean up;
+    public boolean down;
+    public boolean left;
+    public boolean right;
+    private boolean[] keys;
+    private boolean[] justPressed;
+    private boolean[] cantPress;
 
     public KeyManager() {
         this.keys = new boolean[256];

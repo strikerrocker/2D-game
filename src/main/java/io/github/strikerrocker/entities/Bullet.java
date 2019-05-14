@@ -51,11 +51,11 @@ public class Bullet extends Creature {
         }
         if (xMove > 0) {
             int tx = (int) (x + xMove + bounds.x + bounds.width);
-            if (isSolid(tx, (int) ((y + bounds.y))) || isSolid(tx, (int) (y + bounds.y + bounds.height))) {
+            if (isSolid(tx, (int) (y + bounds.y)) || isSolid(tx, (int) (y + bounds.y + bounds.height))) {
                 this.hurt(1);
             }
         } else if (xMove < 0) {
-            int tx = (int) ((x + xMove + bounds.x));
+            int tx = (int) (x + xMove + bounds.x);
             if (isSolid(tx, (int) (y + bounds.y)) || isSolid(tx, (int) (y + bounds.y + bounds.height))) {
                 this.hurt(1);
             }

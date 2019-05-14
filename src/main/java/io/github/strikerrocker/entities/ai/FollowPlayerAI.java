@@ -4,7 +4,9 @@ import io.github.strikerrocker.entities.Creature;
 import io.github.strikerrocker.entities.player.Player;
 
 public class FollowPlayerAI extends MoveToAI {
-    private long lastMoveTimer, moveCooldown = 1000, moveTimer = moveCooldown;
+    private long lastMoveTimer;
+    private long moveCooldown = 1000;
+    private long moveTimer = moveCooldown;
 
     public FollowPlayerAI() {
         super(null);

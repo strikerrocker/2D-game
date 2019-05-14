@@ -42,12 +42,10 @@ public class Portal extends Creature {
     @Override
     public void tick() {
         super.tick();
-        if (handler.getCurrentLevel().getEntityManager().getEntities().contains(this)) {
-            if (handler.getCurrentLevel().isConquered()
-                    && getCollisionBounds().intersects(handler.getCurrentLevel().getEntityManager().getPlayer().getCollisionBounds()) && targetDim != null) {
-                handler.teleportPlayerTo(targetDim);
-                if (targetPos != null) handler.getCurrentLevel().getEntityManager().getPlayer().setPos(targetPos);
-            }
+        if (handler.getCurrentLevel().getEntityManager().getEntities().contains(this) && handler.getCurrentLevel().isConquered()
+                && getCollisionBounds().intersects(handler.getCurrentLevel().getEntityManager().getPlayer().getCollisionBounds()) && targetDim != null) {
+            handler.teleportPlayerTo(targetDim);
+            if (targetPos != null) handler.getCurrentLevel().getEntityManager().getPlayer().setPos(targetPos);
         }
     }
 

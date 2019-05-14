@@ -6,7 +6,8 @@ import java.awt.*;
 public class Display {
     private JFrame frame;
     private String title;
-    private int height, width;
+    private int height;
+    private int width;
     private Canvas canvas;
 
     public Display(String title, int width, int height) {

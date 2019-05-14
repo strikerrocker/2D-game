@@ -9,6 +9,7 @@ import io.github.strikerrocker.items.Item;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static io.github.strikerrocker.blocks.Block.BLOCKHEIGHT;
@@ -31,7 +32,7 @@ public class Inventory {
         this.hotBarSelectedItem = hotBarSelectedItem;
     }
 
-    public ArrayList<Item> getInventoryItems() {
+    public List<Item> getInventoryItems() {
         return inventoryItems;
     }
 
@@ -63,7 +64,8 @@ public class Inventory {
     void renderHotbar(Graphics graphics) {
         if (active)
             return;
-        int guiWidth = BLOCKWIDTH * 3 / 4, guiHeight = BLOCKHEIGHT * 3 / 4;
+        int guiWidth = BLOCKWIDTH * 3 / 4;
+        int guiHeight = BLOCKHEIGHT * 3 / 4;
         int hotBarX = handler.getWidth() / 2 - guiWidth;
         int hotBarY = handler.getHeight() - guiHeight;
         graphics.drawImage(Assets.hotBar, hotBarX - guiWidth / 12, hotBarY - guiHeight / 12, guiWidth, guiHeight, null);

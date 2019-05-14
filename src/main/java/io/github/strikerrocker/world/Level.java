@@ -1,6 +1,5 @@
 package io.github.strikerrocker.world;
 
-import com.google.gson.annotations.Expose;
 import io.github.strikerrocker.Handler;
 import io.github.strikerrocker.blocks.Block;
 import io.github.strikerrocker.blocks.Blocks;
@@ -18,12 +17,10 @@ import java.nio.file.Files;
 
 public class Level {
     protected Handler handler;
-    @Expose
     private String name;
-    @Expose
-    private int worldWidth, worldHeight;
+    private int worldWidth;
+    private int worldHeight;
     private BlockPos spawn;
-    @Expose
     private int[][] blocks;
     private EntityManager entityManager;
     private boolean isConquered = true;

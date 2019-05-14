@@ -29,4 +29,7 @@ public class Serializers {
         object.add("inventoryItems", items);
         return object;
     };
+
+    private Serializers() {
+    }
 }

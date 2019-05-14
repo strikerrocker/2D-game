@@ -50,4 +50,7 @@ public class Deserializers {
         }
         return manager;
     };
+
+    private Deserializers() {
+    }
 }

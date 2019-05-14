@@ -10,6 +10,9 @@ public class Items {
     public static ItemData sword;
     public static ItemData gun;
 
+    private Items() {
+    }
+
     public static void init() {
         wood = new ItemData(Assets.wood, "Wood");
         rock = new ItemData(Assets.rock, "Rock");

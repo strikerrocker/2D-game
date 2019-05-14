@@ -15,7 +15,6 @@ public class Item {
 
     public Item(ItemData itemData, int count) {
         if (count <= 0 || count > MAX_COUNT) {
-            System.out.println("test");
             throw new IllegalArgumentException("Count cant be " + count);
         }
         this.itemData = itemData;

@@ -2,7 +2,6 @@ package io.github.strikerrocker.entities;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.annotations.Expose;
 import io.github.strikerrocker.Handler;
 import io.github.strikerrocker.entities.ai.AI;
 import io.github.strikerrocker.entities.player.Player;
@@ -30,12 +29,13 @@ public abstract class Creature extends Entity {
     private static final Timer renderHurtTimer = new Timer();
     public int maxHealth;
     protected float speed;
-    @Expose
-    protected float xMove, yMove;
-    protected long lastAttackTimer, attackCooldown = 1500, attackTimer = attackCooldown;
+    protected float xMove;
+    protected float yMove;
+    protected long lastAttackTimer;
+    protected long attackCooldown = 1500;
+    protected long attackTimer = attackCooldown;
     Map<AI, Integer> aiTasks;
     private boolean renderHurt = false;
-    @Expose
     private int health;
 
     public Creature(EntityType type, Handler handler, float x, float y, int width, int height, int maxHealth) {
@@ -126,13 +126,13 @@ public abstract class Creature extends Entity {
     private void moveX() {
         if (xMove > 0) {
             int tx = (int) (x + xMove + bounds.x + bounds.width);
-            if (!isSolid(tx, (int) ((y + bounds.y))) && !isSolid(tx, (int) (y + bounds.y + bounds.height))) {
+            if (!isSolid(tx, (int) (y + bounds.y)) && !isSolid(tx, (int) (y + bounds.y + bounds.height))) {
                 x += xMove;
             } else {
                 x += tx - Math.floor(tx);
             }
         } else if (xMove < 0) {
-            int tx = (int) ((x + xMove + bounds.x));
+            int tx = (int) (x + xMove + bounds.x);
             if (!isSolid(tx, (int) (y + bounds.y)) && !isSolid(tx, (int) (y + bounds.y + bounds.height))) {
                 x += xMove;
             } else {

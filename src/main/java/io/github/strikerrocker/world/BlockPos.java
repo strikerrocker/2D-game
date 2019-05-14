@@ -2,8 +2,11 @@ package io.github.strikerrocker.world;
 
 import io.github.strikerrocker.gfx.PixelPos;
 
+import java.util.Objects;
+
 public class BlockPos {
-    private float x, y;
+    private float x;
+    private float y;
 
     public BlockPos(float x, float y) {
         this.x = x;
@@ -24,6 +27,11 @@ public class BlockPos {
 
     public void setX(float x) {
         this.x = x;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
     }
 
     @Override

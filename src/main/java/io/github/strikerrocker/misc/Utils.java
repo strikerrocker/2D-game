@@ -8,6 +8,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Utils {
+    private Utils() {
+    }
+
     public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> unsortMap) {
         List<Map.Entry<K, V>> list = new LinkedList<>(unsortMap.entrySet());
         list.sort(Comparator.comparing(Map.Entry::getValue));
@@ -17,12 +20,12 @@ public class Utils {
     public static String loadFilesAsString(File path) {
         StringBuilder builder = new StringBuilder();
         try {
-            BufferedReader br = new BufferedReader(new FileReader(path));
-            String line;
-            while ((line = br.readLine()) != null) {
-                builder.append(line).append("\n");
+            try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    builder.append(line).append("\n");
+                }
             }
-            br.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -54,16 +57,16 @@ public class Utils {
                     copyFolder(new File(src, file), new File(dest, file));
                 }
             } else {
-                InputStream in = new FileInputStream(src);
-                OutputStream out = new FileOutputStream(dest);
-                byte[] buffer = new byte[1024];
-                int length;
-                //copy the file content in bytes
-                while ((length = in.read(buffer)) > 0) {
-                    out.write(buffer, 0, length);
+                try (InputStream in = new FileInputStream(src)) {
+                    try (OutputStream out = new FileOutputStream(dest)) {
+                        byte[] buffer = new byte[1024];
+                        int length;
+                        //copy the file content in bytes
+                        while ((length = in.read(buffer)) > 0) {
+                            out.write(buffer, 0, length);
+                        }
+                    }
                 }
-                in.close();
-                out.close();
             }
         } catch (IOException e) {
             e.printStackTrace();

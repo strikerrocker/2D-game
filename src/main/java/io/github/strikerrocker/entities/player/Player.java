@@ -26,7 +26,9 @@ import static io.github.strikerrocker.blocks.Block.BLOCKWIDTH;
 import static io.github.strikerrocker.misc.Deserializers.inventoryJsonDeserializer;
 
 public class Player extends Creature {
-    private long lastItemUseTimer, itemUseCooldown = 1000, itemUseTimer = itemUseCooldown;
+    private long lastItemUseTimer;
+    private long itemUseCooldown = 1000;
+    private long itemUseTimer = itemUseCooldown;
     private Animation down;
     private Animation up;
     private Animation right;
@@ -39,10 +41,10 @@ public class Player extends Creature {
     public Player(Handler handler, float x, float y) {
         super(EntityTypes.player, handler, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, 10);
 
-        down = new Animation(500, Assets.player_down);
-        up = new Animation(500, Assets.player_up);
-        right = new Animation(500, Assets.player_right);
-        left = new Animation(500, Assets.player_left);
+        down = new Animation(500, Assets.playerDown);
+        up = new Animation(500, Assets.playerUp);
+        right = new Animation(500, Assets.playerRight);
+        left = new Animation(500, Assets.playerLeft);
         inventory = new Inventory(handler);
 
         attackCooldown = 500;

@@ -4,7 +4,8 @@ import io.github.strikerrocker.blocks.Block;
 import io.github.strikerrocker.world.BlockPos;
 
 public class PixelPos {
-    private float x, y;
+    private float x;
+    private float y;
 
     public PixelPos(float x, float y) {
         this.x = x;
@@ -22,10 +23,6 @@ public class PixelPos {
 
     public float getX() {
         return x;
-    }
-
-    public BlockPos toBlockPos() {
-        return new BlockPos(x / Block.BLOCKWIDTH, y / Block.BLOCKHEIGHT);
     }
 
     @Override

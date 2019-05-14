@@ -14,6 +14,9 @@ public class EntityTypes {
     public static EntityType player;
     public static EntityType bullet;
 
+    private EntityTypes() {
+    }
+
     public static void init() {
         EntityType.types = new ArrayList<>();
         zombie = new EntityType("zombie") {

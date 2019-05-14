@@ -4,8 +4,10 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 
 public abstract class UIBase {
-    protected float x, y;
-    protected int width, height;
+    protected float x;
+    protected float y;
+    protected int width;
+    protected int height;
     boolean hovering = false;
     private Rectangle bounds;
 

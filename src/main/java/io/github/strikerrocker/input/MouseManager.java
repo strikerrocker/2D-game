@@ -7,8 +7,10 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 public class MouseManager implements MouseListener, MouseMotionListener {
-    private boolean left, right;
-    private int x, y;
+    private boolean left;
+    private boolean right;
+    private int x;
+    private int y;
     private UIManager uiManager;
 
     public void setUIManager(UIManager uiManager) {

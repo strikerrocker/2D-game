@@ -3,6 +3,7 @@ package io.github.strikerrocker.blocks;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Block {
     /*
@@ -10,7 +11,7 @@ public class Block {
      */
     public static final int BLOCKWIDTH = 64;
     public static final int BLOCKHEIGHT = 64;
-    public static ArrayList<Block> blocks = new ArrayList<>();
+    public static List<Block> blocks = new ArrayList<>();
     private final int id;
     private BufferedImage texture;
 

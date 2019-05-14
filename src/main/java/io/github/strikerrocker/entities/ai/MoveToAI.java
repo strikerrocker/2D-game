@@ -4,12 +4,12 @@ import io.github.strikerrocker.entities.Creature;
 import io.github.strikerrocker.entities.pathfinding.PathFinder;
 import io.github.strikerrocker.world.BlockPos;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class MoveToAI extends AI {
+public class MoveToAI implements AI {
     protected BlockPos targetPos;
     private BlockPos tempTarget;
-    private ArrayList<BlockPos> path;
+    private List<BlockPos> path;
 
     public MoveToAI(BlockPos targetPos) {
         this.targetPos = targetPos;
@@ -32,8 +32,8 @@ public class MoveToAI extends AI {
 
     @Override
     public void execute(Creature creature) {
-        if (path == null || path.size() == 0) updatePath(creature);
-        if ((tempTarget == null || tempTarget.intForm().equals(creature.getPos().intForm())) && path.size() > 0) {
+        if (path == null || path.isEmpty()) updatePath(creature);
+        if ((tempTarget == null || tempTarget.intForm().equals(creature.getPos().intForm())) && !path.isEmpty()) {
             BlockPos movePos = path.get(0);
             double x = (movePos.getX() - creature.getX());
             double y = (movePos.getY() - creature.getY());
@@ -48,8 +48,8 @@ public class MoveToAI extends AI {
 
     private void updatePath(Creature creature) {
         tempTarget = creature.getPos().intForm();
-        ArrayList<BlockPos> list = new PathFinder(creature.getPos(), targetPos).setEntity(creature).setHandler(creature.getHandler()).tryGetPath();
-        if (list.size() > 0) list.remove(0);
+        List<BlockPos> list = new PathFinder(creature.getPos(), targetPos).setEntity(creature).setHandler(creature.getHandler()).tryGetPath();
+        if (!list.isEmpty()) list.remove(0);
         path = list;
         System.out.println(path);
     }

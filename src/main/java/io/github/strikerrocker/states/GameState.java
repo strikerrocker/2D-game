@@ -60,12 +60,7 @@ public class GameState extends State {
     }
 
     public Level getLevel(String string) {
-        for (Level level : levels) {
-            if (level.getName().equals(string)) {
-                return level;
-            }
-        }
-        return null;
+        return levels.stream().filter(lvl -> lvl.getName().equals(string)).findFirst().orElse(null);
     }
 
     public Level getCurrentLevel() {

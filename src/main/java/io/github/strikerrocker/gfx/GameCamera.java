@@ -6,7 +6,8 @@ import io.github.strikerrocker.entities.Entity;
 
 public class GameCamera {
     private Handler handler;
-    private float xOffset, yOffset;
+    private float xOffset;
+    private float yOffset;
 
     public GameCamera(Handler handler, float xOffset, float yOffset) {
         this.handler = handler;

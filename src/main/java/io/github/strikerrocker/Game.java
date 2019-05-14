@@ -29,13 +29,13 @@ public class Game implements Runnable {
     private int fps = 0;
     private Logger logger;
     private String title;
-    private int height, width;
+    private int height;
+    private int width;
     private Display display;
     private Thread thread;
     private boolean running = false;
     private KeyManager keyManager;
     private GameCamera camera;
-    private Handler handler;
     private MouseManager mouseManager;
     private boolean dev = false;
     private Gson gson;
@@ -100,9 +100,9 @@ public class Game implements Runnable {
         display.getCanvas().addMouseMotionListener(mouseManager);
         display.getFrame().addMouseListener(mouseManager);
         display.getFrame().addMouseMotionListener(mouseManager);
-        Assets.init();
 
-        handler = new Handler(this);
+        Handler handler = new Handler(this);
+        Assets.init(handler);
         camera = new GameCamera(handler, 0, 0);
         Blocks.init();
         Items.init();
@@ -142,8 +142,8 @@ public class Game implements Runnable {
     @Override
     public void run() {
         init();
-        int fps = 60;
-        double tps = 1000000000 / fps;
+        int intendedFPS = 60;
+        double tps = 1000000000 / intendedFPS;
         double delta = 0;
         double now;
         double lastTime = System.nanoTime();

@@ -6,11 +6,13 @@ import io.github.strikerrocker.world.BlockPos;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 public class PathFinder {
     private ArrayList<PathStep> openList;
     private ArrayList<BlockPos> closedList;
-    private BlockPos start, target;
+    private BlockPos start;
+    private BlockPos target;
     private Handler handler;
     private Entity entity;
 
@@ -52,11 +54,13 @@ public class PathFinder {
         return this;
     }
 
-    public ArrayList<BlockPos> tryGetPath() {
+    public List<BlockPos> tryGetPath() {
         ArrayList<BlockPos> posArrayList = new ArrayList<>();
         PathStep startStep = new PathStep(start);
         openList.add(startStep);
-        long lastTimer = 0, cooldown = 1000, timer = cooldown;
+        long lastTimer = 0;
+        long cooldown = 1000;
+        long timer = cooldown;
         do {
             timer += System.currentTimeMillis() - lastTimer;
             lastTimer = System.currentTimeMillis();
@@ -69,7 +73,7 @@ public class PathFinder {
                 break;
             }
             tryNewPath(currentStep);
-        } while (openList.size() > 0 || !(timer > cooldown));
+        } while (!openList.isEmpty() || timer < cooldown);
         return posArrayList;
     }
 

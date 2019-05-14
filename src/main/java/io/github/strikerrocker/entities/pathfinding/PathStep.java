@@ -3,7 +3,8 @@ package io.github.strikerrocker.entities.pathfinding;
 import io.github.strikerrocker.world.BlockPos;
 
 class PathStep {
-    private int g, h;
+    private int g;
+    private int h;
     private BlockPos pos;
     private PathStep parent;
 
