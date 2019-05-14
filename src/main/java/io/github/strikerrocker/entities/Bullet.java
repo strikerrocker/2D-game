@@ -38,11 +38,11 @@ public class Bullet extends Creature {
         Rectangle attackArea;
         if (xMove > 0) {
             attackArea = new Rectangle((float) (x + getCollisionBounds().getWidth()), y, 0.5f, 0.5f);
-        } else attackArea = new Rectangle((float) (x + getCollisionBounds().getWidth()), y, -1.5f, 0.5f);
+        } else attackArea = new Rectangle((float) (x + getCollisionBounds().getWidth()), y, -0.5f, 0.5f);
 
         for (Entity entity : handler.getCurrentLevel().getEntityManager().getEntities()) {
-            if (entity != this && entity.getCollisionBounds().intersects(attackArea)
-                    && !(entity instanceof Portal) && entity instanceof Creature && attackTimer > attackCooldown) {
+            if (entity != this && entity instanceof Creature && entity.getCollisionBounds().intersects(attackArea)
+                    && !(entity instanceof Portal) && attackTimer > attackCooldown) {
                 setAttackTimer(0);
                 ((Creature) entity).hurt(damage);
                 this.hurt(1);

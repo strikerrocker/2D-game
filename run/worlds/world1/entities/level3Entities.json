@@ -1,17 +1,1 @@
-{
-  "entities": [
-    {
-      "x": 0.0,
-      "y": 1.0,
-      "name": "portal",
-      "health": 1,
-      "xMove": 0.0,
-      "yMove": 0.0,
-      "targetDim": "level2",
-      "targetPos": {
-        "targetX": 23.0,
-        "targetY": 22.0
-      }
-    }
-  ]
-}
+{"entities":[{"x":0.0,"y":1.0,"name":"portal","health":1,"xMove":0.0,"yMove":0.0,"targetDim":"level2","targetPos":{"targetX":23.0,"targetY":22.0}}]}

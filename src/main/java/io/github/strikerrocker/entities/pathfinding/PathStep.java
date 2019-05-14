@@ -29,7 +29,7 @@ class PathStep {
         this.h = h;
     }
 
-    int getF() {
+    public int getF() {
         return getG() + getH();
     }
 

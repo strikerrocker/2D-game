@@ -42,8 +42,8 @@ public class Zombie extends Creature {
     @Override
     protected void initAITasks() {
         aiTasks.put(new AttackAI(1, 1), 0);
-        //aiTasks.put(new MoveToAI(this, new BlockPos(3, 4)), 1);
-        aiTasks.put(new FollowPlayerAI(this), 1);
+//        aiTasks.put(new MoveToAI(new BlockPos(3, 4)), 1);
+        aiTasks.put(new FollowPlayerAI(), 1);
     }
 
     @Override
@@ -54,5 +54,10 @@ public class Zombie extends Creature {
     @Override
     public void onKilled() {
         System.out.println("You killed a Zombie");
+    }
+
+    @Override
+    public boolean canMove() {
+        return true;
     }
 }

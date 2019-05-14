@@ -43,6 +43,22 @@ public class BlockPos {
         return new BlockPos((int) x, (int) y);
     }
 
+    public BlockPos left() {
+        return new BlockPos(x - 1, y);
+    }
+
+    public BlockPos right() {
+        return new BlockPos(x + 1, y);
+    }
+
+    public BlockPos up() {
+        return new BlockPos(x, y - 1);
+    }
+
+    public BlockPos down() {
+        return new BlockPos(x, y + 1);
+    }
+
     @Override
     public String toString() {
         return "BlockPos{" +

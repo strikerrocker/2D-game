@@ -5,20 +5,14 @@ import io.github.strikerrocker.entities.pathfinding.PathFinder;
 import io.github.strikerrocker.world.BlockPos;
 
 import java.util.ArrayList;
-import java.util.function.Consumer;
 
 public class MoveToAI extends AI {
-    protected Creature creature;
     protected BlockPos targetPos;
-    private BlockPos creaturePos;
     private BlockPos tempTarget;
     private ArrayList<BlockPos> path;
-    private Consumer<Creature> consumer;
 
-    public MoveToAI(Creature creature, BlockPos targetPos) {
-        this.creature = creature;
+    public MoveToAI(BlockPos targetPos) {
         this.targetPos = targetPos;
-        this.creaturePos = creature.getPos();
     }
 
     public void setTargetPos(BlockPos targetPos, Creature creature) {
@@ -28,7 +22,6 @@ public class MoveToAI extends AI {
 
     @Override
     public boolean canExecute(Creature creature) {
-        if (consumer != null) consumer.accept(creature);
         if (creature.getPos().intForm().equals(targetPos.intForm())) {
             creature.setXMove(0);
             creature.setYMove(0);
@@ -40,7 +33,7 @@ public class MoveToAI extends AI {
     @Override
     public void execute(Creature creature) {
         if (path == null || path.size() == 0) updatePath(creature);
-        if ((tempTarget == null || tempTarget.intForm().equals(creaturePos)) && path.size() > 0) {
+        if ((tempTarget == null || tempTarget.intForm().equals(creature.getPos().intForm())) && path.size() > 0) {
             BlockPos movePos = path.get(0);
             double x = (movePos.getX() - creature.getX());
             double y = (movePos.getY() - creature.getY());
@@ -51,18 +44,13 @@ public class MoveToAI extends AI {
             tempTarget = movePos;
             path.remove(tempTarget);
         }
-        creaturePos = creature.getPos().intForm();
     }
 
     private void updatePath(Creature creature) {
-        tempTarget = creaturePos;
-        ArrayList<BlockPos> list = new PathFinder(creature.getHandler(), creature, targetPos).tryGetPath();
+        tempTarget = creature.getPos().intForm();
+        ArrayList<BlockPos> list = new PathFinder(creature.getPos(), targetPos).setEntity(creature).setHandler(creature.getHandler()).tryGetPath();
         if (list.size() > 0) list.remove(0);
         path = list;
-        System.out.println(list);
-    }
-
-    protected void setConsumer(Consumer<Creature> consumer) {
-        this.consumer = consumer;
+        System.out.println(path);
     }
 }

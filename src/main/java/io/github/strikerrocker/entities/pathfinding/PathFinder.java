@@ -14,11 +14,9 @@ public class PathFinder {
     private Handler handler;
     private Entity entity;
 
-    public PathFinder(Handler handler, Entity entity, BlockPos target) {
-        this.handler = handler;
-        this.start = entity.getPos().intForm();
-        this.target = target;
-        this.entity = entity;
+    public PathFinder(BlockPos start, BlockPos target) {
+        this.start = start.intForm();
+        this.target = target.intForm();
         openList = new ArrayList<PathStep>() {
 
             @Override
@@ -44,13 +42,24 @@ public class PathFinder {
         return 1;
     }
 
+    public PathFinder setHandler(Handler handler) {
+        this.handler = handler;
+        return this;
+    }
+
+    public PathFinder setEntity(Entity entity) {
+        this.entity = entity;
+        return this;
+    }
+
     public ArrayList<BlockPos> tryGetPath() {
         ArrayList<BlockPos> posArrayList = new ArrayList<>();
         PathStep startStep = new PathStep(start);
-        startStep.setG(1);
-        startStep.setH(computeH(startStep.getPos(), target));
         openList.add(startStep);
+        long lastTimer = 0, cooldown = 1000, timer = cooldown;
         do {
+            timer += System.currentTimeMillis() - lastTimer;
+            lastTimer = System.currentTimeMillis();
             PathStep currentStep = openList.get(0);
             closedList.add(currentStep.getPos());
             openList.remove(0);
@@ -60,7 +69,7 @@ public class PathFinder {
                 break;
             }
             tryNewPath(currentStep);
-        } while (openList.size() > 0);
+        } while (openList.size() > 0 || !(timer > cooldown));
         return posArrayList;
     }
 
@@ -79,7 +88,7 @@ public class PathFinder {
     private void tryNewPath(PathStep currentStep) {
         ArrayList<BlockPos> adjMovable = adjMovablePos(currentStep.getPos());
         for (BlockPos pos : adjMovable) {
-            if (isClosed(pos)) continue;
+            if (closedList.contains(pos)) continue;
             PathStep step = new PathStep(pos);
             int moveCost = computeAdjMoveCost(currentStep, step);
             int index = openList.indexOf(step);
@@ -102,20 +111,20 @@ public class PathFinder {
     private ArrayList<BlockPos> adjMovablePos(BlockPos pos) {
         ArrayList<BlockPos> arrayList = new ArrayList<>();
         BlockPos adj;
-        adj = new BlockPos(pos.getX(), pos.getY() - 1);
-        if (isValidPos(adj)) {
+        adj = pos.left();
+        if (isValidPathStep(adj)) {
             arrayList.add(adj);
         }
-        adj = new BlockPos(pos.getX() - 1, pos.getY());
-        if (isValidPos(adj)) {
+        adj = pos.right();
+        if (isValidPathStep(adj)) {
             arrayList.add(adj);
         }
-        adj = new BlockPos(pos.getX(), pos.getY() + 1);
-        if (isValidPos(adj)) {
+        adj = pos.up();
+        if (isValidPathStep(adj)) {
             arrayList.add(adj);
         }
-        adj = new BlockPos(pos.getX() + 1, pos.getY());
-        if (isValidPos(adj)) {
+        adj = pos.down();
+        if (isValidPathStep(adj)) {
             arrayList.add(adj);
         }
 
@@ -127,11 +136,9 @@ public class PathFinder {
                 || handler.getCurrentLevel().getBlock(pos.getX(), pos.getY()).isSolid();
     }
 
-    private boolean isValidPos(BlockPos pos) {
-        return !hasCollision(pos) && !(pos.getX() < 0) && !(pos.getX() > entity.getHandler().getCurrentLevel().getWorldWidth()) && !(pos.getY() < 0) && !(pos.getY() > entity.getHandler().getCurrentLevel().getWorldHeight());
-    }
-
-    private boolean isClosed(BlockPos pos) {
-        return closedList.contains(pos);
+    private boolean isValidPathStep(BlockPos pos) {
+        if (entity == null || handler == null) return true;
+        return !hasCollision(pos) && pos.getX() >= 0 && pos.getX() <= handler.getCurrentLevel().getWorldWidth() &&
+                pos.getY() >= 0 && pos.getY() <= handler.getCurrentLevel().getWorldHeight();
     }
 }
